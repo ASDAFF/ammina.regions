@@ -3,19 +3,11 @@
 $MESS['kit.multiregions_PAGE_TITLE'] = "Модуль Kit: Регионы (филиалы и представительства)";
 $MESS['kit.multiregions_TAB_SETTINGS_TITLE'] = "Настройки";
 $MESS['kit.multiregions_TAB_SETTINGS_DESC'] = "Настройки модуля";
-$MESS['kit.multiregions_TAB_SUPPORT_TITLE'] = "Техподдержка, развитие модуля";
-$MESS['kit.multiregions_TAB_SUPPORT_DESC'] = "Техническая поддержка и пожелания по функционалу модуля ammain.ip";
+$MESS['kit.multiregions_TAB_SUPPORT_TITLE'] = "Документация";
+$MESS['kit.multiregions_TAB_SUPPORT_DESC'] = "Техническая документация по функционалу модуля ammain.ip";
 $MESS['kit.multiregions_TAB_SUPPORT_CONTENT'] = '
 	<h3>Документация</h3>
-	<p>Подробная документация по использованию модуля доступна по ссылке: <a href="https://www.kit.ru/documentation/course3/index/" target="_blank">https://www.kit.ru/documentation/course3/index/</a>.</p>
-	<h3>Техническая поддержка</h3>
-	<p>Техническая поддержка модуля осуществляется по электронной почте <a href="mailto:support@kit.ru">support@kit.ru</a></p>
-	<h3>Развитие модуля, новый функционал</h3>
-	<p>Если вы обнаружили что какого-то функционала модуля не хватает лично для вас - напишите нам.</p>
-	<hr/>
-	<h3>Наши контакты:</h3>
-	<p>Электронная почта: <a href="mailto:support@kit.ru">support@kit.ru</a></p>
-	<div style="clear:both;"></div>
+	<p>Подробная документация по использованию модуля доступна по ссылке: <a href="https://www.ammina.ru/documentation/course3/index/" target="_blank">https://www.ammina.ru/documentation/course3/index/</a>.</p>
 ';
 $MESS['kit.multiregions_TAB_RIGHTS_TITLE'] = "Права на доступ";
 $MESS['kit.multiregions_TAB_RIGHTS_DESC'] = "Настройка прав на доступ к модулю";
