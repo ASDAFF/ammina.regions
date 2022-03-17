@@ -76,9 +76,7 @@ class AmminaRegionsGeoContentComponent extends CBitrixComponent
 		if (!CModule::IncludeModule("ammina.regions")) {
 			return;
 		}
-		if (CAmminaRegions::isTestPeriodEnd()) {
-			return false;
-		}
+
 		if ($this->isCacheDisabled() || $this->startResultCache(false, $this->getAdditionalCacheId(), $this->getComponentCachePath())) {
 			$this->processResultData();
 			$this->initResultCache();
@@ -134,14 +132,14 @@ class AmminaRegionsGeoContentComponent extends CBitrixComponent
 			}
 		}
 		/**
-		 * Ищем геоконтент:
-		 * 1. Если совпадает город
-		 * 2. Если совпадает регион
-		 * 3. Если совпадает страна
-		 * 4. Если совпадает домен
-		 * 5. Без страны, региона, города
+		 * РС‰РµРј РіРµРѕРєРѕРЅС‚РµРЅС‚:
+		 * 1. Р•СЃР»Рё СЃРѕРІРїР°РґР°РµС‚ РіРѕСЂРѕРґ
+		 * 2. Р•СЃР»Рё СЃРѕРІРїР°РґР°РµС‚ СЂРµРіРёРѕРЅ
+		 * 3. Р•СЃР»Рё СЃРѕРІРїР°РґР°РµС‚ СЃС‚СЂР°РЅР°
+		 * 4. Р•СЃР»Рё СЃРѕРІРїР°РґР°РµС‚ РґРѕРјРµРЅ
+		 * 5. Р‘РµР· СЃС‚СЂР°РЅС‹, СЂРµРіРёРѕРЅР°, РіРѕСЂРѕРґР°
 		 *
-		 * Если город по IP не определен, то выводим геоконтент без страны, города, региона
+		 * Р•СЃР»Рё РіРѕСЂРѕРґ РїРѕ IP РЅРµ РѕРїСЂРµРґРµР»РµРЅ, С‚Рѕ РІС‹РІРѕРґРёРј РіРµРѕРєРѕРЅС‚РµРЅС‚ Р±РµР· СЃС‚СЂР°РЅС‹, РіРѕСЂРѕРґР°, СЂРµРіРёРѕРЅР°
 		 */
 		if ($this->arParams['PREVENT_CITY'] > 0) {
 			$arCity = \Ammina\Regions\CityTable::getList(array(

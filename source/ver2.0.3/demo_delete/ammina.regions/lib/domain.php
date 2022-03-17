@@ -841,9 +841,7 @@ Crawl-delay: 2.0
 
 	public static function doHackCurrency()
 	{
-		if (\CAmminaRegions::isTestPeriodEnd()) {
-			return false;
-		}
+
 		if (!empty($GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'])) {
 			Calculation::setConfig(
 				array(

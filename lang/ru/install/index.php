@@ -2,8 +2,8 @@
 
 $MESS["kit.multiregions_MODULE_NAME"] = "Kit. Регионы (филиалы и представительства)";
 $MESS["kit.multiregions_MODULE_DESC"] = "Модуль Kit: Регионы (филиалы и представительства)";
-$MESS["kit.multiregions_PARTNER_NAME"] = "Kit - решения для 1С-Битрикс";
-$MESS["kit.multiregions_PARTNER_URI"] = "https://www.kit.ru";
+$MESS["kit.multiregions_PARTNER_NAME"] = "ASDAFF";
+$MESS["kit.multiregions_PARTNER_URI"] = "https://asdaff.github.io/";
 $MESS["kit.multiregions_INSTALL_TITLE"] = "Установка модуля Kit: Регионы (филиалы и представительства)";
 $MESS["kit.multiregions_UNINSTALL_TITLE"] = "Установка модуля Kit: Регионы (филиалы и представительства)";
 $MESS['kit.multiregions_SYSVAR_CURRENT_DOMAIN_ID_NAME'] = "ID домена";

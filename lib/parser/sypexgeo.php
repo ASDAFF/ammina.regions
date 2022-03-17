@@ -10,8 +10,8 @@ class SypexGeo extends Base
 	const SXGEO_MEMORY = 1;
 	const SXGEO_BATCH = 2;
 
-	protected $strUrlFileCity = "https://kitgeo.ru/files/SxGeoCity_utf8.zip";
-	protected $strUrlFileInfo = "https://kitgeo.ru/files/SxGeo_Info.zip";
+	protected $strUrlFileCity = "https://amminageo.ru/files/SxGeoCity_utf8.zip";
+	protected $strUrlFileInfo = "https://amminageo.ru/files/SxGeo_Info.zip";
 	protected $strUrlFileCity2 = "https://sypexgeo.net/files/SxGeoCity_utf8.zip";
 	protected $strUrlFileInfo2 = "https://sypexgeo.net/files/SxGeo_Info.zip";
 	protected $strUrlFileCity3 = "http://sypexgeo.net/files/SxGeoCity_utf8.zip";

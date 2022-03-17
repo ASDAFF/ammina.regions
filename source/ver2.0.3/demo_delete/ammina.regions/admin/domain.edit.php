@@ -25,13 +25,6 @@ if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-if (CAmminaRegions::getTestPeriodInfo() == \Bitrix\Main\Loader::MODULE_DEMO_EXPIRED) {
-	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
-	CAdminMessage::ShowMessage(array("MESSAGE" => Loc::getMessage("AMMINA_REGIONS_SYS_MODULE_IS_DEMO_EXPIRED"), "HTML" => true));
-	require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
-	die();
-}
-
 $isSaleModule = CAmminaRegions::isIMExists();
 $needFieldsRestore = $_SERVER["REQUEST_METHOD"] == "POST" && !$isSavingOperation;
 $isNewItem = ($ID <= 0);
@@ -146,7 +139,7 @@ if ($isSavingOperation) {
 		}
 
 		$arCurrentDomain = \Ammina\Regions\DomainTable::getRowById($ID);
-		/*//Ïðîâåðÿåì íàëè÷èå äîìåííîãî èìåíè â ñàéòå è îáíîâëÿåì
+		/*//ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð°Ð»Ð¸Ñ‡Ð¸Ðµ Ð´Ð¾Ð¼ÐµÐ½Ð½Ð¾Ð³Ð¾ Ð¸Ð¼ÐµÐ½Ð¸ Ð² ÑÐ°Ð¹Ñ‚Ðµ Ð¸ Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÐµÐ¼
 		$arSite = CSite::GetArrayByID($arCurrentDomain['SITE_ID']);
 		$ar = explode("\n", str_replace("\r", "\n", $arSite["DOMAINS"]));
 		$arDomains = array();
@@ -165,14 +158,14 @@ if ($isSavingOperation) {
 			));
 		}
 		*/
-		//Ïðîâåðÿåì äëÿ ÑÅÎ (ñàéòìàï è robots)
+		//ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð´Ð»Ñ Ð¡Ð•Ðž (ÑÐ°Ð¹Ñ‚Ð¼Ð°Ð¿ Ð¸ robots)
 		if ($arActions['MAKE_SETTINGS_SITEMAP'] == "Y") {
 			\Ammina\Regions\DomainTable::doMakeSitemapSettingsForDomain($arCurrentDomain['ID']);
 		}
 		if ($arActions['MAKE_ROBOTS_FILE'] == "Y") {
 			\Ammina\Regions\DomainTable::doMakeRobotsForDomain($arCurrentDomain['ID']);
 		}
-		//Ïðîâåðÿåì äåéñòâèÿ ñ êîìïàíèåé
+		//ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ Ñ ÐºÐ¾Ð¼Ð¿Ð°Ð½Ð¸ÐµÐ¹
 		if ($arActions['SALE_COMPANY_CREATE'] == "Y") {
 			\Ammina\Regions\DomainTable::doMakeSaleCompanyForDomain($arCurrentDomain['ID']);
 		}

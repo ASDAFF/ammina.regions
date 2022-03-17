@@ -5,12 +5,6 @@ use Bitrix\Main\Localization\Loc;
 $module_id = "ammina.regions";
 CModule::IncludeModule($module_id);
 
-if (CAmminaRegions::getTestPeriodInfo() == \Bitrix\Main\Loader::MODULE_DEMO) {
-	CAdminMessage::ShowMessage(array("MESSAGE" => Loc::getMessage("AMMINA_REGIONS_SYS_MODULE_IS_DEMO"), "HTML" => true));
-} elseif (CAmminaRegions::getTestPeriodInfo() == \Bitrix\Main\Loader::MODULE_DEMO_EXPIRED) {
-	CAdminMessage::ShowMessage(array("MESSAGE" => Loc::getMessage("AMMINA_REGIONS_SYS_MODULE_IS_DEMO_EXPIRED"), "HTML" => true));
-}
-
 $modulePermissions = $APPLICATION->GetGroupRight($module_id);
 if ($modulePermissions >= "R") {
 	global $MESS;

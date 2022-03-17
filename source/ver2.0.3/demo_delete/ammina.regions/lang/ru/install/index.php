@@ -122,16 +122,6 @@ $MESS['ammina.regions_INSTALLFORM_ERROR_NAME'] = "укажите свое имя
 $MESS['ammina.regions_INSTALLFORM_ERROR_EMAIL1'] = "укажите свою электронную почту";
 $MESS['ammina.regions_INSTALLFORM_ERROR_EMAIL2'] = "проверьте корректность указания электроннной почты";
 $MESS['ammina.regions_INSTALLFORM_ERROR_PHONE'] = "укажите свой телефон";
-$MESS['ammina.regions_INSTALLFORM_TITLE1'] = "После отправки данных за Вами будет закреплен менеджер, который будет Вас сопровождать.";
-$MESS['ammina.regions_INSTALLFORM_FIELD_NAME'] = "Ваше имя";
-$MESS['ammina.regions_INSTALLFORM_FIELD_NAME_PLACEHOLDER'] = "Ваше имя";
-$MESS['ammina.regions_INSTALLFORM_FIELD_EMAIL'] = "E-Mail";
-$MESS['ammina.regions_INSTALLFORM_FIELD_PHONE'] = "Номер телефона";
-$MESS['ammina.regions_INSTALLFORM_FIELDS_REQUIRED'] = "* все поля обязательны для заполнения";
-$MESS['ammina.regions_INSTALLFORM_RULES'] = 'Нажимая на кнопку &laquo;Установить модуль&raquo;, я даю согласие на обработку персональных данных и соглашаюсь c <a href="https://www.ammina.ru/confidential/" target="_blank">политикой конфиденциальности</a>.';
-$MESS['ammina.regions_INSTALLFORM_MANAGER'] = "Ваш личный менеджер:";
-$MESS['ammina.regions_INSTALLFORM_MANAGER1'] = "Проконсультирует Вас по использованию наших решений";
-$MESS['ammina.regions_INSTALLFORM_MANAGER2'] = "Свяжет с нашей технической поддержкой для бесплатной установки и настройки решения";
-$MESS['ammina.regions_INSTALLFORM_MANAGER3'] = "Ответит на все интересующие вопросы";
-$MESS['ammina.regions_INSTALLFORM_MANAGER4'] = "Расскажет о наших продуктах, услугах, акциях и скидках";
-$MESS['ammina.regions_INSTALLFORM_MANAGER5'] = "Поможет организовать техническую поддержку Вашего сайта";
+
+
+

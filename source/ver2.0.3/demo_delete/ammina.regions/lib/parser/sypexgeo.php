@@ -10,10 +10,12 @@ class SypexGeo extends Base
 	const SXGEO_MEMORY = 1;
 	const SXGEO_BATCH = 2;
 
-	protected $strUrlFileCity = "https://sypexgeo.net/files/SxGeoCity_utf8.zip";
-	protected $strUrlFileInfo = "https://sypexgeo.net/files/SxGeo_Info.zip";
-	protected $strUrlFileCity2 = "http://sypexgeo.net/files/SxGeoCity_utf8.zip";
-	protected $strUrlFileInfo2 = "http://sypexgeo.net/files/SxGeo_Info.zip";
+	protected $strUrlFileCity = "https://amminageo.ru/files/SxGeoCity_utf8.zip";
+	protected $strUrlFileInfo = "https://amminageo.ru/files/SxGeo_Info.zip";
+	protected $strUrlFileCity2 = "https://sypexgeo.net/files/SxGeoCity_utf8.zip";
+	protected $strUrlFileInfo2 = "https://sypexgeo.net/files/SxGeo_Info.zip";
+	protected $strUrlFileCity3 = "http://sypexgeo.net/files/SxGeoCity_utf8.zip";
+	protected $strUrlFileInfo3 = "http://sypexgeo.net/files/SxGeo_Info.zip";
 	protected $id2iso = array(
 		'',
 		'AP',
@@ -297,7 +299,9 @@ class SypexGeo extends Base
 		);
 		if (!$client->download($this->strUrlFileInfo, $this->strDataLocalDir . "info.zip")) {
 			if (!$client->download($this->strUrlFileInfo2, $this->strDataLocalDir . "info.zip")) {
-				return false;
+				if (!$client->download($this->strUrlFileInfo3, $this->strDataLocalDir . "info.zip")) {
+					return false;
+				}
 			}
 		}
 		$status = intval($client->getStatus());
@@ -322,7 +326,9 @@ class SypexGeo extends Base
 		);
 		if (!$client->download($this->strUrlFileCity, $this->strDataLocalDir . "city.zip")) {
 			if (!$client->download($this->strUrlFileCity2, $this->strDataLocalDir . "city.zip")) {
-				return false;
+				if (!$client->download($this->strUrlFileCity3, $this->strDataLocalDir . "city.zip")) {
+					return false;
+				}
 			}
 		}
 		$status = intval($client->getStatus());
@@ -484,25 +490,25 @@ class SypexGeo extends Base
 
 	protected function get_num($ip)
 	{
-		$ip1n = (int)$ip; // Первый байт
+		$ip1n = (int)$ip; // РџРµСЂРІС‹Р№ Р±Р°Р№С‚
 		if ($ip1n == 0 || $ip1n == 10 || $ip1n == 127 || $ip1n >= $this->b_idx_len || false === ($ipn = ip2long($ip))) {
 			return false;
 		}
 		$ipn = pack('N', $ipn);
 		$this->ip1c = chr($ip1n);
-		// Находим блок данных в индексе первых байт
+		// РќР°С…РѕРґРёРј Р±Р»РѕРє РґР°РЅРЅС‹С… РІ РёРЅРґРµРєСЃРµ РїРµСЂРІС‹С… Р±Р°Р№С‚
 		if ($this->batch_mode) {
 			$blocks = array('min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]);
 		} else {
 			$blocks = unpack("Nmin/Nmax", substr($this->b_idx_str, ($ip1n - 1) * 4, 8));
 		}
 		if ($blocks['max'] - $blocks['min'] > $this->range) {
-			// Ищем блок в основном индексе
+			// РС‰РµРј Р±Р»РѕРє РІ РѕСЃРЅРѕРІРЅРѕРј РёРЅРґРµРєСЃРµ
 			$part = $this->search_idx($ipn, floor($blocks['min'] / $this->range), floor($blocks['max'] / $this->range) - 1);
-			// Нашли номер блока в котором нужно искать IP, теперь находим нужный блок в БД
+			// РќР°С€Р»Рё РЅРѕРјРµСЂ Р±Р»РѕРєР° РІ РєРѕС‚РѕСЂРѕРј РЅСѓР¶РЅРѕ РёСЃРєР°С‚СЊ IP, С‚РµРїРµСЂСЊ РЅР°С…РѕРґРёРј РЅСѓР¶РЅС‹Р№ Р±Р»РѕРє РІ Р‘Р”
 			$min = $part > 0 ? $part * $this->range : 0;
 			$max = $part > $this->m_idx_len ? $this->db_items : ($part + 1) * $this->range;
-			// Нужно проверить чтобы блок не выходил за пределы блока первого байта
+			// РќСѓР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ С‡С‚РѕР±С‹ Р±Р»РѕРє РЅРµ РІС‹С…РѕРґРёР» Р·Р° РїСЂРµРґРµР»С‹ Р±Р»РѕРєР° РїРµСЂРІРѕРіРѕ Р±Р°Р№С‚Р°
 			if ($min < $blocks['min']) {
 				$min = $blocks['min'];
 			}
@@ -514,7 +520,7 @@ class SypexGeo extends Base
 			$max = $blocks['max'];
 		}
 		$len = $max - $min;
-		// Находим нужный диапазон в БД
+		// РќР°С…РѕРґРёРј РЅСѓР¶РЅС‹Р№ РґРёР°РїР°Р·РѕРЅ РІ Р‘Р”
 		if ($this->memory_mode) {
 			return $this->search_db($this->db, $ipn, $min, $max);
 		} else {
@@ -561,16 +567,16 @@ class SypexGeo extends Base
 			}
 			if (!defined("BX_UTF") || BX_UTF !== true) {
 				if (isset($country) && !empty($country) && $country['id'] > 0) {
-					$country['name_ru'] = iconv("utf-8","windows-1251",$country['name_ru']);
-					$country['name_en'] = iconv("utf-8","windows-1251",$country['name_en']);
+					$country['name_ru'] = iconv("utf-8", "windows-1251", $country['name_ru']);
+					$country['name_en'] = iconv("utf-8", "windows-1251", $country['name_en']);
 				}
 				if (isset($region) && !empty($region) && $region['id'] > 0) {
-					$region['name_ru'] = iconv("utf-8","windows-1251",$region['name_ru']);
-					$region['name_en'] = iconv("utf-8","windows-1251",$region['name_en']);
+					$region['name_ru'] = iconv("utf-8", "windows-1251", $region['name_ru']);
+					$region['name_en'] = iconv("utf-8", "windows-1251", $region['name_en']);
 				}
 				if (isset($city) && !empty($city) && $city['id'] > 0) {
-					$city['name_ru'] = iconv("utf-8","windows-1251",$city['name_ru']);
-					$city['name_en'] = iconv("utf-8","windows-1251",$city['name_en']);
+					$city['name_ru'] = iconv("utf-8", "windows-1251", $city['name_ru']);
+					$city['name_en'] = iconv("utf-8", "windows-1251", $city['name_en']);
 				}
 			}
 			unset($city['region_seek']);
@@ -579,12 +585,12 @@ class SypexGeo extends Base
 		} else {
 			if (!defined("BX_UTF") || BX_UTF !== true) {
 				if (isset($country) && !empty($country) && $country['id'] > 0) {
-					$country['name_ru'] = iconv("utf-8","windows-1251",$country['name_ru']);
-					$country['name_en'] = iconv("utf-8","windows-1251",$country['name_en']);
+					$country['name_ru'] = iconv("utf-8", "windows-1251", $country['name_ru']);
+					$country['name_en'] = iconv("utf-8", "windows-1251", $country['name_en']);
 				}
 				if (isset($city) && !empty($city) && $city['id'] > 0) {
-					$city['name_ru'] = iconv("utf-8","windows-1251",$city['name_ru']);
-					$city['name_en'] = iconv("utf-8","windows-1251",$city['name_en']);
+					$city['name_ru'] = iconv("utf-8", "windows-1251", $city['name_ru']);
+					$city['name_en'] = iconv("utf-8", "windows-1251", $city['name_en']);
 				}
 			}
 			unset($city['region_seek']);
