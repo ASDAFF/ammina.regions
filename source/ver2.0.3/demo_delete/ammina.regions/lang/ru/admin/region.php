@@ -1,0 +1,20 @@
+<?
+$MESS['AMMINA_REGIONS_RECORD_EDIT'] = "Редактировать регион";
+$MESS['AMMINA_REGIONS_PAGE_TITLE'] = "Список регионов базы данных определения города по IP";
+$MESS['AMMINA_REGIONS_FILTER_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FILTER_COUNTRY_ID'] = "Страна";
+$MESS['AMMINA_REGIONS_FILTER_CODE'] = "ISO";
+$MESS['AMMINA_REGIONS_FILTER_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FIELD_CODE'] = "ISO";
+$MESS['AMMINA_REGIONS_FIELD_COUNTRY_ID'] = "Страна";
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_OKATO'] = "ОКАТО";
+$MESS['AMMINA_REGIONS_FIELD_TIMEZONE'] = "Часовой пояс";
+$MESS['AMMINA_REGIONS_LOCATION_ID'] = "Местоположение модуля интернет-магазина";
+$MESS['AMMINA_REGIONS_FIELD_EXT_ID'] = "Внешний код";
+$MESS['AMMINA_REGIONS_FIELD_REGION_CNT'] = "Кол-во регионов";
+$MESS['AMMINA_REGIONS_FIELD_CITY_CNT'] = "Кол-во городов";
+$MESS['AMMINA_REGIONS_ACTION_DELETE'] = "Удалить";
+$MESS['AMMINA_REGIONS_ACTION_DELETE_CONFIRM'] = "Вы действительно хотите удалить город?";
+$MESS['AMMINA_REGIONS_DELETE_ERROR'] = "Ошибка удаления записи";

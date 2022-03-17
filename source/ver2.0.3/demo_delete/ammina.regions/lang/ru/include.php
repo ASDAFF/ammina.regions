@@ -1,0 +1,26 @@
+<?
+$MESS['ammina.regions_MENU_INDEX_TITLE'] = "Ammina: Регионы (филиалы и представительства)";
+$MESS['ammina.regions_MENU_index.php_TITLE'] = "Инструкция";
+$MESS['ammina.regions_CONTINENT_AF'] = "[AF] Африка";
+$MESS['ammina.regions_CONTINENT_AN'] = "[AN] Антарктида";
+$MESS['ammina.regions_CONTINENT_AS'] = "[AS] Азия";
+$MESS['ammina.regions_CONTINENT_EU'] = "[EU] Европа";
+$MESS['ammina.regions_CONTINENT_NA'] = "[NA] Северная Америка";
+$MESS['ammina.regions_CONTINENT_OC'] = "[OC] Океания";
+$MESS['ammina.regions_CONTINENT_SA'] = "[SA] Южная Америка";
+$MESS['ammina.regions_SEO_MENU_TITLE'] = "Регионы (филиалы и представительства)";
+$MESS['ammina.regions_DISCOUNT_GROUP_LABEL'] = "Регион (домен)";
+$MESS['ammina.regions_DISCOUNT_DOMAIN_LABEL'] = "Регион (домен)";
+$MESS['ammina.regions_DISCOUNT_DOMAIN_PREFIX'] = "Регион (домен)";
+$MESS['ammina.regions_USER_GROUP_COMPANY'] = "Группы компании";
+$MESS['ammina.regions_USER_GROUP_COMPANY_RESPONSIBLE'] = "Группы ответственных компании";
+$MESS['ammina.regions_ORDER_PROP_SYS_DOMAIN_NAME'] = "Домен сайта (филиал, представительство)";
+$MESS['ammina.regions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'] = "Системное свойство для модуля Ammina.Regions для хранения домена на котором сделан заказ";
+$MESS['ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_NAME'] = "Ammina.Regions: Доступность товара по доменам";
+$MESS['ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_LIST_NAME'] = "Ammina.Regions: Доступность товара по доменам (список)";
+$MESS['ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_SORT_NAME'] = "Ammina.Regions: Доступность по доменам (с сортировкой по наличию)";
+$MESS['AMMINA_REGIONS_SYS_MODULE_IS_DEMO'] = 'Модуль работает в демо-режиме. Приобрести полнофункциональную версию вы можете по адресу: <a href="https://marketplace.1c-bitrix.ru/solutions/ammina.regions/" target="_blank">https://marketplace.1c-bitrix.ru/solutions/ammina.regions/</a>';
+$MESS['AMMINA_REGIONS_SYS_MODULE_IS_DEMO_EXPIRED'] = 'Истекло время работы модуля в демо-режиме. Приобрести полнофункциональную версию вы можете по адресу: <a href="https://marketplace.1c-bitrix.ru/solutions/ammina.regions/" target="_blank">https://marketplace.1c-bitrix.ru/solutions/ammina.regions/</a>';
+$MESS['AMMINA_REGIONS_PREDLOG_I'] = "и";
+$MESS['ammina.regions_GEOCONTENT_SEO_NAME'] = "Геоконтент";
+$MESS['ammina.regions_GEOCONTENT_NOHTML_SEO_NAME'] = "Геоконтент (HTML безопасный)";

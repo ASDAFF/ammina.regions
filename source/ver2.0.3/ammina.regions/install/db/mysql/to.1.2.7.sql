@@ -1,0 +1,1 @@
+ALTER TABLE `am_regions_content` ADD `SITE_ID` CHAR(2) NULL DEFAULT NULL AFTER `ID`;

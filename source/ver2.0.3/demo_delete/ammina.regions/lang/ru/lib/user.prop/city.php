@@ -1,0 +1,2 @@
+<?
+$MESS['AMMINA_REGION_USERPROP_CITY_DESCRIPTION'] = "Ammina.Regions: Город";

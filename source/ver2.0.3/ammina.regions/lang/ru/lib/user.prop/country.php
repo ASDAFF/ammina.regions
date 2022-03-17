@@ -1,0 +1,2 @@
+<?
+$MESS['AMMINA_REGION_USERPROP_COUNTRY_DESCRIPTION'] = "Ammina.Regions: Страна";

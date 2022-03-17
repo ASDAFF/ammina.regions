@@ -1,0 +1,5 @@
+<?
+
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_IDENT'] = "Атрибут ID HTML-блока";
+$MESS['AMMINA_REGIONS_FIELD_CLASS'] = "CSS класс HTML-блока";

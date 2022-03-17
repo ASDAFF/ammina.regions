@@ -1,0 +1,13 @@
+{
+  "name": "kit.multiregions",
+  "version": "2.0.3",
+  "main": "",
+  "ignore": [
+    "source",
+    ".gitignore",
+    ".idea",
+    "bower.json",
+    "gulpfile.js",
+    "package.json"
+  ]
+}

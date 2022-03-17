@@ -1,0 +1,25 @@
+<?
+$MESS['AMMINA_REGIONS_RECORD_EDIT'] = "Редактировать переменную";
+$MESS['AMMINA_REGIONS_PAGE_TITLE'] = "Переменные в зависимости от региона (филиала или представительства)";
+$MESS['AMMINA_REGIONS_FILTER_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FILTER_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FILTER_DESCRIPTION'] = "Описание";
+$MESS['AMMINA_REGIONS_FILTER_CODE'] = "Код";
+$MESS['AMMINA_REGIONS_FILTER_IS_SYSTEM'] = "Системная переменная";
+$MESS['AMMINA_REGIONS_FILTER_IS_SYSTEM_Y'] = "Системная";
+$MESS['AMMINA_REGIONS_FILTER_IS_SYSTEM_E'] = "Системная (редактируемая)";
+$MESS['AMMINA_REGIONS_FILTER_IS_SYSTEM_N'] = "Пользовательская";
+$MESS['AMMINA_REGIONS_FIELD_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_DESCRIPTION'] = "Описание";
+$MESS['AMMINA_REGIONS_FIELD_CODE'] = "Код";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM'] = "Системная переменная";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_Y'] = "Системная";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_E'] = "Системная (редактируемая)";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_N'] = "Пользовательская";
+$MESS['AMMINA_REGIONS_NEW_RECORD'] = "Добавить";
+$MESS['AMMINA_REGIONS_NEW_RECORD_TITLE'] = "Добавить новую переменную";
+$MESS['AMMINA_REGIONS_ACTION_DELETE'] = "Удалить";
+$MESS['AMMINA_REGIONS_ACTION_VIEW'] = "Просмотреть";
+$MESS['AMMINA_REGIONS_ACTION_DELETE_CONFIRM'] = "Вы действительно хотите удалить переменную?";
+$MESS['AMMINA_REGIONS_DELETE_ERROR'] = "Ошибка удаления записи";

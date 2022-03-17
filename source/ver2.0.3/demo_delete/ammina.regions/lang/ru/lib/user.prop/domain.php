@@ -1,0 +1,2 @@
+<?
+$MESS['AMMINA_REGION_USERPROP_DOMAIN_DESCRIPTION'] = "Ammina.Regions: Домен";

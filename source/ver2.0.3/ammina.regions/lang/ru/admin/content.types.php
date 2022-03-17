@@ -1,0 +1,20 @@
+<?
+$MESS['AMMINA_REGIONS_RECORD_EDIT'] = "Редактировать тип";
+$MESS['AMMINA_REGIONS_PAGE_TITLE'] = "Типы геозависимого контента";
+$MESS['AMMINA_REGIONS_FILTER_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FILTER_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FILTER_IDENT'] = "Атрибут ID HTML блока";
+$MESS['AMMINA_REGIONS_FILTER_CLASS'] = "CSS класс HTML блока";
+$MESS['AMMINA_REGIONS_FIELD_ID'] = "ID";
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_IDENT'] = "Атрибут ID HTML блока";
+$MESS['AMMINA_REGIONS_FIELD_CLASS'] = "CSS класс HTML блока";
+$MESS['AMMINA_REGIONS_FIELD_GEOCONTENT_TEMPLATE'] = "Шаблон вывода";
+$MESS['AMMINA_REGIONS_FIELD_GEOCONTENT_GLOBAL'] = "Глобальная переменная";
+$MESS['AMMINA_REGIONS_FIELD_GEOCONTENT_NOHTML_TEMPLATE'] = "Шаблон вывода (HTML безопасный вид)";
+$MESS['AMMINA_REGIONS_FIELD_GEOCONTENT_NOHTML_GLOBAL'] = "Глобальная переменная (HTML безопасный вид)";
+$MESS['AMMINA_REGIONS_NEW_RECORD'] = "Добавить";
+$MESS['AMMINA_REGIONS_NEW_RECORD_TITLE'] = "Добавить новый тип";
+$MESS['AMMINA_REGIONS_ACTION_DELETE'] = "Удалить";
+$MESS['AMMINA_REGIONS_ACTION_DELETE_CONFIRM'] = "Вы действительно хотите удалить тип геозависимого контента?";
+$MESS['AMMINA_REGIONS_DELETE_ERROR'] = "Ошибка удаления записи";

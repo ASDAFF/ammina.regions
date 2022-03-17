@@ -1,0 +1,12 @@
+<?
+
+$MESS['AMMINA_REGIONS_FIELD_REGION_ID'] = "Регион";
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_LAT'] = "Широта";
+$MESS['AMMINA_REGIONS_FIELD_LON'] = "Долгота";
+$MESS['AMMINA_REGIONS_FIELD_OKATO'] = "ОКАТО";
+$MESS['AMMINA_REGIONS_FIELD_LOCATION_ID'] = "Местоположение модуля интернет-магазина";
+$MESS['AMMINA_REGIONS_FIELD_EXT_ID'] = "Внешний код";
+$MESS['AMMINA_REGIONS_FIELD_IS_FAVORITE'] = "Избранное";
+$MESS['AMMINA_REGIONS_FIELD_IS_DEFAULT'] = "По умолчанию";
+

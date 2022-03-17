@@ -1,0 +1,2 @@
+<?
+$MESS['AMMINA_REGION_IBPROP_REGION_DESCRIPTION'] = "Ammina.Regions: Регион";
