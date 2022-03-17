@@ -1,0 +1,2 @@
+<?
+$MESS['KIT_MULTIREGIONS_NOT_SELECTED'] = "(не выбрано)";

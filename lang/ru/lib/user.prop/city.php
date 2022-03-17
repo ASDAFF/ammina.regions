@@ -1,0 +1,2 @@
+<?
+$MESS['KIT_REGION_USERPROP_CITY_DESCRIPTION'] = "Kit.MultiRegions: Город";

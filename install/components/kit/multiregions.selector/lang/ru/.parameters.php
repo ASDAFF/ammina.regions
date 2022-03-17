@@ -1,0 +1,19 @@
+<?
+$MESS["KIT_COMPONENT_MULTIREGIONS_ALLOW_CHANGE_CITY_MANUAL"] = "Разрешить изменение посетителем";
+$MESS["KIT_COMPONENT_MULTIREGIONS_CITY_VERIFYCATION"] = "Подтверждать определение города";
+$MESS["KIT_COMPONENT_MULTIREGIONS_USE_GPS"] = "Использовать GPS";
+$MESS["KIT_COMPONENT_MULTIREGIONS_INCLUDE_JQUERY"] = "Подключать JQuery в компоненте";
+$MESS["KIT_COMPONENT_MULTIREGIONS_IP"] = "IP адрес";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SHOW_CITY_TYPE"] = "Тип отображаемых местоположений по умолчанию";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SHOW_CITY_TYPE_R"] = "Релевантные по GPS координатам";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SHOW_CITY_TYPE_F"] = "Избранные местоположения";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SHOW_CITY_TYPE_D"] = "Основные города доменов (филиалов/представительств)";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SEARCH_CITY_TYPE"] = "Тип поиска местоположений";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SEARCH_CITY_TYPE_R"] = "Релевантные по GPS координатам и запросу";
+$MESS["KIT_COMPONENT_MULTIREGIONS_SEARCH_CITY_TYPE_Q"] = "В соответствии с запросом";
+$MESS["KIT_COMPONENT_MULTIREGIONS_COUNT_SHOW_CITY"] = "Количество выводимых городов";
+$MESS["KIT_COMPONENT_MULTIREGIONS_PRIORITY_DOMAIN"] = "Приоритет определения местоположения домену (либо по IP вхождение в текущий домен, либо основной город домена)";
+$MESS["KIT_COMPONENT_MULTIREGIONS_ALLOW_REDIRECT"] = "Автоматический редирект на региональный домен";
+$MESS['KIT_COMPONENT_MULTIREGIONS_SEPARATE_SETTINGS_MOBILE'] = "Раздельные настройки для десктопов и мобильных";
+$MESS['KIT_COMPONENT_MULTIREGIONS_MAIN_SETTINGS'] = "Настройки для всех устройств";
+$MESS['KIT_COMPONENT_MULTIREGIONS_MOBILE_SETTINGS'] = "Настройки для мобильных (при установленной опции разделения настроек)";

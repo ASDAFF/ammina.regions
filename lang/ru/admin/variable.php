@@ -1,0 +1,25 @@
+<?
+$MESS['KIT_MULTIREGIONS_RECORD_EDIT'] = "Редактировать переменную";
+$MESS['KIT_MULTIREGIONS_PAGE_TITLE'] = "Переменные в зависимости от региона (филиала или представительства)";
+$MESS['KIT_MULTIREGIONS_FILTER_ID'] = "ID";
+$MESS['KIT_MULTIREGIONS_FILTER_NAME'] = "Название";
+$MESS['KIT_MULTIREGIONS_FILTER_DESCRIPTION'] = "Описание";
+$MESS['KIT_MULTIREGIONS_FILTER_CODE'] = "Код";
+$MESS['KIT_MULTIREGIONS_FILTER_IS_SYSTEM'] = "Системная переменная";
+$MESS['KIT_MULTIREGIONS_FILTER_IS_SYSTEM_Y'] = "Системная";
+$MESS['KIT_MULTIREGIONS_FILTER_IS_SYSTEM_E'] = "Системная (редактируемая)";
+$MESS['KIT_MULTIREGIONS_FILTER_IS_SYSTEM_N'] = "Пользовательская";
+$MESS['KIT_MULTIREGIONS_FIELD_ID'] = "ID";
+$MESS['KIT_MULTIREGIONS_FIELD_NAME'] = "Название";
+$MESS['KIT_MULTIREGIONS_FIELD_DESCRIPTION'] = "Описание";
+$MESS['KIT_MULTIREGIONS_FIELD_CODE'] = "Код";
+$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM'] = "Системная переменная";
+$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_Y'] = "Системная";
+$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_E'] = "Системная (редактируемая)";
+$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_N'] = "Пользовательская";
+$MESS['KIT_MULTIREGIONS_NEW_RECORD'] = "Добавить";
+$MESS['KIT_MULTIREGIONS_NEW_RECORD_TITLE'] = "Добавить новую переменную";
+$MESS['KIT_MULTIREGIONS_ACTION_DELETE'] = "Удалить";
+$MESS['KIT_MULTIREGIONS_ACTION_VIEW'] = "Просмотреть";
+$MESS['KIT_MULTIREGIONS_ACTION_DELETE_CONFIRM'] = "Вы действительно хотите удалить переменную?";
+$MESS['KIT_MULTIREGIONS_DELETE_ERROR'] = "Ошибка удаления записи";

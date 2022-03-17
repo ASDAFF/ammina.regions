@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS `am_multiregions_block`;
+DROP TABLE IF EXISTS `am_multiregions_city`;
+DROP TABLE IF EXISTS `am_multiregions_city_lang`;
+DROP TABLE IF EXISTS `am_multiregions_content`;
+DROP TABLE IF EXISTS `am_multiregions_content_types`;
+DROP TABLE IF EXISTS `am_multiregions_country_lang`;
+DROP TABLE IF EXISTS `am_multiregions_country`;
+DROP TABLE IF EXISTS `am_multiregions_domain`;
+DROP TABLE IF EXISTS `am_multiregions_domain_loc`;
+DROP TABLE IF EXISTS `am_multiregions_domain_var`;
+DROP TABLE IF EXISTS `am_multiregions_price`;
+DROP TABLE IF EXISTS `am_multiregions_region`;
+DROP TABLE IF EXISTS `am_multiregions_region_lang`;
+DROP TABLE IF EXISTS `am_multiregions_variable`;

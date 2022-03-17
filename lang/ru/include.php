@@ -1,0 +1,26 @@
+<?
+$MESS['kit.multiregions_MENU_INDEX_TITLE'] = "Kit: Регионы (филиалы и представительства)";
+$MESS['kit.multiregions_MENU_index.php_TITLE'] = "Инструкция";
+$MESS['kit.multiregions_CONTINENT_AF'] = "[AF] Африка";
+$MESS['kit.multiregions_CONTINENT_AN'] = "[AN] Антарктида";
+$MESS['kit.multiregions_CONTINENT_AS'] = "[AS] Азия";
+$MESS['kit.multiregions_CONTINENT_EU'] = "[EU] Европа";
+$MESS['kit.multiregions_CONTINENT_NA'] = "[NA] Северная Америка";
+$MESS['kit.multiregions_CONTINENT_OC'] = "[OC] Океания";
+$MESS['kit.multiregions_CONTINENT_SA'] = "[SA] Южная Америка";
+$MESS['kit.multiregions_SEO_MENU_TITLE'] = "Регионы (филиалы и представительства)";
+$MESS['kit.multiregions_DISCOUNT_GROUP_LABEL'] = "Регион (домен)";
+$MESS['kit.multiregions_DISCOUNT_DOMAIN_LABEL'] = "Регион (домен)";
+$MESS['kit.multiregions_DISCOUNT_DOMAIN_PREFIX'] = "Регион (домен)";
+$MESS['kit.multiregions_USER_GROUP_COMPANY'] = "Группы компании";
+$MESS['kit.multiregions_USER_GROUP_COMPANY_RESPONSIBLE'] = "Группы ответственных компании";
+$MESS['kit.multiregions_ORDER_PROP_SYS_DOMAIN_NAME'] = "Домен сайта (филиал, представительство)";
+$MESS['kit.multiregions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'] = "Системное свойство для модуля Kit.MultiRegions для хранения домена на котором сделан заказ";
+$MESS['kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_NAME'] = "Kit.MultiRegions: Доступность товара по доменам";
+$MESS['kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_LIST_NAME'] = "Kit.MultiRegions: Доступность товара по доменам (список)";
+$MESS['kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_SORT_NAME'] = "Kit.MultiRegions: Доступность по доменам (с сортировкой по наличию)";
+$MESS['KIT_MULTIREGIONS_SYS_MODULE_IS_DEMO'] = 'Модуль работает в демо-режиме. Приобрести полнофункциональную версию вы можете по адресу: <a href="https://marketplace.1c-bitrix.ru/solutions/kit.multiregions/" target="_blank">https://marketplace.1c-bitrix.ru/solutions/kit.multiregions/</a>';
+$MESS['KIT_MULTIREGIONS_SYS_MODULE_IS_DEMO_EXPIRED'] = 'Истекло время работы модуля в демо-режиме. Приобрести полнофункциональную версию вы можете по адресу: <a href="https://marketplace.1c-bitrix.ru/solutions/kit.multiregions/" target="_blank">https://marketplace.1c-bitrix.ru/solutions/kit.multiregions/</a>';
+$MESS['KIT_MULTIREGIONS_PREDLOG_I'] = "и";
+$MESS['kit.multiregions_GEOCONTENT_SEO_NAME'] = "Геоконтент";
+$MESS['kit.multiregions_GEOCONTENT_NOHTML_SEO_NAME'] = "Геоконтент (HTML безопасный)";

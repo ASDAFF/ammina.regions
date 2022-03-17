@@ -1,0 +1,2 @@
+<?
+$MESS['KIT_REGION_USERPROP_REGION_DESCRIPTION'] = "Kit.MultiRegions: Регион";

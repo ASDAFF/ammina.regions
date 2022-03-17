@@ -1,0 +1,2 @@
+<?
+$MESS['KIT_REGION_IBPROP_DOMAIN_DESCRIPTION'] = "Kit.MultiRegions: Домен";

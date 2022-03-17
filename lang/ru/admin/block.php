@@ -1,0 +1,21 @@
+<?
+$MESS['KIT_MULTIREGIONS_RECORD_VIEW'] = "Показать информацию по блоку IP адресов";
+$MESS['KIT_MULTIREGIONS_PAGE_TITLE'] = "Список блоков IP адресов";
+$MESS['KIT_MULTIREGIONS_FILTER_COUNTRY_ID'] = "Страна";
+$MESS['KIT_MULTIREGIONS_FILTER_REGION_ID'] = "Регион";
+$MESS['KIT_MULTIREGIONS_FILTER_CITY_NAME'] = "Название города";
+$MESS['KIT_MULTIREGIONS_FILTER_IP'] = "IP адрес (XX.XX.XX.XX)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_START_1'] = "Начало блока (часть 1)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_START_2'] = "Начало блока (часть 2)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_START_3'] = "Начало блока (часть 3)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_START_4'] = "Начало блока (часть 4)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_END_1'] = "Конец блока (часть 1)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_END_2'] = "Конец блока (часть 2)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_END_3'] = "Конец блока (часть 3)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_END_4'] = "Конец блока (часть 4)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_START'] = "Начало блока (IP адрес)";
+$MESS['KIT_MULTIREGIONS_FIELD_BLOCK_END'] = "Конец блока (IP адрес)";
+$MESS['KIT_MULTIREGIONS_FIELD_COUNTRY_ID'] = "Страна";
+$MESS['KIT_MULTIREGIONS_FIELD_REGION_ID'] = "Регион";
+$MESS['KIT_MULTIREGIONS_FIELD_CITY_ID'] = "Город";
+$MESS['MAIN_ADMIN_MENU_VIEW'] = "Подробнее";

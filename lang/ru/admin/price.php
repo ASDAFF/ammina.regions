@@ -1,0 +1,27 @@
+<?
+$MESS['KIT_MULTIREGIONS_RECORD_EDIT'] = "Редактировать расчет цен";
+$MESS['KIT_MULTIREGIONS_PAGE_TITLE'] = "Расчет цен";
+$MESS['KIT_MULTIREGIONS_FILTER_ID'] = "ID";
+$MESS['KIT_MULTIREGIONS_FILTER_ACTIVE'] = "Активность";
+$MESS['KIT_MULTIREGIONS_FILTER_PRICE_FROM_ID'] = "Базовая цена для расчета";
+$MESS['KIT_MULTIREGIONS_FILTER_PRICE_TO_ID'] = "Расчетная цена";
+$MESS['KIT_MULTIREGIONS_FIELD_ID'] = "ID";
+$MESS['KIT_MULTIREGIONS_FIELD_ACTIVE'] = "Активность";
+$MESS['KIT_MULTIREGIONS_FIELD_SORT'] = "Сортировка";
+$MESS['KIT_MULTIREGIONS_FIELD_CURRENCY'] = "Установить валюту";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_FROM_ID'] = "Базовая цена для расчета";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_TO_ID'] = "Расчетная цена";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE'] = "Тип расчета";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_VALUE'] = "Значение изменения";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_NC'] = "Не менять (копировать)";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_SU'] = "Увеличить значение на фиксированную сумму";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_SD'] = "Уменьшить значение на фиксированную сумму";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_PU'] = "Увеличить значение на процент";
+$MESS['KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_PD'] = "Уменьшить значение на процент";
+$MESS['KIT_MULTIREGIONS_NEW_RECORD'] = "Добавить";
+$MESS['KIT_MULTIREGIONS_NEW_RECORD_TITLE'] = "Добавить новый расчет цен";
+$MESS['KIT_MULTIREGIONS_ACTION_DELETE'] = "Удалить";
+$MESS['KIT_MULTIREGIONS_ACTION_VIEW'] = "Просмотреть";
+$MESS['KIT_MULTIREGIONS_ACTION_DELETE_CONFIRM'] = "Вы действительно хотите удалить домен?";
+$MESS['KIT_MULTIREGIONS_DELETE_ERROR'] = "Ошибка удаления записи";
+$MESS['KIT_MULTIREGIONS_UPDATE_ERROR'] = "Ошибка изменения записи #ID#: #ERROR_TEXT#";
