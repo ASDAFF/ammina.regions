@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions\Parser;
+namespace Ammina\Regions\Parser;
 
 abstract class Base
 {

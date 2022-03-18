@@ -1,12 +1,12 @@
 <?
 
-if (IsModuleInstalled('kit.multiregions')) {
-	$arVal = \Kit\MultiRegions\VariableTable::getList(array("filter" => array("CODE" => "SYS_ORDER_PREFIX")))->fetch();
+if (IsModuleInstalled('ammina.regions')) {
+	$arVal = \Ammina\Regions\VariableTable::getList(array("filter" => array("CODE" => "SYS_ORDER_PREFIX")))->fetch();
 	if (!$arVal) {
-		\Kit\MultiRegions\VariableTable::add(
+		\Ammina\Regions\VariableTable::add(
 			array(
-				"NAME" => "ÐŸÑ€ÐµÑ„Ð¸ÐºÑ Ð·Ð°ÐºÐ°Ð·Ð¾Ð²",
-				"DESCRIPTION" => "ÐŸÑ€ÐµÑ„Ð¸ÐºÑ Ð·Ð°ÐºÐ°Ð·Ð¾Ð²",
+				"NAME" => "Ïðåôèêñ çàêàçîâ",
+				"DESCRIPTION" => "Ïðåôèêñ çàêàçîâ",
 				"CODE" => "SYS_ORDER_PREFIX",
 				"IS_SYSTEM" => "Y",
 			)
@@ -15,20 +15,20 @@ if (IsModuleInstalled('kit.multiregions')) {
 }
 
 if ($updater->CanUpdateDatabase()) {
-	if ($updater->TableExists("am_multiregions_domain")) {
+	if ($updater->TableExists("am_regions_domain")) {
 		global $DB;
-		$arFields = $DB->GetTableFields("am_multiregions_domain");
+		$arFields = $DB->GetTableFields("am_regions_domain");
 		if (!isset($arFields['SITE_EXT'])) {
 			$updater->Query(
 				array(
-					"MySQL" => "ALTER TABLE `am_multiregions_domain` ADD `SITE_EXT` text DEFAULT NULL AFTER `SITE_ID`;",
+					"MySQL" => "ALTER TABLE `am_regions_domain` ADD `SITE_EXT` text DEFAULT NULL AFTER `SITE_ID`;",
 				)
 			);
 		}
 		if (!isset($arFields['ORDER_PREFIX'])) {
 			$updater->Query(
 				array(
-					"MySQL" => "ALTER TABLE `am_multiregions_domain` ADD `ORDER_PREFIX` varchar(64) DEFAULT NULL AFTER `PATHCODE`;",
+					"MySQL" => "ALTER TABLE `am_regions_domain` ADD `ORDER_PREFIX` varchar(64) DEFAULT NULL AFTER `PATHCODE`;",
 				)
 			);
 		}

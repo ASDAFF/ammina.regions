@@ -3,18 +3,18 @@
 use Bitrix\Main\Localization\Loc;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-Bitrix\Main\Loader::includeModule('kit.multiregions');
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/kit.multiregions/prolog.php");
+Bitrix\Main\Loader::includeModule('ammina.regions');
+require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/ammina.regions/prolog.php");
 
 Loc::loadMessages(__FILE__);
 
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-$sTableID = "tbl_kit_multiregions_price";
-$isSaleModule = CKitMultiRegions::isIMExists();
+$sTableID = "tbl_ammina_regions_price";
+$isSaleModule = CAmminaRegions::isIMExists();
 
 $oSort = new CAdminSorting($sTableID, "ID", "asc");
 $arOrder = (amreg_strtoupper($by) === "ID" ? array($by => $order) : array($by => $order, "ID" => "ASC"));
@@ -33,13 +33,13 @@ if ($isSaleModule) {
 $filterFields = array(
 	array(
 		"id" => "ID",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_ID"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_ID"),
 		"type" => "number",
 		"filterable" => "",
 	),
 	array(
 		"id" => "ACTIVE",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_ACTIVE"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_ACTIVE"),
 		"filterable" => "",
 		"type" => "list",
 		"items" => array(
@@ -50,7 +50,7 @@ $filterFields = array(
 	),
 	array(
 		"id" => "PRICE_FROM_ID",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_PRICE_FROM_ID"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_PRICE_FROM_ID"),
 		"filterable" => "",
 		"type" => "list",
 		"items" => $arAllPrices,
@@ -58,7 +58,7 @@ $filterFields = array(
 	),
 	array(
 		"id" => "PRICE_TO_ID",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_PRICE_TO_ID"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_PRICE_TO_ID"),
 		"filterable" => "",
 		"type" => "list",
 		"items" => $arAllPrices,
@@ -88,9 +88,9 @@ if ($lAdmin->EditAction()) {
 				$arFields[$fieldId] = $postFields[$fieldId];
 		}
 
-		$oUpdate = \Kit\MultiRegions\PriceTable::update($ID, $arFields);
+		$oUpdate = \Ammina\Regions\PriceTable::update($ID, $arFields);
 		if (!$oUpdate->isSuccess()) {
-			$lAdmin->AddUpdateError(GetMessage("KIT_MULTIREGIONS_UPDATE_ERROR", array("#ID#" => $ID, "#ERROR_TEXT#" => implode(", ", $oUpdate->getErrorMessages()))), $ID);
+			$lAdmin->AddUpdateError(GetMessage("AMMINA_REGIONS_UPDATE_ERROR", array("#ID#" => $ID, "#ERROR_TEXT#" => implode(", ", $oUpdate->getErrorMessages()))), $ID);
 			$DB->Rollback();
 		}
 		$DB->Commit();
@@ -100,7 +100,7 @@ if ($lAdmin->EditAction()) {
 if (($arID = $lAdmin->GroupAction()) && $modulePermissions >= "W") {
 	if ($_REQUEST['action_target'] == 'selected') {
 		$arID = Array();
-		$dbResultList = \Kit\MultiRegions\PriceTable::getList(array(
+		$dbResultList = \Ammina\Regions\PriceTable::getList(array(
 			"order" => $arOrder,
 			"filter" => $arFilter,
 			"select" => array("ID")));
@@ -118,20 +118,20 @@ if (($arID = $lAdmin->GroupAction()) && $modulePermissions >= "W") {
 			case "delete":
 				@set_time_limit(0);
 				$bComplete = true;
-				$rRecord = \Kit\MultiRegions\PriceTable::getList(array(
+				$rRecord = \Ammina\Regions\PriceTable::getList(array(
 					"filter" => array("ID" => $ID),
 					"select" => array("ID"),
 				));
 				$arRecordOld = $rRecord->Fetch();
 				$DB->StartTransaction();
 				$bComplete = true;
-				$rOperation = \Kit\MultiRegions\PriceTable::delete($ID);
+				$rOperation = \Ammina\Regions\PriceTable::delete($ID);
 				if (!$bComplete || !$rOperation->isSuccess()) {
 					$DB->Rollback();
 					if ($ex = $APPLICATION->GetException()) {
 						$lAdmin->AddGroupError($ex->GetString(), $ID);
 					} else {
-						$lAdmin->AddGroupError(Loc::getMessage("KIT_MULTIREGIONS_DELETE_ERROR"), $ID);
+						$lAdmin->AddGroupError(Loc::getMessage("AMMINA_REGIONS_DELETE_ERROR"), $ID);
 					}
 				}
 				$DB->Commit();
@@ -143,49 +143,49 @@ if (($arID = $lAdmin->GroupAction()) && $modulePermissions >= "W") {
 $arHeader = array(
 	array(
 		"id" => "ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_ID"),
 		"sort" => "ID",
 		"default" => true,
 	),
 	array(
 		"id" => "ACTIVE",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_ACTIVE"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_ACTIVE"),
 		"sort" => "ACTIVE",
 		"default" => true,
 	),
 	array(
 		"id" => "SORT",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_SORT"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_SORT"),
 		"sort" => "SORT",
 		"default" => true,
 	),
 	array(
 		"id" => "CURRENCY",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_CURRENCY"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_CURRENCY"),
 		"sort" => "CURRENCY",
 		"default" => true,
 	),
 	array(
 		"id" => "PRICE_FROM_ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_FROM_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_FROM_ID"),
 		"sort" => "PRICE_FROM.NAME_LANG",
 		"default" => true,
 	),
 	array(
 		"id" => "PRICE_TO_ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_TO_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_TO_ID"),
 		"sort" => "PRICE_TO.NAME_LANG",
 		"default" => true,
 	),
 	array(
 		"id" => "PRICE_CHANGE",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE"),
 		"sort" => "PRICE_CHANGE",
 		"default" => true,
 	),
 	array(
 		"id" => "PRICE_CHANGE_VALUE",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_VALUE"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_VALUE"),
 		"sort" => "PRICE_CHANGE_VALUE",
 		"default" => true,
 	),
@@ -193,7 +193,7 @@ $arHeader = array(
 
 $lAdmin->AddHeaders($arHeader);
 
-$rsItems = \Kit\MultiRegions\PriceTable::getList(array(
+$rsItems = \Ammina\Regions\PriceTable::getList(array(
 	"order" => $arOrder,
 	"filter" => $arFilter,
 	"select" => array("*")));
@@ -202,11 +202,11 @@ $rsItems->NavStart();
 
 $lAdmin->SetNavigationParams($rsItems);
 $arSelectPriceChange = array(
-	'NC' => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_NC"),
-	'SU' => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_SU"),
-	'SD' => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_SD"),
-	'PU' => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_PU"),
-	'PD' => Loc::getMessage("KIT_MULTIREGIONS_FIELD_PRICE_CHANGE_PD"),
+	'NC' => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_NC"),
+	'SU' => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_SU"),
+	'SD' => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_SD"),
+	'PU' => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_PU"),
+	'PD' => Loc::getMessage("AMMINA_REGIONS_FIELD_PRICE_CHANGE_PD"),
 );
 $arAllCurrency = array();
 $rCurrency = \Bitrix\Currency\CurrencyTable::getList(array(
@@ -218,8 +218,8 @@ while ($arCurrency = $rCurrency->fetch()) {
 }
 
 while ($arData = $rsItems->NavNext()) {
-	$row =& $lAdmin->AddRow($arData['ID'], $arData, 'kit.multiregions.price.edit.php?ID=' . $arData['ID'] . '&lang=' . LANGUAGE_ID, Loc::getMessage("KIT_MULTIREGIONS_RECORD_EDIT"));
-	$row->AddViewField("ID", '<a href="kit.multiregions.price.edit.php?ID=' . $arData['ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['ID'] . '</a>');
+	$row =& $lAdmin->AddRow($arData['ID'], $arData, 'ammina.regions.price.edit.php?ID=' . $arData['ID'] . '&lang=' . LANGUAGE_ID, Loc::getMessage("AMMINA_REGIONS_RECORD_EDIT"));
+	$row->AddViewField("ID", '<a href="ammina.regions.price.edit.php?ID=' . $arData['ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['ID'] . '</a>');
 	$row->AddCheckField("ACTIVE");
 	$row->AddInputField("PRICE_CHANGE_VALUE");
 	$row->AddInputField("SORT");
@@ -233,7 +233,7 @@ while ($arData = $rsItems->NavNext()) {
 			"ICON" => "edit",
 			"TEXT" => Loc::getMessage("MAIN_ADMIN_MENU_EDIT"),
 			"DEFAULT" => true,
-			"ACTION" => $lAdmin->ActionRedirect("kit.multiregions.price.edit.php?ID=" . $arData['ID'] . "&lang=" . LANGUAGE_ID),
+			"ACTION" => $lAdmin->ActionRedirect("ammina.regions.price.edit.php?ID=" . $arData['ID'] . "&lang=" . LANGUAGE_ID),
 		);
 
 		$arActions[] = array(
@@ -241,8 +241,8 @@ while ($arData = $rsItems->NavNext()) {
 		);
 		$arActions[] = array(
 			"ICON" => "delete",
-			"TEXT" => GetMessage("KIT_MULTIREGIONS_ACTION_DELETE"),
-			"ACTION" => "if(confirm('" . GetMessage('KIT_MULTIREGIONS_ACTION_DELETE_CONFIRM') . "')) " . $lAdmin->ActionDoGroup($arData['ID'], "delete"),
+			"TEXT" => GetMessage("AMMINA_REGIONS_ACTION_DELETE"),
+			"ACTION" => "if(confirm('" . GetMessage('AMMINA_REGIONS_ACTION_DELETE_CONFIRM') . "')) " . $lAdmin->ActionDoGroup($arData['ID'], "delete"),
 		);
 		if (count($arActions) > 0) {
 			$row->AddActions($arActions);
@@ -259,10 +259,10 @@ $lAdmin->AddFooter(
 if ($modulePermissions >= "W") {
 	$aContext = array(
 		array(
-			"TEXT" => Loc::getMessage("KIT_MULTIREGIONS_NEW_RECORD"),
+			"TEXT" => Loc::getMessage("AMMINA_REGIONS_NEW_RECORD"),
 			"ICON" => "btn_new",
-			"LINK" => "kit.multiregions.price.edit.php?lang=" . LANGUAGE_ID,
-			"TITLE" => Loc::getMessage("KIT_MULTIREGIONS_NEW_RECORD_TITLE"),
+			"LINK" => "ammina.regions.price.edit.php?lang=" . LANGUAGE_ID,
+			"TITLE" => Loc::getMessage("AMMINA_REGIONS_NEW_RECORD_TITLE"),
 		),
 	);
 
@@ -276,12 +276,12 @@ if ($modulePermissions >= "W") {
 
 $lAdmin->CheckListMode();
 
-$APPLICATION->SetTitle(Loc::getMessage("KIT_MULTIREGIONS_PAGE_TITLE"));
+$APPLICATION->SetTitle(Loc::getMessage("AMMINA_REGIONS_PAGE_TITLE"));
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
 $lAdmin->DisplayFilter($filterFields);
 
 $lAdmin->DisplayList();
-CKitMultiRegions::showSupportForm();
+CAmminaRegions::showSupportForm();
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

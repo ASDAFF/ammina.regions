@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 
@@ -8,7 +8,7 @@ class ContentTypesTable extends DataManager
 {
 	public static function getTableName()
 	{
-		return 'am_multiregions_content_types';
+		return 'am_regions_content_types';
 	}
 
 	public static function getMap()

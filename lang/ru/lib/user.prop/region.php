@@ -1,2 +1,2 @@
 <?
-$MESS['KIT_REGION_USERPROP_REGION_DESCRIPTION'] = "Kit.MultiRegions: Регион";
+$MESS['AMMINA_REGION_USERPROP_REGION_DESCRIPTION'] = "Ammina.Regions: Регион";

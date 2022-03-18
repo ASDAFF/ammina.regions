@@ -1,2 +1,2 @@
 <?
-$MESS['KIT_REGION_IBPROP_DOMAIN_DESCRIPTION'] = "Kit.MultiRegions: Домен";
+$MESS['AMMINA_REGION_IBPROP_DOMAIN_DESCRIPTION'] = "Ammina.Regions: Домен";

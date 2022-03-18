@@ -8,13 +8,13 @@ define("NO_KEEP_STATISTIC", true);
 
 $initialTime = time();
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/kit.multiregions/prolog.php");
+require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/ammina.regions/prolog.php");
 
-Bitrix\Main\Loader::includeModule('kit.multiregions');
+Bitrix\Main\Loader::includeModule('ammina.regions');
 
 Loc::loadMessages(__FILE__);
 
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
@@ -53,16 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["Import"] == "Y") {
 			"PAUSE" => $_REQUEST['PAUSE'],
 			"START_TIME" => time(),
 		);
-		$_SESSION['KIT_MULTIREGIONS_IMPORT_DATA'] = array();
+		$_SESSION['AMMINA_REGIONS_IMPORT_DATA'] = array();
 	}
 
-	$obImport = new \Kit\MultiRegions\Import($NS, $start_time);
+	$obImport = new \Ammina\Regions\Import($NS, $start_time);
 	if (!check_bitrix_sessid()) {
-		$arErrors[] = GetMessage("KIT_MULTIREGIONS_IMPORT_ACCESS_DENIED");
+		$arErrors[] = GetMessage("AMMINA_REGIONS_IMPORT_ACCESS_DENIED");
 	} else {
-		$obImport->doImportProcess($_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']);
+		$obImport->doImportProcess($_SESSION['AMMINA_REGIONS_IMPORT_DATA']);
 		$NS = $obImport->getNSData();
-		$_SESSION['KIT_MULTIREGIONS_IMPORT_DATA'] = $obImport->getImportData();
+		$_SESSION['AMMINA_REGIONS_IMPORT_DATA'] = $obImport->getImportData();
 		$arErrors = array_merge($arErrors, $obImport->getErrors());
 	}
 
@@ -88,82 +88,82 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["Import"] == "Y") {
 		$sTime = sprintf("%d:%02d:%02d", $h, $m, $s);
 		if ($NS['STEP'] < 12) {
 			$progressItems = array(
-				Loc::getMessage("kit.multiregions_STATUS_STEP_0"),
-				Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+				Loc::getMessage("ammina.regions_STATUS_STEP_0"),
+				Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 			);
 			$progressTotal = 0;
 			$progressValue = 0;
 			if ($NS['STEP'] == 1) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_1"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_1"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
 			} elseif ($NS['STEP'] == 2) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_2"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_2"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
 			} elseif ($NS['STEP'] == 3) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_3", array("#BLOCK#" => (amreg_strlen($_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['CURRENT_IP']) > 0 ? $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['CURRENT_IP'] : "0.0.0.0"))),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_3", array("#BLOCK#" => (amreg_strlen($_SESSION['AMMINA_REGIONS_IMPORT_DATA']['CURRENT_IP']) > 0 ? $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['CURRENT_IP'] : "0.0.0.0"))),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP3_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP3_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP3_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP3_TOTAL'];
 			} elseif ($NS['STEP'] == 4) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_4"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_4"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP4_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP4_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP4_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP4_TOTAL'];
 			} elseif ($NS['STEP'] == 5) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_5"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_5"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP5_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP5_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP5_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP5_TOTAL'];
 			} elseif ($NS['STEP'] == 6) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_6"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_6"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP6_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP6_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP6_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP6_TOTAL'];
 			} elseif ($NS['STEP'] == 7) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_7"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_7"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
 			} elseif ($NS['STEP'] == 8) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_8"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_8"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP8_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP8_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP8_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP8_TOTAL'];
 			} elseif ($NS['STEP'] == 9) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_9"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_9"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP9_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP9_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP9_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP9_TOTAL'];
 			} elseif ($NS['STEP'] == 10) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_10"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_10"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP10_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP10_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP10_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP10_TOTAL'];
 			} elseif ($NS['STEP'] == 11) {
 				$progressItems = array(
-					Loc::getMessage("kit.multiregions_STATUS_STEP_11"),
-					Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)),
+					Loc::getMessage("ammina.regions_STATUS_STEP_11"),
+					Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)),
 				);
-				$progressValue = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP11_CNT'];
-				$progressTotal = $_SESSION['KIT_MULTIREGIONS_IMPORT_DATA']['STEP11_TOTAL'];
+				$progressValue = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP11_CNT'];
+				$progressTotal = $_SESSION['AMMINA_REGIONS_IMPORT_DATA']['STEP11_TOTAL'];
 			}
 			CAdminMessage::ShowMessage(
 				array(
@@ -187,8 +187,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["Import"] == "Y") {
 		} else {
 			CAdminMessage::ShowMessage(
 				array(
-					"MESSAGE" => Loc::getMessage("KIT_MULTIREGIONS_IMPORT_COMPLETED"),
-					"DETAILS" => "<p>" . Loc::getMessage("KIT_MULTIREGIONS_IMPORT_COMPLETED") . "</p><p>" . Loc::getMessage("kit.multiregions_STATUS_TIME", array("#TIME#" => $sTime)) . "</p>",
+					"MESSAGE" => Loc::getMessage("AMMINA_REGIONS_IMPORT_COMPLETED"),
+					"DETAILS" => "<p>" . Loc::getMessage("AMMINA_REGIONS_IMPORT_COMPLETED") . "</p><p>" . Loc::getMessage("ammina.regions_STATUS_TIME", array("#TIME#" => $sTime)) . "</p>",
 					"HTML" => true,
 					"TYPE" => "PROGRESS",
 				)
@@ -210,19 +210,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $_REQUEST["Import"] == "Y") {
 	require($_SERVER["DOCUMENT_ROOT"] . BX_ROOT . "/modules/main/include/epilog_admin_js.php");
 }
 
-$APPLICATION->SetTitle(Loc::getMessage('KIT_MULTIREGIONS_PAGE_TITLE'));
+$APPLICATION->SetTitle(Loc::getMessage('AMMINA_REGIONS_PAGE_TITLE'));
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
 ?>
-	<div id="tbl_kit_multiregions_import_result_div"></div>
+	<div id="tbl_ammina_regions_import_result_div"></div>
 <?
 $aTabs = array(
 	array(
 		"DIV" => "edit1",
-		"TAB" => GetMessage("KIT_MULTIREGIONS_IMPORT_TAB"),
+		"TAB" => GetMessage("AMMINA_REGIONS_IMPORT_TAB"),
 		"ICON" => "main_user_edit",
-		"TITLE" => GetMessage("KIT_MULTIREGIONS_IMPORT_TAB_TITLE"),
+		"TITLE" => GetMessage("AMMINA_REGIONS_IMPORT_TAB_TITLE"),
 	),
 );
 $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
@@ -255,13 +255,13 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
 			if (running) {
 				ShowWaitWindow();
 				BX.ajax({
-					url: 'kit.multiregions.update.php?' + queryString,
+					url: 'ammina.regions.update.php?' + queryString,
 					method: 'POST',
 					data: NS,
 					dataType: 'html',
 					cache: false,
 					onsuccess: function(result){
-						document.getElementById('tbl_kit_multiregions_import_result_div').innerHTML = result;
+						document.getElementById('tbl_ammina_regions_import_result_div').innerHTML = result;
 					},
 					onfailure: function(){
 						window.setTimeout(function () {
@@ -271,10 +271,10 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
 				});
 				/*
 				BX.ajax.post(
-					'kit.multiregions.update.php?' + queryString,
+					'ammina.regions.update.php?' + queryString,
 					NS,
 					function (result) {
-						document.getElementById('tbl_kit_multiregions_import_result_div').innerHTML = result;
+						document.getElementById('tbl_ammina_regions_import_result_div').innerHTML = result;
 					}
 				);*/
 			}
@@ -295,25 +295,25 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
 		$tabControl->BeginNextTab();
 		?>
 		<tr>
-			<td width="40%"><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_INTERVAL") ?>:</td>
+			<td width="40%"><? echo GetMessage("AMMINA_REGIONS_IMPORT_INTERVAL") ?>:</td>
 			<td width="60%">
 				<input type="text" id="INTERVAL" name="INTERVAL" size="5" value="<?= intval($INTERVAL) ?>"/>
 			</td>
 		</tr>
 		<tr>
-			<td width="40%"><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_PAUSE") ?>:</td>
+			<td width="40%"><? echo GetMessage("AMMINA_REGIONS_IMPORT_PAUSE") ?>:</td>
 			<td width="60%">
 				<input type="text" id="PAUSE" name="PAUSE" size="5" value="<?= intval($PAUSE) ?>"/>
 			</td>
 		</tr>
 		<tr>
-			<td><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_DELETE_CITY") ?>:</td>
+			<td><? echo GetMessage("AMMINA_REGIONS_IMPORT_DELETE_CITY") ?>:</td>
 			<td>
 				<input type="checkbox" id="DELETE_CITY" name="DELETE_CITY" value="Y"/>
 			</td>
 		</tr>
 		<tr>
-			<td><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_LINK_LOCATION_CITY") ?>:</td>
+			<td><? echo GetMessage("AMMINA_REGIONS_IMPORT_LINK_LOCATION_CITY") ?>:</td>
 			<td>
 				<input type="checkbox" id="LOCATION_CITY" name="LOCATION_CITY" value="Y"/>
 			</td>
@@ -322,25 +322,25 @@ $tabControl = new CAdminTabControl("tabControl", $aTabs, true, true);
 		if (CModule::IncludeModule("sale")) {
 			?>
 			<tr>
-				<td><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_LOAD_LOCATION") ?>:</td>
+				<td><? echo GetMessage("AMMINA_REGIONS_IMPORT_LOAD_LOCATION") ?>:</td>
 				<td>
 					<input type="checkbox" id="LOAD_LOCATION" name="LOAD_LOCATION" value="Y" checked="checked"/>
 				</td>
 			</tr>
 			<tr>
-				<td><? echo GetMessage("KIT_MULTIREGIONS_IMPORT_LOAD_LOCATION_VILLAGE") ?>:</td>
+				<td><? echo GetMessage("AMMINA_REGIONS_IMPORT_LOAD_LOCATION_VILLAGE") ?>:</td>
 				<td>
 					<input type="checkbox" id="LOAD_LOCATION_VILLAGE" name="LOAD_LOCATION_VILLAGE" value="Y" />
 				</td>
 			</tr>
 		<? } ?>
 		<? $tabControl->Buttons(); ?>
-		<input type="button" id="start_button" value="<? echo GetMessage("KIT_MULTIREGIONS_IMPORT_START_IMPORT") ?>" onclick="StartImport();" class="adm-btn-save">
-		<input type="button" id="stop_button" value="<? echo GetMessage("KIT_MULTIREGIONS_IMPORT_STOP_IMPORT") ?>" onclick="EndImport();">
+		<input type="button" id="start_button" value="<? echo GetMessage("AMMINA_REGIONS_IMPORT_START_IMPORT") ?>" onclick="StartImport();" class="adm-btn-save">
+		<input type="button" id="stop_button" value="<? echo GetMessage("AMMINA_REGIONS_IMPORT_STOP_IMPORT") ?>" onclick="EndImport();">
 		<? $tabControl->End(); ?>
 	</form>
 
 <?
-CKitMultiRegions::showSupportForm();
+CAmminaRegions::showSupportForm();
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
 ?>

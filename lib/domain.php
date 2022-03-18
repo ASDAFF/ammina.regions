@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Catalog\Product\Price\Calculation;
 use Bitrix\Main\ORM\Data\DataManager;
@@ -15,7 +15,7 @@ class DomainTable extends DataManager
 
 	public static function getTableName()
 	{
-		return 'am_multiregions_domain';
+		return 'am_regions_domain';
 	}
 
 	public static function getMap()
@@ -63,7 +63,7 @@ class DomainTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'CITY' => array(
-				'data_type' => '\Kit\MultiRegions\City',
+				'data_type' => '\Ammina\Regions\City',
 				'reference' => array('=this.CITY_ID' => 'ref.ID'),
 			),
 			"NOINDEX" => array(
@@ -103,7 +103,7 @@ class DomainTable extends DataManager
 				'data_type' => 'string',
 			),
 			'DOMAIN_LOCATIONS' => array(
-				'data_type' => '\Kit\MultiRegions\DomainLocation',
+				'data_type' => '\Ammina\Regions\DomainLocation',
 				'reference' => array('=this.ID' => 'ref.DOMAIN_ID'),
 			),
 		);
@@ -126,7 +126,7 @@ class DomainTable extends DataManager
 			$arUpdateFields['PRICES'] = serialize($data['PRICES']);
 		}
 		if (isset($data['NAME_LANG'])) {
-			$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+			$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 			foreach ($data['NAME_LANG'] as $k => $v) {
 				if (!in_array($k, $arAllowLangs)) {
 					unset($data['NAME_LANG'][$k]);
@@ -175,7 +175,7 @@ class DomainTable extends DataManager
 			$arUpdateFields['PRICES'] = serialize($data['PRICES']);
 		}
 		if (isset($data['NAME_LANG'])) {
-			$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+			$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 			foreach ($data['NAME_LANG'] as $k => $v) {
 				if (!in_array($k, $arAllowLangs)) {
 					unset($data['NAME_LANG'][$k]);
@@ -232,11 +232,11 @@ class DomainTable extends DataManager
 			}
 		}
 		if ($id['ID'] > 0) {
-			\Kit\MultiRegions\DomainVariableTable::doFillAllSystemVariables($recordId);
+			\Ammina\Regions\DomainVariableTable::doFillAllSystemVariables($recordId);
 		}
 		$o = new \CPHPCache();
-		$o->CleanDir("kit/multiregions/domain");
-		$o->CleanDir("kit/multiregions/domain.list");
+		$o->CleanDir("ammina/regions/domain");
+		$o->CleanDir("ammina/regions/domain.list");
 		self::doCheckDomainHostInSite($recordId);
 		self::doCheckIBlockPropsList();
 	}
@@ -265,11 +265,11 @@ class DomainTable extends DataManager
 			}
 		}
 		if ($id['ID'] > 0) {
-			\Kit\MultiRegions\DomainVariableTable::doFillAllSystemVariables($recordId);
+			\Ammina\Regions\DomainVariableTable::doFillAllSystemVariables($recordId);
 		}
 		$o = new \CPHPCache();
-		$o->CleanDir("kit/multiregions/domain");
-		$o->CleanDir("kit/multiregions/domain.list");
+		$o->CleanDir("ammina/regions/domain");
+		$o->CleanDir("ammina/regions/domain.list");
 		self::doCheckDomainHostInSite($recordId);
 		self::doCheckIBlockPropsList();
 	}
@@ -296,7 +296,7 @@ class DomainTable extends DataManager
 		$result = parent::getList($parameters);
 		$result->setSerializedFields(array("PRICES", "STORES", "NAME_LANG"));
 		$result->addFetchDataModifier(function (&$data) use ($parameters) {
-			//\CKitMultiRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
+			//\CAmminaRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
 			if (isset($data['SITE_EXT'])) {
 				$data['SITE_EXT'] = explode("-", $data['SITE_EXT']);
 				foreach ($data['SITE_EXT'] as $k => $v) {
@@ -450,10 +450,10 @@ Crawl-delay: 2.0
 	public static function doMakeSaleCompanyForDomain($ID)
 	{
 		$arCurrentDomain = self::getRowById($ID);
-		if ($arCurrentDomain && \CKitMultiRegions::isIMExists()) {
+		if ($arCurrentDomain && \CAmminaRegions::isIMExists()) {
 			$domainLocationId = false;
 			if ($arCurrentDomain['CITY_ID'] > 0) {
-				$arCityInfo = \Kit\MultiRegions\CityTable::getRowById($arCurrentDomain['CITY_ID']);
+				$arCityInfo = \Ammina\Regions\CityTable::getRowById($arCurrentDomain['CITY_ID']);
 				if ($arCityInfo['LOCATION_ID'] > 0) {
 					$arLocation = \Bitrix\Sale\Location\LocationTable::getRowById($arCityInfo['LOCATION_ID']);
 					$domainLocationId = $arLocation['CODE'];
@@ -466,7 +466,7 @@ Crawl-delay: 2.0
 			);
 			$oResultCompany = \Bitrix\Sale\Internals\CompanyTable::add($arCompanyFields);
 			if ($oResultCompany->isSuccess()) {
-				\Kit\MultiRegions\DomainTable::update(
+				\Ammina\Regions\DomainTable::update(
 					$arCurrentDomain['ID'],
 					array(
 						"SALE_COMPANY_ID" => $oResultCompany->getId(),
@@ -480,7 +480,7 @@ Crawl-delay: 2.0
 	public static function doMakeSaleCompanyRestrictionsForDomain($ID)
 	{
 		$arCurrentDomain = self::getRowById($ID);
-		if ($arCurrentDomain && \CKitMultiRegions::isIMExists()) {
+		if ($arCurrentDomain && \CAmminaRegions::isIMExists()) {
 			if ($arCurrentDomain['SALE_COMPANY_ID'] > 0) {
 				$rRestrictions = \Bitrix\Sale\Internals\ServiceRestrictionTable::getList(
 					array(
@@ -491,7 +491,7 @@ Crawl-delay: 2.0
 					)
 				);
 				while ($arRestriction = $rRestrictions->fetch()) {
-					if ($arRestriction['CLASS_NAME'] == '\Kit\MultiRegions\Rules\Sale\CompanyRules\Domain') {
+					if ($arRestriction['CLASS_NAME'] == '\Ammina\Regions\Rules\Sale\CompanyRules\Domain') {
 						break;
 					}
 				}
@@ -508,7 +508,7 @@ Crawl-delay: 2.0
 				} else {
 					$arFieldsRestriction = array(
 						"SERVICE_ID" => $arCurrentDomain['SALE_COMPANY_ID'],
-						"CLASS_NAME" => '\Kit\MultiRegions\Rules\Sale\CompanyRules\Domain',
+						"CLASS_NAME" => '\Ammina\Regions\Rules\Sale\CompanyRules\Domain',
 						"SERVICE_TYPE" => \Bitrix\Sale\Services\Base\RestrictionManager::SERVICE_TYPE_COMPANY,
 						"SORT" => 100,
 						"PARAMS" => array(
@@ -532,14 +532,14 @@ Crawl-delay: 2.0
 			$arGroup = \Bitrix\Main\GroupTable::getList(
 				array(
 					"filter" => array(
-						"NAME" => Loc::getMessage("kit.multiregions_USER_GROUP_COMPANY") . ": " . $arCurrentDomain['NAME'],
+						"NAME" => Loc::getMessage("ammina.regions_USER_GROUP_COMPANY") . ": " . $arCurrentDomain['NAME'],
 					),
 				)
 			)->fetch();
 			if (!$arGroup) {
 				$oRes = \Bitrix\Main\GroupTable::add(
 					array(
-						"NAME" => Loc::getMessage("kit.multiregions_USER_GROUP_COMPANY") . ": " . $arCurrentDomain['NAME'],
+						"NAME" => Loc::getMessage("ammina.regions_USER_GROUP_COMPANY") . ": " . $arCurrentDomain['NAME'],
 						"C_SORT" => 10000,
 						"ACTIVE" => "Y",
 					)
@@ -553,14 +553,14 @@ Crawl-delay: 2.0
 			$arGroup = \Bitrix\Main\GroupTable::getList(
 				array(
 					"filter" => array(
-						"NAME" => Loc::getMessage("kit.multiregions_USER_GROUP_COMPANY_RESPONSIBLE") . ": " . $arCurrentDomain['NAME'],
+						"NAME" => Loc::getMessage("ammina.regions_USER_GROUP_COMPANY_RESPONSIBLE") . ": " . $arCurrentDomain['NAME'],
 					),
 				)
 			)->fetch();
 			if (!$arGroup) {
 				$oRes = \Bitrix\Main\GroupTable::add(
 					array(
-						"NAME" => Loc::getMessage("kit.multiregions_USER_GROUP_COMPANY_RESPONSIBLE") . ": " . $arCurrentDomain['NAME'],
+						"NAME" => Loc::getMessage("ammina.regions_USER_GROUP_COMPANY_RESPONSIBLE") . ": " . $arCurrentDomain['NAME'],
 						"C_SORT" => 10000,
 						"ACTIVE" => "Y",
 					)
@@ -571,7 +571,7 @@ Crawl-delay: 2.0
 			} else {
 				$iUserGroup = $arGroup['ID'];
 			}
-			if (\CKitMultiRegions::isIMExists()) {
+			if (\CAmminaRegions::isIMExists()) {
 				if ($arCurrentDomain['SALE_COMPANY_ID'] > 0 && $iCompanyGroup > 0) {
 					$isExists = false;
 					$rAllCompanyGroup = \Bitrix\Sale\Internals\CompanyGroupTable::getList(
@@ -627,7 +627,7 @@ Crawl-delay: 2.0
 		$arCurrentDomain = self::getRowById($ID);
 		if ($arCurrentDomain) {
 			$arAllGroupsCompany = array();
-			if (\CKitMultiRegions::isIMExists()) {
+			if (\CAmminaRegions::isIMExists()) {
 				$rAllCompanyGroup = \Bitrix\Sale\Internals\CompanyGroupTable::getList(
 					array(
 						"filter" => array(
@@ -774,9 +774,9 @@ Crawl-delay: 2.0
 
 	public static function doGetOriginalUrl($strRegionalUrl)
 	{
-		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.multiregions.php")) {
-			$arMultiRegionsUrl = @include($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.multiregions.php");
-			foreach ($arMultiRegionsUrl as $regionUrlPath => $arRegionalUrl) {
+		if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.regions.php")) {
+			$arRegionsUrl = @include($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.regions.php");
+			foreach ($arRegionsUrl as $regionUrlPath => $arRegionalUrl) {
 				foreach ($arRegionalUrl as $k => $v) {
 					if (amreg_strpos($strRegionalUrl, $v['REGIONAL']) === 0) {
 						$strRegionalUrl = str_replace($v["REGIONAL"], $v['ORIGINAL'], $strRegionalUrl);
@@ -795,7 +795,7 @@ Crawl-delay: 2.0
 		if ($DOMAIN_ID > 0) {
 			$arDomain = self::getRowById($DOMAIN_ID);
 			if ($arDomain) {
-				if (\COption::GetOptionString("kit.multiregions", "use_one_domain", "N") == "Y") {
+				if (\COption::GetOptionString("ammina.regions", "use_one_domain", "N") == "Y") {
 					if (amreg_strlen($path) <= 0) {
 						$path = $APPLICATION->GetCurPageParam();
 					}
@@ -808,11 +808,11 @@ Crawl-delay: 2.0
 					}
 					$strResult = $path;
 				} else {
-					$arHost = array(amreg_strtolower($_SERVER[\COption::GetOptionString("kit.multiregions", "host_var_name", "HTTP_HOST")]));
-					if (amreg_strpos(amreg_strtolower($_SERVER[\COption::GetOptionString("kit.multiregions", "host_var_name", "HTTP_HOST")]), "www.") === 0) {
-						$arHost[] = amreg_substr(amreg_strtolower($_SERVER[\COption::GetOptionString("kit.multiregions", "host_var_name", "HTTP_HOST")]), 4);
+					$arHost = array(amreg_strtolower($_SERVER[\COption::GetOptionString("ammina.regions", "host_var_name", "HTTP_HOST")]));
+					if (amreg_strpos(amreg_strtolower($_SERVER[\COption::GetOptionString("ammina.regions", "host_var_name", "HTTP_HOST")]), "www.") === 0) {
+						$arHost[] = amreg_substr(amreg_strtolower($_SERVER[\COption::GetOptionString("ammina.regions", "host_var_name", "HTTP_HOST")]), 4);
 					} else {
-						$arHost[] = "www." . amreg_strtolower($_SERVER[\COption::GetOptionString("kit.multiregions", "host_var_name", "HTTP_HOST")]);
+						$arHost[] = "www." . amreg_strtolower($_SERVER[\COption::GetOptionString("ammina.regions", "host_var_name", "HTTP_HOST")]);
 					}
 					if (!in_array(amreg_strtolower($arDomain['DOMAIN']), $arHost)) {
 						if (\CMain::IsHTTPS()) {
@@ -835,17 +835,17 @@ Crawl-delay: 2.0
 				}
 			}
 		}
-		$strResult = \CKitMultiRegions::ConvertUrlToPathRegion($strResult, $DOMAIN_ID);
+		$strResult = \CAmminaRegions::ConvertUrlToPathRegion($strResult, $DOMAIN_ID);
 		return $strResult;
 	}
 
 	public static function doHackCurrency()
 	{
 
-		if (!empty($GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY'])) {
+		if (!empty($GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'])) {
 			Calculation::setConfig(
 				array(
-					"CURRENCY" => $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY'],
+					"CURRENCY" => $GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'],
 				)
 			);
 			$setCacheSiteCurrency = static function ($siteId, $currency) {
@@ -855,24 +855,24 @@ Crawl-delay: 2.0
 				);
 			};
 			$bsetCacheSiteCurrency = \Closure::bind($setCacheSiteCurrency, null, '\Bitrix\Sale\Internals\SiteCurrencyTable');
-			$bsetCacheSiteCurrency(SITE_ID, $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY']);
+			$bsetCacheSiteCurrency(SITE_ID, $GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY']);
 		}
 	}
 
 	public static function doFillVariableLocativeCityName($DOMAIN_ID)
 	{
-		$arVarLocativeCityName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarLocativeCityName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => "SYS_LOCATIVE_CITY_NAME",
 				),
 			)
 		)->fetch();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			$strName = \morphos\Russian\RussianLanguage::in(\morphos\Russian\GeographicalNamesInflection::getCase($arFormatName['CITY_NAME'], \morphos\Russian\Cases::PREDLOJ));
-			$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+			$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 				array(
 					"filter" => array(
 						"VARIABLE_ID" => $arVarLocativeCityName['ID'],
@@ -881,14 +881,14 @@ Crawl-delay: 2.0
 				)
 			);
 			if ($arVariable = $rVariable->fetch()) {
-				\Kit\MultiRegions\DomainVariableTable::update(
+				\Ammina\Regions\DomainVariableTable::update(
 					$arVariable['ID'],
 					array(
 						"VALUE" => $strName,
 					)
 				);
 			} else {
-				\Kit\MultiRegions\DomainVariableTable::add(
+				\Ammina\Regions\DomainVariableTable::add(
 					array(
 						"VARIABLE_ID" => $arVarLocativeCityName['ID'],
 						"DOMAIN_ID" => $DOMAIN_ID,
@@ -901,18 +901,18 @@ Crawl-delay: 2.0
 
 	public static function doFillVariableLocativeRegionName($DOMAIN_ID)
 	{
-		$arVarLocativeCityRegionName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarLocativeCityRegionName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => "SYS_LOCATIVE_REGION_NAME",
 				),
 			)
 		)->fetch();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			$strName = \morphos\Russian\RussianLanguage::in(\morphos\Russian\GeographicalNamesInflection::getCase($arFormatName['REGION_NAME'], \morphos\Russian\Cases::PREDLOJ));
-			$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+			$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 				array(
 					"filter" => array(
 						"VARIABLE_ID" => $arVarLocativeCityRegionName['ID'],
@@ -921,14 +921,14 @@ Crawl-delay: 2.0
 				)
 			);
 			if ($arVariable = $rVariable->fetch()) {
-				\Kit\MultiRegions\DomainVariableTable::update(
+				\Ammina\Regions\DomainVariableTable::update(
 					$arVariable['ID'],
 					array(
 						"VALUE" => $strName,
 					)
 				);
 			} else {
-				\Kit\MultiRegions\DomainVariableTable::add(
+				\Ammina\Regions\DomainVariableTable::add(
 					array(
 						"VARIABLE_ID" => $arVarLocativeCityRegionName['ID'],
 						"DOMAIN_ID" => $DOMAIN_ID,
@@ -941,23 +941,23 @@ Crawl-delay: 2.0
 
 	public static function doFillVariableLocativeCityRegionName($DOMAIN_ID)
 	{
-		$arVarLocativeCityRegionName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarLocativeCityRegionName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => "SYS_LOCATIVE_CITY_REGION_NAME",
 				),
 			)
 		)->fetch();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			if ($arFormatName['CITY_NAME'] == $arFormatName['REGION_NAME']) {
 				$strName = \morphos\Russian\RussianLanguage::in(\morphos\Russian\GeographicalNamesInflection::getCase($arFormatName['CITY_NAME'], \morphos\Russian\Cases::PREDLOJ));
 			} else {
 				$strName = \morphos\Russian\RussianLanguage::in(\morphos\Russian\GeographicalNamesInflection::getCase($arFormatName['CITY_NAME'] . " &&& " . $arFormatName['REGION_NAME'], \morphos\Russian\Cases::PREDLOJ));
 			}
-			$strName = str_replace("&&&", Loc::getMessage("KIT_MULTIREGIONS_PREDLOG_I"), $strName);
-			$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+			$strName = str_replace("&&&", Loc::getMessage("AMMINA_REGIONS_PREDLOG_I"), $strName);
+			$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 				array(
 					"filter" => array(
 						"VARIABLE_ID" => $arVarLocativeCityRegionName['ID'],
@@ -966,14 +966,14 @@ Crawl-delay: 2.0
 				)
 			);
 			if ($arVariable = $rVariable->fetch()) {
-				\Kit\MultiRegions\DomainVariableTable::update(
+				\Ammina\Regions\DomainVariableTable::update(
 					$arVariable['ID'],
 					array(
 						"VALUE" => $strName,
 					)
 				);
 			} else {
-				\Kit\MultiRegions\DomainVariableTable::add(
+				\Ammina\Regions\DomainVariableTable::add(
 					array(
 						"VARIABLE_ID" => $arVarLocativeCityRegionName['ID'],
 						"DOMAIN_ID" => $DOMAIN_ID,
@@ -994,20 +994,20 @@ Crawl-delay: 2.0
 			"SYS_PADEZH_TVORITELNIY_CITY_NAME" => "ablative",
 			"SYS_PADEZH_PREDLOJNIY_CITY_NAME" => "prepositional",
 		);
-		$arVarsCityName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarsCityName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => array_keys($arVariables),
 				),
 			)
 		)->fetchAll();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			$arName = \morphos\Russian\GeographicalNamesInflection::getCases($arFormatName['CITY_NAME']);
 
 			foreach ($arVarsCityName as $arVar) {
-				$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+				$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 					array(
 						"filter" => array(
 							"VARIABLE_ID" => $arVar['ID'],
@@ -1017,14 +1017,14 @@ Crawl-delay: 2.0
 				);
 				$strName = $arName[$arVariables[$arVar['CODE']]];
 				if ($arVariable = $rVariable->fetch()) {
-					\Kit\MultiRegions\DomainVariableTable::update(
+					\Ammina\Regions\DomainVariableTable::update(
 						$arVariable['ID'],
 						array(
 							"VALUE" => $strName,
 						)
 					);
 				} else {
-					\Kit\MultiRegions\DomainVariableTable::add(
+					\Ammina\Regions\DomainVariableTable::add(
 						array(
 							"VARIABLE_ID" => $arVar['ID'],
 							"DOMAIN_ID" => $DOMAIN_ID,
@@ -1046,20 +1046,20 @@ Crawl-delay: 2.0
 			"SYS_PADEZH_TVORITELNIY_REGION_NAME" => "ablative",
 			"SYS_PADEZH_PREDLOJNIY_REGION_NAME" => "prepositional",
 		);
-		$arVarsCityName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarsCityName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => array_keys($arVariables),
 				),
 			)
 		)->fetchAll();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			$arName = \morphos\Russian\GeographicalNamesInflection::getCases($arFormatName['REGION_NAME']);
 
 			foreach ($arVarsCityName as $arVar) {
-				$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+				$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 					array(
 						"filter" => array(
 							"VARIABLE_ID" => $arVar['ID'],
@@ -1069,14 +1069,14 @@ Crawl-delay: 2.0
 				);
 				$strName = $arName[$arVariables[$arVar['CODE']]];
 				if ($arVariable = $rVariable->fetch()) {
-					\Kit\MultiRegions\DomainVariableTable::update(
+					\Ammina\Regions\DomainVariableTable::update(
 						$arVariable['ID'],
 						array(
 							"VALUE" => $strName,
 						)
 					);
 				} else {
-					\Kit\MultiRegions\DomainVariableTable::add(
+					\Ammina\Regions\DomainVariableTable::add(
 						array(
 							"VARIABLE_ID" => $arVar['ID'],
 							"DOMAIN_ID" => $DOMAIN_ID,
@@ -1098,16 +1098,16 @@ Crawl-delay: 2.0
 			"SYS_PADEZH_TVORITELNIY_CITY_REGION_NAME" => "ablative",
 			"SYS_PADEZH_PREDLOJNIY_CITY_REGION_NAME" => "prepositional",
 		);
-		$arVarsCityName = \Kit\MultiRegions\VariableTable::getList(
+		$arVarsCityName = \Ammina\Regions\VariableTable::getList(
 			array(
 				"filter" => array(
 					"CODE" => array_keys($arVariables),
 				),
 			)
 		)->fetchAll();
-		$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+		$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 		if ($arRecord['CITY_ID'] > 0) {
-			$arFormatName = \Kit\MultiRegions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
+			$arFormatName = \Ammina\Regions\DomainVariableTable::getCityFormatInfo($arRecord['CITY_ID']);
 			if ($arFormatName['CITY_NAME'] == $arFormatName['REGION_NAME']) {
 				$arName = \morphos\Russian\GeographicalNamesInflection::getCases($arFormatName['CITY_NAME']);
 			} else {
@@ -1115,7 +1115,7 @@ Crawl-delay: 2.0
 			}
 
 			foreach ($arVarsCityName as $arVar) {
-				$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(
+				$rVariable = \Ammina\Regions\DomainVariableTable::getList(
 					array(
 						"filter" => array(
 							"VARIABLE_ID" => $arVar['ID'],
@@ -1124,16 +1124,16 @@ Crawl-delay: 2.0
 					)
 				);
 				$strName = $arName[$arVariables[$arVar['CODE']]];
-				$strName = str_replace("&&&", Loc::getMessage("KIT_MULTIREGIONS_PREDLOG_I"), $strName);
+				$strName = str_replace("&&&", Loc::getMessage("AMMINA_REGIONS_PREDLOG_I"), $strName);
 				if ($arVariable = $rVariable->fetch()) {
-					\Kit\MultiRegions\DomainVariableTable::update(
+					\Ammina\Regions\DomainVariableTable::update(
 						$arVariable['ID'],
 						array(
 							"VALUE" => $strName,
 						)
 					);
 				} else {
-					\Kit\MultiRegions\DomainVariableTable::add(
+					\Ammina\Regions\DomainVariableTable::add(
 						array(
 							"VARIABLE_ID" => $arVar['ID'],
 							"DOMAIN_ID" => $DOMAIN_ID,
@@ -1149,7 +1149,7 @@ Crawl-delay: 2.0
 	{
 		global $CACHE_MANAGER;
 		if ($DOMAIN_ID > 0) {
-			$arRecord = \Kit\MultiRegions\DomainTable::getRowById($DOMAIN_ID);
+			$arRecord = \Ammina\Regions\DomainTable::getRowById($DOMAIN_ID);
 			if ($arRecord) {
 				$arSiteDomain = \Bitrix\Main\SiteDomainTable::getList(
 					array(
@@ -1179,7 +1179,7 @@ Crawl-delay: 2.0
 
 	public static function doCheckIBlockPropsList()
 	{
-		$strProp = trim(\COption::GetOptionString("kit.multiregions", "iblock_prop_domains"));
+		$strProp = trim(\COption::GetOptionString("ammina.regions", "iblock_prop_domains"));
 		$arPropCheck = explode("|", $strProp);
 		if (amreg_strlen($strProp) > 0 && !empty($arPropCheck)) {
 			$obPropEnum = new \CIBlockPropertyEnum();
@@ -1258,6 +1258,6 @@ Crawl-delay: 2.0
 				$arAllNames = array_merge($arAllNames, $arDomain['NAME_LANG']);
 			}
 		}
-		return \CKitMultiRegions::getLangFirstName($arAllNames, $lang);
+		return \CAmminaRegions::getLangFirstName($arAllNames, $lang);
 	}
 }

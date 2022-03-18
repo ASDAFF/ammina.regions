@@ -1,10 +1,10 @@
 <?
 
-namespace Kit\MultiRegions\UserProp;
+namespace Ammina\Regions\UserProp;
 
-use Kit\MultiRegions\CityLangTable;
-use Kit\MultiRegions\CountryLangTable;
-use Kit\MultiRegions\RegionLangTable;
+use Ammina\Regions\CityLangTable;
+use Ammina\Regions\CountryLangTable;
+use Ammina\Regions\RegionLangTable;
 use Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\UserField\TypeBase;
 
@@ -12,14 +12,14 @@ Loc::loadMessages(__FILE__);
 
 class City extends TypeBase
 {
-	const USER_TYPE = 'KitMultiRegionsCity';
+	const USER_TYPE = 'AmminaRegionsCity';
 
 	public static function GetUserTypeDescription()
 	{
 		return array(
 			"USER_TYPE_ID" => self::USER_TYPE,
 			"CLASS_NAME" => __CLASS__,
-			"DESCRIPTION" => Loc::getMessage("KIT_REGION_USERPROP_CITY_DESCRIPTION"),
+			"DESCRIPTION" => Loc::getMessage("AMMINA_REGION_USERPROP_CITY_DESCRIPTION"),
 			"BASE_TYPE" => \CUserTypeManager::BASE_TYPE_INT,
 		);
 	}
@@ -44,11 +44,11 @@ class City extends TypeBase
 			$arHtmlControl['VALUE_TEXT'] = self::getTextValue($arHtmlControl["VALUE"]);
 		}
 		?>
-		<div class="bammultiregionsadm-area-item">
+		<div class="bamregionsadm-area-item">
 			<input type="hidden" name="<?= htmlspecialcharsbx($arHtmlControl["NAME"]) ?>" id="<?= htmlspecialcharsbx($ident) ?>" value="<?= $arHtmlControl["VALUE"] ?>"/>
 			<input type="text" name="TEXTFIELD_<?= htmlspecialcharsbx($arHtmlControl["NAME"]) ?>" id="TEXTFIELD_<?= htmlspecialcharsbx($ident) ?>" size="50" value="<?= $arHtmlControl['VALUE_TEXT'] ?>" data-action="city" data-result-id="<?= htmlspecialcharsbx($ident) ?>" data-min-length="2" data-cnt="30" class="amr-request-field" autocomplete="off"<?= ($arUserField["EDIT_IN_LIST"] != "Y" ? 'disabled="disabled" ' : '') ?> />
 		</div>
-		<div clas="bammultiregionsadm-area-item-clear"></div>
+		<div clas="bamregionsadm-area-item-clear"></div>
 		<?
 		$strResult = ob_get_contents();
 		ob_end_clean();
@@ -103,7 +103,7 @@ class City extends TypeBase
 			</tr>
 			<tr>
 				<td style="padding-top: 6px;">
-					<input type="button" value="<?= Loc::getMessage("USER_TYPE_PROP_ADD") ?>" onClick="addNewRow('table_<?= $arUserField["FIELD_NAME"] ?>', '<?= $FIELD_NAME_X ?>|<?= $arUserField["FIELD_NAME"] ?>|<?= $arUserField["FIELD_NAME"] ?>_old_id');$('#table_<?= $arUserField["FIELD_NAME"] ?> .amr-request-field:last').kitMultiRegionsAdminQueryField();">
+					<input type="button" value="<?= Loc::getMessage("USER_TYPE_PROP_ADD") ?>" onClick="addNewRow('table_<?= $arUserField["FIELD_NAME"] ?>', '<?= $FIELD_NAME_X ?>|<?= $arUserField["FIELD_NAME"] ?>|<?= $arUserField["FIELD_NAME"] ?>_old_id');$('#table_<?= $arUserField["FIELD_NAME"] ?> .amr-request-field:last').amminaRegionsAdminQueryField();">
 				</td>
 			</tr>
 		</table>
@@ -118,7 +118,7 @@ class City extends TypeBase
 		$strResult = '';
 		$arResult = self::GetPropertyValue($arUserField, $arHtmlControl);
 		if (is_array($arResult)) {
-			$strResult = '<a href="/bitrix/admin/kit.multiregions.city.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
+			$strResult = '<a href="/bitrix/admin/ammina.regions.city.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
 		}
 		return $strResult;
 	}
@@ -139,31 +139,31 @@ class City extends TypeBase
 	{
 		global $APPLICATION;
 		\CJSCore::Init(array("jquery2"));
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/queryfield.js");
-		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/kit.multiregions.css");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/queryfield.js");
+		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/ammina.regions.css");
 	}
 
 	protected static function getTextValue($ID)
 	{
 		$strResult = "";
 		if ($ID > 0) {
-			$arCity = \Kit\MultiRegions\CityTable::getList(array(
+			$arCity = \Ammina\Regions\CityTable::getList(array(
 				"filter" => array("ID" => $ID),
 				"select" => array("ID", "REGION_ID", "COUNTRY_ID" => "REGION.COUNTRY_ID"),
 			))->fetch();
 
 			$arData = array(
 				"ID" => $arCity['ID'],
-				"NAME" => \CKitMultiRegions::getFirstNotEmpty(CityLangTable::getLangNames($arCity['ID'])),
-				"REGION_NAME" => \CKitMultiRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arCity['REGION_ID'])),
-				"COUNTRY_NAME" => \CKitMultiRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCity['COUNTRY_ID'])),
+				"NAME" => \CAmminaRegions::getFirstNotEmpty(CityLangTable::getLangNames($arCity['ID'])),
+				"REGION_NAME" => \CAmminaRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arCity['REGION_ID'])),
+				"COUNTRY_NAME" => \CAmminaRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCity['COUNTRY_ID'])),
 			);
 			$strResult = $arData['COUNTRY_NAME'] . ", " . $arData['REGION_NAME'] . ", " . $arData['NAME'];
 		}
 		return $strResult;
 	}
 
-	protected static function amultiregions_getFirstNotEmptyValue($arData)
+	protected static function aregions_getFirstNotEmptyValue($arData)
 	{
 		foreach ($arData as $val) {
 			$val = trim($val);

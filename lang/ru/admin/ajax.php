@@ -1,2 +1,2 @@
 <?
-$MESS['KIT_MULTIREGIONS_NOT_SELECTED'] = "(не выбрано)";
+$MESS['AMMINA_REGIONS_NOT_SELECTED'] = "(не выбрано)";

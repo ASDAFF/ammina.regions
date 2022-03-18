@@ -1,9 +1,9 @@
 <?
 
-namespace Kit\MultiRegions\Agent;
+namespace Ammina\Regions\Agent;
 
 
-use Kit\MultiRegions\DomainTable;
+use Ammina\Regions\DomainTable;
 use Bitrix\Main\IO\File;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\SiteTable;
@@ -29,15 +29,15 @@ class SiteMapGenerate
 	public static function doExecute()
 	{
 		@set_time_limit(0);
-		\CModule::IncludeModule("kit.multiregions");
-		$iMemory = intval(\COption::GetOptionString("kit.multiregions", "sitemapagent_memorylimit", ""));
+		\CModule::IncludeModule("ammina.regions");
+		$iMemory = intval(\COption::GetOptionString("ammina.regions", "sitemapagent_memorylimit", ""));
 		if ($iMemory > 0) {
 			@ini_set("memory_limit", $iMemory . "M");
 		}
 		if (\CModule::IncludeModule("seo")) {
 			$arCurrentAgent = \CAgent::GetList(array(), array(
-				"NAME" => '\Kit\MultiRegions\Agent\SiteMapGenerate::doExecute();',
-				"MODULE_ID" => "kit.multiregions",
+				"NAME" => '\Ammina\Regions\Agent\SiteMapGenerate::doExecute();',
+				"MODULE_ID" => "ammina.regions",
 			))->Fetch();
 			if ($arCurrentAgent) {
 				\CAgent::Update($arCurrentAgent['ID'], array("NEXT_EXEC" => ConvertTimeStamp(time() + 3600 * 12, "FULL")));
@@ -45,17 +45,17 @@ class SiteMapGenerate
 			if ((defined("BX_CRONTAB") && BX_CRONTAB === true) || (defined("CHK_EVENT") && CHK_EVENT === true)) {
 				self::doExecuteAgent();
 			} else {
-				if (\COption::GetOptionString("kit.multiregions", "sitemapagent_onlycron", "N") != "Y") {
+				if (\COption::GetOptionString("ammina.regions", "sitemapagent_onlycron", "N") != "Y") {
 					self::doExecuteAgent();
 				}
 			}
 		}
-		return '\Kit\MultiRegions\Agent\SiteMapGenerate::doExecute();';
+		return '\Ammina\Regions\Agent\SiteMapGenerate::doExecute();';
 	}
 
 	public static function doExecuteAgent()
 	{
-		$minTimeRun = time() - \COption::GetOptionString("kit.multiregions", "sitemapagent_period_run", "7") * 3600 * 24;
+		$minTimeRun = time() - \COption::GetOptionString("ammina.regions", "sitemapagent_period_run", "7") * 3600 * 24;
 		$arSitemap = SitemapTable::getList(array(
 			"order" => array(
 				"DATE_RUN" => "ASC",
@@ -247,7 +247,7 @@ class SiteMapGenerate
 		$dbOldIblockResult = NULL;
 		$dbIblockResult = NULL;
 
-		$bTakeProp = (\COption::GetOptionString("kit.multiregions", "sitemapagent_take_prop", "N") == "Y" ? true : false);
+		$bTakeProp = (\COption::GetOptionString("ammina.regions", "sitemapagent_take_prop", "N") == "Y" ? true : false);
 
 		while (!$bFinished && \CModule::IncludeModule("iblock")) {
 			if (!$currentIblock) {
@@ -1017,7 +1017,7 @@ class SiteMapGenerate
 	public static function fillPropDomain()
 	{
 		if (self::$arPropDomainAvailable == false) {
-			self::$arPropDomainAvailable = \COption::GetOptionString("kit.multiregions", "sitemapagent_prop_domain_available", "SYS_DOMAIN_AVAILABLE");
+			self::$arPropDomainAvailable = \COption::GetOptionString("ammina.regions", "sitemapagent_prop_domain_available", "SYS_DOMAIN_AVAILABLE");
 			self::$arPropDomainAvailable = str_replace(",", "\n", self::$arPropDomainAvailable);
 			self::$arPropDomainAvailable = explode("\n", self::$arPropDomainAvailable);
 			foreach (self::$arPropDomainAvailable as $k => $v) {
@@ -1030,7 +1030,7 @@ class SiteMapGenerate
 		}
 
 		if (self::$arPropDomainShow == false) {
-			self::$arPropDomainShow = \COption::GetOptionString("kit.multiregions", "sitemapagent_prop_show_domain", "SYS_SHOW_DOMAIN");
+			self::$arPropDomainShow = \COption::GetOptionString("ammina.regions", "sitemapagent_prop_show_domain", "SYS_SHOW_DOMAIN");
 			self::$arPropDomainShow = str_replace(",", "\n", self::$arPropDomainShow);
 			self::$arPropDomainShow = explode("\n", self::$arPropDomainShow);
 			foreach (self::$arPropDomainShow as $k => $v) {
@@ -1043,7 +1043,7 @@ class SiteMapGenerate
 		}
 
 		if (self::$arPropDomainHide == false) {
-			self::$arPropDomainHide = \COption::GetOptionString("kit.multiregions", "sitemapagent_prop_hide_domain", "SYS_HIDE_DOMAIN");
+			self::$arPropDomainHide = \COption::GetOptionString("ammina.regions", "sitemapagent_prop_hide_domain", "SYS_HIDE_DOMAIN");
 			self::$arPropDomainHide = str_replace(",", "\n", self::$arPropDomainHide);
 			self::$arPropDomainHide = explode("\n", self::$arPropDomainHide);
 			foreach (self::$arPropDomainHide as $k => $v) {

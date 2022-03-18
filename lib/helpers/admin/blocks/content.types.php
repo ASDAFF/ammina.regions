@@ -1,6 +1,6 @@
 <?php
 
-namespace Kit\MultiRegions\Helpers\Admin\Blocks;
+namespace Ammina\Regions\Helpers\Admin\Blocks;
 
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
@@ -23,19 +23,19 @@ class ContentTypes
 						<td class="adm-detail-content-cell-r">' . htmlspecialcharsbx($arItem['ID']) . '</td>
 					</tr>' : '') . '
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_NAME") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_NAME") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[NAME]" maxlength="255" id="FIELD_NAME" value="' . htmlspecialcharsbx($arItem['NAME']) . '" />
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_IDENT") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_IDENT") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[IDENT]" maxlength="255" id="FIELD_IDENT" value="' . htmlspecialcharsbx($arItem['IDENT']) . '" />
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_CLASS") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_CLASS") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[CLASS]" maxlength="255" id="FIELD_CLASS" value="' . htmlspecialcharsbx($arItem['CLASS']) . '" />
 						</td>

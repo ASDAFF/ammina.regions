@@ -1,2 +1,2 @@
 <?
-$MESS['KIT_REGION_IBPROP_COUNTRY_DESCRIPTION'] = "Kit.MultiRegions: Страна";
+$MESS['AMMINA_REGION_IBPROP_COUNTRY_DESCRIPTION'] = "Ammina.Regions: Страна";

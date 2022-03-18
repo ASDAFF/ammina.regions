@@ -1,0 +1,19 @@
+<?
+$MESS["AMMINA_COMPONENT_REGIONS_ALLOW_CHANGE_CITY_MANUAL"] = "Разрешить изменение посетителем";
+$MESS["AMMINA_COMPONENT_REGIONS_CITY_VERIFYCATION"] = "Подтверждать определение города";
+$MESS["AMMINA_COMPONENT_REGIONS_USE_GPS"] = "Использовать GPS";
+$MESS["AMMINA_COMPONENT_REGIONS_INCLUDE_JQUERY"] = "Подключать JQuery в компоненте";
+$MESS["AMMINA_COMPONENT_REGIONS_IP"] = "IP адрес";
+$MESS["AMMINA_COMPONENT_REGIONS_SHOW_CITY_TYPE"] = "Тип отображаемых местоположений по умолчанию";
+$MESS["AMMINA_COMPONENT_REGIONS_SHOW_CITY_TYPE_R"] = "Релевантные по GPS координатам";
+$MESS["AMMINA_COMPONENT_REGIONS_SHOW_CITY_TYPE_F"] = "Избранные местоположения";
+$MESS["AMMINA_COMPONENT_REGIONS_SHOW_CITY_TYPE_D"] = "Основные города доменов (филиалов/представительств)";
+$MESS["AMMINA_COMPONENT_REGIONS_SEARCH_CITY_TYPE"] = "Тип поиска местоположений";
+$MESS["AMMINA_COMPONENT_REGIONS_SEARCH_CITY_TYPE_R"] = "Релевантные по GPS координатам и запросу";
+$MESS["AMMINA_COMPONENT_REGIONS_SEARCH_CITY_TYPE_Q"] = "В соответствии с запросом";
+$MESS["AMMINA_COMPONENT_REGIONS_COUNT_SHOW_CITY"] = "Количество выводимых городов";
+$MESS["AMMINA_COMPONENT_REGIONS_PRIORITY_DOMAIN"] = "Приоритет определения местоположения домену (либо по IP вхождение в текущий домен, либо основной город домена)";
+$MESS["AMMINA_COMPONENT_REGIONS_ALLOW_REDIRECT"] = "Автоматический редирект на региональный домен";
+$MESS['AMMINA_COMPONENT_REGIONS_SEPARATE_SETTINGS_MOBILE'] = "Раздельные настройки для десктопов и мобильных";
+$MESS['AMMINA_COMPONENT_REGIONS_MAIN_SETTINGS'] = "Настройки для всех устройств";
+$MESS['AMMINA_COMPONENT_REGIONS_MOBILE_SETTINGS'] = "Настройки для мобильных (при установленной опции разделения настроек)";

@@ -1,0 +1,53 @@
+.bamregionsadm-area-item {
+  display: inline-block;
+  position: relative;
+}
+
+.bamregionsadm-area-item-clear {
+  clear: both;
+}
+
+.bamregionsadm-popup {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  background-color: #ffffff;
+  top: 26px;
+  left: 0;
+  right: 0;
+  border: 1px solid #87919c;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 2px 3px #c7c7c7;
+  box-shadow: 0 2px 3px #c7c7c7;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0;
+  width: 100%;
+}
+.bamregionsadm-popup .bamregionsadm-popup-variant {
+  display: block;
+  padding: 5px;
+  cursor: pointer;
+}
+.bamregionsadm-popup .bamregionsadm-popup-variant strong {
+  color: #a00000;
+}
+.bamregionsadm-popup .bamregionsadm-popup-variant:hover {
+  background-color: #e0e8ea;
+}
+
+.ammina-regions-contentext-type {
+  display: none;
+}
+
+.ammina-regions-domain-variable-table tbody td, .ammina-regions-contentext-table tbody td {
+  border-bottom: 1px dotted #888888;
+}
+.ammina-regions-domain-variable-table tbody tr:last-of-type td, .ammina-regions-contentext-table tbody tr:last-of-type td {
+  border-bottom: 0 none;
+}
+
+/*# sourceMappingURL=ammina.regions.css.map */

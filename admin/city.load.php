@@ -3,13 +3,13 @@
 use Bitrix\Main\Localization\Loc;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-Bitrix\Main\Loader::includeModule('kit.multiregions');
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/kit.multiregions/prolog.php");
+Bitrix\Main\Loader::includeModule('ammina.regions');
+require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/ammina.regions/prolog.php");
 
 Loc::loadMessages(__FILE__);
 $ID = isset($_REQUEST["ID"]) ? intval($_REQUEST["ID"]) : 0;
 
-$isSaleModule = CKitMultiRegions::isIMExists();
+$isSaleModule = CAmminaRegions::isIMExists();
 
 $isSavingOperation = (
 	$_SERVER["REQUEST_METHOD"] == "POST"
@@ -21,7 +21,7 @@ $isSavingOperation = (
 );
 
 $arUserGroups = $USER->GetUserGroupArray();
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
@@ -32,7 +32,7 @@ $needFieldsRestore = $_SERVER["REQUEST_METHOD"] == "POST" && !$isSavingOperation
 $isNewItem = ($ID <= 0);
 $arCurrentItem = false;
 if ($ID > 0) {
-	$arCurrentItem = \Kit\MultiRegions\CityTable::getById($ID)->fetch();
+	$arCurrentItem = \Ammina\Regions\CityTable::getById($ID)->fetch();
 }
 if (!$arCurrentItem) {
 	$isNewItem = true;
@@ -41,12 +41,12 @@ if (!$arCurrentItem) {
 }
 
 if ($isNewItem) {
-	LocalRedirect("/bitrix/admin/kit.multiregions.city.php?lang=" . LANGUAGE_ID);
+	LocalRedirect("/bitrix/admin/ammina.regions.city.php?lang=" . LANGUAGE_ID);
 }*/
 $result = new \Bitrix\Main\Entity\Result();
 
-$customTabber = new CAdminTabEngine("OnAdminKitMultiRegionsCityLoad");
-$customDraggableBlocks = new CAdminDraggableBlockEngine('OnAdminKitMultiRegionsCityLoadDraggable');
+$customTabber = new CAdminTabEngine("OnAdminAmminaRegionsCityLoad");
+$customDraggableBlocks = new CAdminDraggableBlockEngine('OnAdminAmminaRegionsCityLoadDraggable');
 
 if ($isSavingOperation) {
 
@@ -71,16 +71,16 @@ if ($isSavingOperation) {
 
 	$strLoadContent = trim($_REQUEST['FIELDS']['LOAD_CONTENT']);
 	if (strlen($strLoadContent) > 0) {
-		$APPLICATION->SaveFileContent($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/kit.multiregions.city.load.csv", $strLoadContent);
+		$APPLICATION->SaveFileContent($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/ammina.regions.city.load.csv", $strLoadContent);
 		$oCsv = new CCSVData();
-		$oCsv->LoadFile($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/kit.multiregions.city.load.csv");
+		$oCsv->LoadFile($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/ammina.regions.city.load.csv");
 		set_time_limit(1800);
 		ignore_user_abort(true);
 		$arCache = array();
 		while ($arData = $oCsv->Fetch()) {
 			if (strlen($arData[0]) > 0 && strlen($arData[1]) > 0 && strlen($arData[2]) > 0) {
 				if (!isset($arCache['COUNTRY'][$arData[0]])) {
-					$arCountry = \Kit\MultiRegions\CountryTable::getList(array(
+					$arCountry = \Ammina\Regions\CountryTable::getList(array(
 						"filter" => array(
 							array(
 								"LOGIC" => "OR",
@@ -99,7 +99,7 @@ if ($isSavingOperation) {
 				}
 				if ($arCache['COUNTRY'][$arData[0]] > 0) {
 					if (!isset($arCache['REGION'][$arData[1]])) {
-						$arRegion = \Kit\MultiRegions\RegionTable::getList(array(
+						$arRegion = \Ammina\Regions\RegionTable::getList(array(
 							"filter" => array(
 								"COUNTRY_ID" => $arCache['COUNTRY'][$arData[0]],
 								array(
@@ -118,7 +118,7 @@ if ($isSavingOperation) {
 						}
 					}
 					if ($arCache['REGION'][$arData[1]] > 0) {
-						$arCity = \Kit\MultiRegions\CityTable::getList(array(
+						$arCity = \Ammina\Regions\CityTable::getList(array(
 							"filter" => array(
 								"REGION_ID" => $arCache['REGION'][$arData[1]],
 								array(
@@ -137,26 +137,26 @@ if ($isSavingOperation) {
 								"REGION_ID" => $arCache['REGION'][$arData[1]],
 								"NAME"=>$arData[2]
 							);
-							\Kit\MultiRegions\CityTable::add($arFields);
+							\Ammina\Regions\CityTable::add($arFields);
 						}
 					}
 				}
 			}
 		}
 
-		@unlink($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/kit.multiregions.city.load.csv");
+		@unlink($_SERVER['DOCUMENT_ROOT'] . "/upload/tmp/ammina.regions.city.load.csv");
 	}
 
 	if ($result->isSuccess()) {
 		if (isset($_POST["save"])) {
-			LocalRedirect("/bitrix/admin/kit.multiregions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
+			LocalRedirect("/bitrix/admin/ammina.regions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
 		} else {
-			LocalRedirect("/bitrix/admin/kit.multiregions.city.load.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
+			LocalRedirect("/bitrix/admin/ammina.regions.city.load.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
 		}
 	}
 }
 
-$APPLICATION->SetTitle(Loc::getMessage("KIT_MULTIREGIONS_PAGE_TITLE_LOAD"));
+$APPLICATION->SetTitle(Loc::getMessage("AMMINA_REGIONS_PAGE_TITLE_LOAD"));
 
 CUtil::InitJSCore();
 
@@ -168,9 +168,9 @@ Blocks\OrderBasket::getCatalogMeasures();
 $aMenu = array();
 $aMenu[] = array(
 	"ICON" => "btn_list",
-	"TEXT" => Loc::getMessage("KIT_MULTIREGIONS_TO_LIST"),
-	"TITLE" => Loc::getMessage("KIT_MULTIREGIONS_TO_LIST_TITLE"),
-	"LINK" => "/bitrix/admin/kit.multiregions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
+	"TEXT" => Loc::getMessage("AMMINA_REGIONS_TO_LIST"),
+	"TITLE" => Loc::getMessage("AMMINA_REGIONS_TO_LIST_TITLE"),
+	"LINK" => "/bitrix/admin/ammina.regions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
 );
 
 
@@ -195,10 +195,10 @@ $defaultBlocksPage = array(
 	"city_load",
 );
 
-$formId = "kit_multiregions_city_load";
+$formId = "ammina_regions_city_load";
 
 $aTabs = array(
-	array("DIV" => "tab_kit", "TAB" => Loc::getMessage("KIT_MULTIREGIONS_TAB_CITY_LOAD"), "SHOW_WRAP" => "N", "IS_DRAGGABLE" => "Y"),
+	array("DIV" => "tab_ammina", "TAB" => Loc::getMessage("AMMINA_REGIONS_TAB_CITY_LOAD"), "SHOW_WRAP" => "N", "IS_DRAGGABLE" => "Y"),
 );
 
 ?>
@@ -227,7 +227,7 @@ foreach ($blocksPage as $item) {
 	if (isset($customFastNavItems[$item]))
 		$fastNavItems[$item] = $customFastNavItems[$item];
 	else {
-		$fastNavItems[$item] = Loc::getMessage("KIT_MULTIREGIONS_BLOCK_TITLE_" . toUpper($item));
+		$fastNavItems[$item] = Loc::getMessage("AMMINA_REGIONS_BLOCK_TITLE_" . toUpper($item));
 	}
 }
 ?>
@@ -238,11 +238,11 @@ foreach ($blocksPage as $item) {
 				<? $tabControl->DraggableBlocksStart(); ?>
 				<?
 				foreach ($blocksPage as $blockCode) {
-					echo '<a id="' . $blockCode . '" class="adm-kit-multiregions-fastnav-anchor"></a>';
+					echo '<a id="' . $blockCode . '" class="adm-ammina-regions-fastnav-anchor"></a>';
 					$tabControl->DraggableBlockBegin($fastNavItems[$blockCode], $blockCode);
 					switch ($blockCode) {
 						case "city_load":
-							echo \Kit\MultiRegions\Helpers\Admin\Blocks\CityLoad::getEdit();
+							echo \Ammina\Regions\Helpers\Admin\Blocks\CityLoad::getEdit();
 							break;
 						default:
 							echo $customDraggableBlocks->getBlockContent($blockCode, $tabControl->selectedTab);
@@ -260,9 +260,9 @@ $tabControl->EndTab();
 
 $tabControl->Buttons(
 	array(
-		"back_url" => "/bitrix/admin/kit.multiregions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"))
+		"back_url" => "/bitrix/admin/ammina.regions.city.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"))
 );
 
 $tabControl->End();
-CKitMultiRegions::showSupportForm();
+CAmminaRegions::showSupportForm();
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

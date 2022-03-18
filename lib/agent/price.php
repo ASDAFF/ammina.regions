@@ -1,8 +1,8 @@
 <?
 
-namespace Kit\MultiRegions\Agent;
+namespace Ammina\Regions\Agent;
 
-use Kit\MultiRegions\PriceTable;
+use Ammina\Regions\PriceTable;
 
 class Price
 {
@@ -13,7 +13,7 @@ class Price
 
 	public static function doExecute()
 	{
-		$iMemory = intval(\COption::GetOptionString("kit.multiregions", "priceagent_memorylimit", ""));
+		$iMemory = intval(\COption::GetOptionString("ammina.regions", "priceagent_memorylimit", ""));
 		if ($iMemory > 0) {
 			@ini_set("memory_limit", $iMemory . "M");
 		}
@@ -24,35 +24,35 @@ class Price
 			 * 2. Если запуск на хитах, то проверяем интервал, включенность режима выполнения по шагам и разрешение выполнения по шагам
 			 */
 			self::$arCurrentAgent = \CAgent::GetList(array(), array(
-				"NAME" => '\Kit\MultiRegions\Agent\Price::doExecute();',
-				"MODULE_ID" => "kit.multiregions",
+				"NAME" => '\Ammina\Regions\Agent\Price::doExecute();',
+				"MODULE_ID" => "ammina.regions",
 			))->Fetch();
-			if (\COption::GetOptionString("kit.multiregions", "priceagent_emptyexec", "N") == "Y") {
-				\COption::SetOptionString("kit.multiregions", "priceagent_emptyexec", "N");
+			if (\COption::GetOptionString("ammina.regions", "priceagent_emptyexec", "N") == "Y") {
+				\COption::SetOptionString("ammina.regions", "priceagent_emptyexec", "N");
 			} elseif ((defined("BX_CRONTAB") && BX_CRONTAB === true) || (defined("CHK_EVENT") && CHK_EVENT === true)) {
 				if (self::$arCurrentAgent) {
 					\CAgent::Update(self::$arCurrentAgent['ID'], array("NEXT_EXEC" => ConvertTimeStamp(time() + 3600 * 12, "FULL")));
 				}
-				if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("kit.multiregions", "priceagent_period", 180) * 60) {
+				if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("ammina.regions", "priceagent_period", 180) * 60) {
 					\CAgent::Update(self::$arCurrentAgent['ID'], array(
-						"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "priceagent_period", 180) * 60,
+						"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "priceagent_period", 180) * 60,
 					));
 					self::$bSetEmptyNext = true;
 				}
 				self::doExecuteWithCron();
 			} else {
-				if (\COption::GetOptionString("kit.multiregions", "priceagent_onlycron", "N") != "Y") {
-					if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("kit.multiregions", "priceagent_period_steps", 30)) {
+				if (\COption::GetOptionString("ammina.regions", "priceagent_onlycron", "N") != "Y") {
+					if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("ammina.regions", "priceagent_period_steps", 30)) {
 						\CAgent::Update(self::$arCurrentAgent['ID'], array(
-							"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "priceagent_period_steps", 30),
+							"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "priceagent_period_steps", 30),
 						));
-						$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("kit.multiregions", "priceagent_period_steps", 30), "FULL");
+						$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("ammina.regions", "priceagent_period_steps", 30), "FULL");
 					}
 					self::doExecuteWithHit();
 				}
 			}
 		}
-		return '\Kit\MultiRegions\Agent\Price::doExecute();';
+		return '\Ammina\Regions\Agent\Price::doExecute();';
 	}
 
 	protected static function getBaseFilterElements()
@@ -186,7 +186,7 @@ class Price
 			self::doCheckElementPrices($arElement['ID']);
 		}
 		if (self::$bSetEmptyNext) {
-			\COption::SetOptionString("kit.multiregions", "priceagent_emptyexec", "Y");
+			\COption::SetOptionString("ammina.regions", "priceagent_emptyexec", "Y");
 		}
 	}
 
@@ -194,8 +194,8 @@ class Price
 	{
 		self::doLoadPrices();
 		$arFilter = self::getBaseFilterElements();
-		$endTime = time() + \COption::GetOptionString("kit.multiregions", "priceagent_maxtime_step", 5);
-		$nextId = \COption::GetOptionString("kit.multiregions", "priceagent_nextId", "");
+		$endTime = time() + \COption::GetOptionString("ammina.regions", "priceagent_maxtime_step", 5);
+		$nextId = \COption::GetOptionString("ammina.regions", "priceagent_nextId", "");
 		if ($nextId > 0) {
 			$arFilter['>ID'] = $nextId;
 		}
@@ -203,16 +203,16 @@ class Price
 		while ($arElement = $rElements->Fetch()) {
 			self::doCheckElementPrices($arElement['ID']);
 			if (time() >= $endTime) {
-				\COption::SetOptionString("kit.multiregions", "priceagent_nextId", $arElement['ID']);
+				\COption::SetOptionString("ammina.regions", "priceagent_nextId", $arElement['ID']);
 				return;
 			}
 		}
-		\COption::SetOptionString("kit.multiregions", "priceagent_nextId", "0");
+		\COption::SetOptionString("ammina.regions", "priceagent_nextId", "0");
 		if (self::$arCurrentAgent['ID'] > 0) {
 			\CAgent::Update(self::$arCurrentAgent['ID'], array(
-				"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "priceagent_period", 180) * 60,
+				"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "priceagent_period", 180) * 60,
 			));
-			$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("kit.multiregions", "priceagent_period", 180) * 60, "FULL");
+			$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("ammina.regions", "priceagent_period", 180) * 60, "FULL");
 		}
 	}
 }

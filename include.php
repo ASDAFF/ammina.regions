@@ -10,9 +10,9 @@ use Bitrix\Main;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Sale;
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/kit.multiregions/mbfunc.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/ammina.regions/mbfunc.php');
 
-class CKitMultiRegions
+class CAmminaRegions
 {
     const LANG_DOMAIN = "DOMAIN";
     const LANG_CITY = "CITY";
@@ -49,16 +49,16 @@ class CKitMultiRegions
 
     public static function onMainGeoIpHandlersBuildList()
     {
-        return new \Bitrix\Main\EventResult(\Bitrix\Main\EventResult::SUCCESS, array('\Kit\MultiRegions\GeoIPHandler' => '/bitrix/modules/kit.multiregions/lib/geoip.php',));
+        return new \Bitrix\Main\EventResult(\Bitrix\Main\EventResult::SUCCESS, array('\Ammina\Regions\GeoIPHandler' => '/bitrix/modules/ammina.regions/lib/geoip.php',));
     }
 
     public static function OnProlog()
     {
 
-        if (amreg_strpos($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')], ':') !== false) {
-            $_1524616046 = explode(':', $_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]);
+        if (amreg_strpos($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')], ':') !== false) {
+            $_1524616046 = explode(':', $_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]);
             unset($_1524616046[count($_1524616046) - 1]);
-            $_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')] = implode(':', $_1524616046);
+            $_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')] = implode(':', $_1524616046);
         }
         CModule::IncludeModule('catalog');
         CModule::IncludeModule('sale');
@@ -78,15 +78,15 @@ class CKitMultiRegions
             $_742466237->setHttpOnly(false);
             $_1478384894->getContext()->getResponse()->addCookie($_742466237);
             unset($_SESSION['BX_GEO_IP']);
-            if (COption::GetOptionString('kit.multiregions', 'use_one_domain', 'N') == 'Y') {
+            if (COption::GetOptionString('ammina.regions', 'use_one_domain', 'N') == 'Y') {
                 $_910246949 = self::ConvertUrlToPathRegion($APPLICATION->GetCurPageParam('', array('argcity')), false, $_REQUEST['argcity']);
             } else {
-                $_910246949 = 'http' . ($APPLICATION->IsHttps() ? 's' : '') . '://' . $_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')] . self::ConvertUrlToPathRegion($APPLICATION->GetCurPageParam('', array('argcity')), false, $_REQUEST['argcity']);
+                $_910246949 = 'http' . ($APPLICATION->IsHttps() ? 's' : '') . '://' . $_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')] . self::ConvertUrlToPathRegion($APPLICATION->GetCurPageParam('', array('argcity')), false, $_REQUEST['argcity']);
             }
             LocalRedirect($_910246949);
         }
         $_277830158 = false;
-        if (COption::GetOptionString('kit.multiregions', 'use_one_domain', 'N') == 'Y') {
+        if (COption::GetOptionString('ammina.regions', 'use_one_domain', 'N') == 'Y') {
             $_1594366934 = false;
             if (amreg_strlen($_REQUEST['argcity']) > 0) {
                 $_1594366934 = $_REQUEST['argcity'];
@@ -95,12 +95,12 @@ class CKitMultiRegions
                 $_1594366934 = intval($_1478384894->getContext()->getRequest()->getCookie('ARG_CITY'));
             }
             if ($_1594366934 <= 0) {
-                $_1594366934 = \Kit\MultiRegions\BlockTable::getCityIdByIP();
+                $_1594366934 = \Ammina\Regions\BlockTable::getCityIdByIP();
             }
-            $_323813335 = \Kit\MultiRegions\DomainTable::doFindDomainByCity($_1594366934, SITE_ID);
-            if (isset($_SERVER['REQUIRED_KIT_REGION_CODE']) && isset($_SERVER['REQUIRED_KIT_DOMAIN_ID'])) {
-                if ($_SERVER['REQUIRED_KIT_DOMAIN_ID'] != $_323813335) {
-                    $_873581518 = \Kit\MultiRegions\DomainTable::getRowById(intval($_SERVER['REQUIRED_KIT_DOMAIN_ID']));
+            $_323813335 = \Ammina\Regions\DomainTable::doFindDomainByCity($_1594366934, SITE_ID);
+            if (isset($_SERVER['REQUIRED_AMMINA_REGION_CODE']) && isset($_SERVER['REQUIRED_AMMINA_DOMAIN_ID'])) {
+                if ($_SERVER['REQUIRED_AMMINA_DOMAIN_ID'] != $_323813335) {
+                    $_873581518 = \Ammina\Regions\DomainTable::getRowById(intval($_SERVER['REQUIRED_AMMINA_DOMAIN_ID']));
                     if ($_873581518) {
                         $_1594366934 = $_873581518['CITY_ID'];
                         $_1478384894 = \Bitrix\Main\Application::getInstance();
@@ -113,85 +113,85 @@ class CKitMultiRegions
                 }
             }
             $_1427624177 = new CPHPCache();
-            if ($_1427624177->InitCache(3600, 'kit_region_domains' . $_323813335, 'kit/multiregions/onedomain')) {
+            if ($_1427624177->InitCache(3600, 'ammina_region_domains' . $_323813335, 'ammina/regions/onedomain')) {
                 $_1228595998 = $_1427624177->GetVars();
                 $_277830158 = $_1228595998['DOMAIN'];
                 $_1474516739 = $_1228595998['LOCATIONS'];
                 $_1489560310 = $_1228595998['VARIABLES'];
-                $GLOBALS['KIT_MULTIREGIONS'] = $_1228595998['GLOBAL_VAR'];
+                $GLOBALS['AMMINA_REGIONS'] = $_1228595998['GLOBAL_VAR'];
                 $GLOBALS['AMR_TEMPLATES'] = $_1228595998['GLOBAL_TMPL'];
             }
             if ($_1427624177->StartDataCache()) {
                 $_1474516739 = false;
                 $_1489560310 = false;
                 if ($_323813335 > 0) {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('ID' => $_323813335, 'SITE_ID' => SITE_ID,),))->fetch();
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('ID' => $_323813335, 'SITE_ID' => SITE_ID,),))->fetch();
                 } else {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
                 }
                 if (!$_277830158) {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y',), 'order' => array('ID' => 'ASC'),))->fetch();
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y',), 'order' => array('ID' => 'ASC'),))->fetch();
                 }
                 if ($_277830158) {
                     list($_277830158, $_1474516739, $_1489560310) = self::doLoadDomainById($_277830158['ID']);
                 }
-                $_1427624177->EndDataCache(array('DOMAIN' => $_277830158, 'LOCATIONS' => $_1474516739, 'VARIABLES' => $_1489560310, 'GLOBAL_VAR' => $GLOBALS['KIT_MULTIREGIONS'], 'GLOBAL_TMPL' => $GLOBALS['AMR_TEMPLATES'],));
+                $_1427624177->EndDataCache(array('DOMAIN' => $_277830158, 'LOCATIONS' => $_1474516739, 'VARIABLES' => $_1489560310, 'GLOBAL_VAR' => $GLOBALS['AMMINA_REGIONS'], 'GLOBAL_TMPL' => $GLOBALS['AMR_TEMPLATES'],));
             }
         } else {
-            $_460093401 = array(amreg_strtolower($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]));
-            if (amreg_strpos(amreg_strtolower($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]), 'www.') === 0) {
-                $_460093401[] = amreg_substr(amreg_strtolower($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]), 4);
+            $_460093401 = array(amreg_strtolower($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]));
+            if (amreg_strpos(amreg_strtolower($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]), 'www.') === 0) {
+                $_460093401[] = amreg_substr(amreg_strtolower($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]), 4);
             } else {
-                $_460093401[] = 'www.' . amreg_strtolower($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]);
+                $_460093401[] = 'www.' . amreg_strtolower($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]);
             }
             $_1427624177 = new CPHPCache();
-            if ($_1427624177->InitCache(3600, 'kit_region_domains' . implode('|', $_460093401), 'kit/multiregions/domain')) {
+            if ($_1427624177->InitCache(3600, 'ammina_region_domains' . implode('|', $_460093401), 'ammina/regions/domain')) {
                 $_1228595998 = $_1427624177->GetVars();
                 $_277830158 = $_1228595998['DOMAIN'];
                 $_1474516739 = $_1228595998['LOCATIONS'];
                 $_1489560310 = $_1228595998['VARIABLES'];
-                $GLOBALS['KIT_MULTIREGIONS'] = $_1228595998['GLOBAL_VAR'];
+                $GLOBALS['AMMINA_REGIONS'] = $_1228595998['GLOBAL_VAR'];
                 $GLOBALS['AMR_TEMPLATES'] = $_1228595998['GLOBAL_TMPL'];
             }
             if (empty($_277830158)) {
-                $_1427624177->Clean('kit_region_domains' . implode('|', $_460093401), 'kit/multiregions/domain');
+                $_1427624177->Clean('ammina_region_domains' . implode('|', $_460093401), 'ammina/regions/domain');
             }
             if ($_1427624177->StartDataCache()) {
                 $_1474516739 = false;
                 $_1489560310 = false;
-                $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'DOMAIN' => $_460093401,),))->fetch();
+                $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'DOMAIN' => $_460093401,),))->fetch();
                 if (!$_277830158) {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
                 }
                 if (!$_277830158) {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y',), 'order' => array('ID' => 'ASC'),))->fetch();
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y',), 'order' => array('ID' => 'ASC'),))->fetch();
                 }
                 if ($_277830158) {
                     list($_277830158, $_1474516739, $_1489560310) = self::doLoadDomainById($_277830158['ID']);
                 }
-                $_1427624177->EndDataCache(array('DOMAIN' => $_277830158, 'LOCATIONS' => $_1474516739, 'VARIABLES' => $_1489560310, 'GLOBAL_VAR' => $GLOBALS['KIT_MULTIREGIONS'], 'GLOBAL_TMPL' => $GLOBALS['AMR_TEMPLATES'],));
+                $_1427624177->EndDataCache(array('DOMAIN' => $_277830158, 'LOCATIONS' => $_1474516739, 'VARIABLES' => $_1489560310, 'GLOBAL_VAR' => $GLOBALS['AMMINA_REGIONS'], 'GLOBAL_TMPL' => $GLOBALS['AMR_TEMPLATES'],));
             }
         }
         $_1388636660 = self::getAllGeocontentId();
         foreach ($_1388636660 as $_1521960729 => $_1636743103) {
             ob_start();
-            $APPLICATION->IncludeComponent('kit:multiregions.geocontent', '', array('CACHE_TIME' => '300', 'CACHE_TYPE' => 'A', 'CONTENT_TYPE' => $_1521960729, 'IP' => '', 'SET_TAG_IDENT' => 'N', 'SET_TAG_TYPE' => '', 'NO_FRAME_MODE' => 'Y'), null, array('HIDE_ICONS' => 'Y'));
-            $GLOBALS['AMR_TEMPLATES']['#KIT_GC_' . $_1521960729 . '#'] = ob_get_contents();
-            $GLOBALS['KIT_MULTIREGIONS']['GC_' . $_1521960729] = $GLOBALS['AMR_TEMPLATES']['#KIT_GC_' . $_1521960729 . '#'];
-            $GLOBALS['AMR_TEMPLATES']['#KIT_GC_' . $_1521960729 . '_NOHTML#'] = htmlspecialchars(strip_tags($GLOBALS['AMR_TEMPLATES']['#KIT_GC_' . $_1521960729 . '#']));
-            $GLOBALS['KIT_MULTIREGIONS']['GC_' . $_1521960729 . '_NOHTML'] = $GLOBALS['AMR_TEMPLATES']['#KIT_GC_' . $_1521960729 . '_NOHTML#'];
+            $APPLICATION->IncludeComponent('ammina:regions.geocontent', '', array('CACHE_TIME' => '300', 'CACHE_TYPE' => 'A', 'CONTENT_TYPE' => $_1521960729, 'IP' => '', 'SET_TAG_IDENT' => 'N', 'SET_TAG_TYPE' => '', 'NO_FRAME_MODE' => 'Y'), null, array('HIDE_ICONS' => 'Y'));
+            $GLOBALS['AMR_TEMPLATES']['#AMMINA_GC_' . $_1521960729 . '#'] = ob_get_contents();
+            $GLOBALS['AMMINA_REGIONS']['GC_' . $_1521960729] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_GC_' . $_1521960729 . '#'];
+            $GLOBALS['AMR_TEMPLATES']['#AMMINA_GC_' . $_1521960729 . '_NOHTML#'] = htmlspecialchars(strip_tags($GLOBALS['AMR_TEMPLATES']['#AMMINA_GC_' . $_1521960729 . '#']));
+            $GLOBALS['AMMINA_REGIONS']['GC_' . $_1521960729 . '_NOHTML'] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_GC_' . $_1521960729 . '_NOHTML#'];
             ob_end_clean();
         }
         $_1041176984 = $APPLICATION->GetCurPage();
         if (amreg_strpos($_1041176984, '/bitrix/admin/') !== 0) {
-            if (amreg_strlen($GLOBALS['KIT_MULTIREGIONS']['SYS_COUNTERS']) > 0) {
-                Main\Page\Asset::getInstance()->addString($GLOBALS['KIT_MULTIREGIONS']['SYS_COUNTERS']);
+            if (amreg_strlen($GLOBALS['AMMINA_REGIONS']['SYS_COUNTERS']) > 0) {
+                Main\Page\Asset::getInstance()->addString($GLOBALS['AMMINA_REGIONS']['SYS_COUNTERS']);
             }
-            if (amreg_strlen($GLOBALS['KIT_MULTIREGIONS']['SYS_HEAD_STRING']) > 0) {
-                Main\Page\Asset::getInstance()->addString($GLOBALS['KIT_MULTIREGIONS']['SYS_HEAD_STRING']);
+            if (amreg_strlen($GLOBALS['AMMINA_REGIONS']['SYS_HEAD_STRING']) > 0) {
+                Main\Page\Asset::getInstance()->addString($GLOBALS['AMMINA_REGIONS']['SYS_HEAD_STRING']);
             }
         }
-        \Kit\MultiRegions\DomainTable::doHackCurrency();
+        \Ammina\Regions\DomainTable::doHackCurrency();
         self::doCheckAdminPages();
         self::doAddMailTemplateFields();
         self::doCheckAdminOrderEditPageInterface();
@@ -202,7 +202,7 @@ class CKitMultiRegions
     static public function isAllowPageWork()
     {
         global $APPLICATION;
-        if (defined('KIT_MULTIREGIONS_STOP') && KIT_MULTIREGIONS_STOP === true) {
+        if (defined('AMMINA_REGIONS_STOP') && AMMINA_REGIONS_STOP === true) {
             return false;
         }
         if ((defined('BX_CRONTAB') && BX_CRONTAB === true) || (defined('CHK_EVENT') && CHK_EVENT === true)) {
@@ -211,7 +211,7 @@ class CKitMultiRegions
         if (!isset($_SERVER['HTTP_HOST'])) {
             return false;
         }
-        if (\CKitMultiRegions::doMathPageToRules(array('/bitrix/admin/', '/bitrix/services/', '/bitrix/activities/', '/bitrix/gadgets/', '/bitrix/panel/', '/bitrix/tools/', '/bitrix/wizards/', '/bitrix/components/bitrix/sender.', '/bitrix/components/bitrix/report.', '/bitrix/components/bitrix/rest.', '/bitrix/components/bitrix/b24connector.', '/bitrix/components/bitrix/bitrixcloud.', '/bitrix/components/bitrix/bitrixcloud.', '/bitrix/components/bitrix/ui.',), $APPLICATION->GetCurPage())) {
+        if (\CAmminaRegions::doMathPageToRules(array('/bitrix/admin/', '/bitrix/services/', '/bitrix/activities/', '/bitrix/gadgets/', '/bitrix/panel/', '/bitrix/tools/', '/bitrix/wizards/', '/bitrix/components/bitrix/sender.', '/bitrix/components/bitrix/report.', '/bitrix/components/bitrix/rest.', '/bitrix/components/bitrix/b24connector.', '/bitrix/components/bitrix/bitrixcloud.', '/bitrix/components/bitrix/bitrixcloud.', '/bitrix/components/bitrix/ui.',), $APPLICATION->GetCurPage())) {
             return false;
         }
         return true;
@@ -255,20 +255,20 @@ class CKitMultiRegions
         if ((defined("ADMIN_SECTION") && ADMIN_SECTION === true) || (defined("BX_CRONTAB") && BX_CRONTAB === true) || (defined("CHK_EVENT") && CHK_EVENT === true)) {
             return;
         }
-        if (COption::GetOptionString('kit.multiregions', 'use_one_domain', 'N') == 'Y') {
+        if (COption::GetOptionString('ammina.regions', 'use_one_domain', 'N') == 'Y') {
             return;
         }
-        $_89171257 = amreg_strtolower(trim($_SERVER[COption::GetOptionString('kit.multiregions', 'host_var_name', 'HTTP_HOST')]));
-        if (COption::GetOptionString('kit.multiregions', 'only_exists_domains', 'Y') == 'Y') {
+        $_89171257 = amreg_strtolower(trim($_SERVER[COption::GetOptionString('ammina.regions', 'host_var_name', 'HTTP_HOST')]));
+        if (COption::GetOptionString('ammina.regions', 'only_exists_domains', 'Y') == 'Y') {
             $_1427624177 = new CPHPCache();
-            $_421704317 = 'kit_region_domains_exists|' . SITE_ID;
-            if ($_1427624177->InitCache(3600, $_421704317, 'kit/multiregions/domain.list')) {
+            $_421704317 = 'ammina_region_domains_exists|' . SITE_ID;
+            if ($_1427624177->InitCache(3600, $_421704317, 'ammina/regions/domain.list')) {
                 $_1228595998 = $_1427624177->GetVars();
                 $_212156784 = $_1228595998['DOMAINS'];
             }
             if ($_1427624177->StartDataCache()) {
                 $_212156784 = array();
-                $_235779931 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y'), 'select' => array('ID', 'IS_DEFAULT', 'DOMAIN'), 'order' => array('ID' => 'ASC')));
+                $_235779931 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y'), 'select' => array('ID', 'IS_DEFAULT', 'DOMAIN'), 'order' => array('ID' => 'ASC')));
                 while ($_277830158 = $_235779931->fetch()) {
                     $_212156784[amreg_strtolower(trim($_277830158['DOMAIN']))] = $_277830158;
                 }
@@ -295,7 +295,7 @@ class CKitMultiRegions
                     $_1114465324 = $_212156784[$_126976587[0]]['ID'];
                 }
                 if ($_1114465324 !== false) {
-                    $_879800218 = \Kit\MultiRegions\DomainTable::doGetRedirectLinkByDomainId($_1114465324);
+                    $_879800218 = \Ammina\Regions\DomainTable::doGetRedirectLinkByDomainId($_1114465324);
                     if (amreg_strlen($_879800218) > 0) {
                         LocalRedirect($_879800218, '301 Moved Permanently');
                         die();
@@ -307,8 +307,8 @@ class CKitMultiRegions
 
     public static function ConvertUrlToPathRegion($_910246949, $_2125521713 = false, $_445082040 = false)
     {
-        if (COption::GetOptionString("kit.multiregions", "use_one_domain", "N") == "Y" && COption::GetOptionString("kit.multiregions", "use_path_domain", "N") == "Y") {
-            $_306338610 = explode("\n", COption::GetOptionString("kit.multiregions", "pathdomain_list", ""));
+        if (COption::GetOptionString("ammina.regions", "use_one_domain", "N") == "Y" && COption::GetOptionString("ammina.regions", "use_path_domain", "N") == "Y") {
+            $_306338610 = explode("\n", COption::GetOptionString("ammina.regions", "pathdomain_list", ""));
             foreach ($_306338610 as $_304928896 => $_173724304) {
                 $_306338610[$_304928896] = trim($_173724304);
                 if (amreg_strlen($_306338610[$_304928896]) <= 0) {
@@ -321,12 +321,12 @@ class CKitMultiRegions
             }
             if ($_2125521713 <= 0) {
                 if ($_445082040 > 0) {
-                    $_2125521713 = \Kit\MultiRegions\DomainTable::doFindDomainByCity($_445082040, SITE_ID);
+                    $_2125521713 = \Ammina\Regions\DomainTable::doFindDomainByCity($_445082040, SITE_ID);
                 }
             }
             if ($_2125521713 > 0) {
                 $_46203454 = array();
-                $_277830158 = \Kit\MultiRegions\DomainTable::getRowById($_2125521713);
+                $_277830158 = \Ammina\Regions\DomainTable::getRowById($_2125521713);
                 if ($_277830158 && amreg_strlen($_277830158['PATHCODE']) > 0) {
                     foreach ($_306338610 as $_304928896 => $_995049603) {
                         $_1806270310 = 0;
@@ -373,20 +373,20 @@ class CKitMultiRegions
         $_1474516739 = false;
         $_1489560310 = false;
         if ($_279617631 > 0) {
-            $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('ID' => $_279617631,),))->fetch();
+            $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('ID' => $_279617631,),))->fetch();
         }
         if (!$_277830158) {
-            $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
+            $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
         }
         if (!$_277830158) {
-            $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
+            $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('SITE_ID' => SITE_ID, 'ACTIVE' => 'Y', 'IS_DEFAULT' => 'Y',),))->fetch();
         }
         if ($_277830158) {
-            $_277830158['NAME'] = \Kit\MultiRegions\DomainTable::getLangName($_277830158['ID']);
+            $_277830158['NAME'] = \Ammina\Regions\DomainTable::getLangName($_277830158['ID']);
             if ($_277830158['CITY_ID'] > 0) {
                 $_1474516739['CITY_ID'][] = $_277830158['CITY_ID'];
             }
-            $_1909020636 = \Kit\MultiRegions\DomainLocationTable::getList(array('filter' => array('DOMAIN_ID' => $_277830158['ID'],),));
+            $_1909020636 = \Ammina\Regions\DomainLocationTable::getList(array('filter' => array('DOMAIN_ID' => $_277830158['ID'],),));
             while ($_452315059 = $_1909020636->fetch()) {
                 if ($_452315059['COUNTRY_ID'] > 0) {
                     $_1474516739['COUNTRY_ID'][] = $_452315059['COUNTRY_ID'];
@@ -399,31 +399,31 @@ class CKitMultiRegions
                 }
             }
             $_1861127605 = array();
-            $_451588349 = \Kit\MultiRegions\VariableTable::getList(array('select' => array('ID', 'CODE', 'NAME')));
+            $_451588349 = \Ammina\Regions\VariableTable::getList(array('select' => array('ID', 'CODE', 'NAME')));
             while ($_909312842 = $_451588349->fetch()) {
                 $_1861127605[$_909312842['ID']] = $_909312842;
             }
-            $_1429214694 = \Kit\MultiRegions\DomainVariableTable::getList(array('filter' => array('DOMAIN_ID' => $_277830158['ID'],), 'select' => array('*', 'VARIABLE_NAME' => 'VARIABLE.NAME', 'VARIABLE_CODE' => 'VARIABLE.CODE'),));
+            $_1429214694 = \Ammina\Regions\DomainVariableTable::getList(array('filter' => array('DOMAIN_ID' => $_277830158['ID'],), 'select' => array('*', 'VARIABLE_NAME' => 'VARIABLE.NAME', 'VARIABLE_CODE' => 'VARIABLE.CODE'),));
             while ($_861549254 = $_1429214694->fetch()) {
                 unset($_1861127605[$_861549254['VARIABLE_ID']]);
                 $_1489560310[] = $_861549254;
                 if (is_array($_861549254['VALUE'])) {
-                    $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = implode($_277830158['VARIABLE_SEPARATOR'], $_861549254['VALUE']);
+                    $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = implode($_277830158['VARIABLE_SEPARATOR'], $_861549254['VALUE']);
                 } else {
-                    $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = $_861549254['VALUE'];
+                    $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = $_861549254['VALUE'];
                 }
-                $GLOBALS['AMR_TEMPLATES_NAME']['#KIT_MULTIREGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = $_861549254['VARIABLE_NAME'];
+                $GLOBALS['AMR_TEMPLATES_NAME']['#AMMINA_REGIONS_' . $_861549254['VARIABLE_CODE'] . '#'] = $_861549254['VARIABLE_NAME'];
                 if (!empty($_861549254['VARIABLE_CODE'])) {
-                    $GLOBALS['KIT_MULTIREGIONS'][$_861549254['VARIABLE_CODE']] = $_861549254['VALUE'];
+                    $GLOBALS['AMMINA_REGIONS'][$_861549254['VARIABLE_CODE']] = $_861549254['VALUE'];
                 }
             }
-            $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'] = $_277830158['ID'];
+            $GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'] = $_277830158['ID'];
             foreach ($_1861127605 as $_1521960729 => $_861549254) {
-                $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_' . $_861549254['CODE'] . '#'] = '';
+                $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_' . $_861549254['CODE'] . '#'] = '';
                 if (amreg_strlen($_861549254['CODE']) > 0) {
-                    $GLOBALS['KIT_MULTIREGIONS'][$_861549254['CODE']] = '';
+                    $GLOBALS['AMMINA_REGIONS'][$_861549254['CODE']] = '';
                 }
-                $GLOBALS['AMR_TEMPLATES_NAME']['#KIT_MULTIREGIONS_' . $_861549254['CODE'] . '#'] = $_861549254['NAME'];
+                $GLOBALS['AMR_TEMPLATES_NAME']['#AMMINA_REGIONS_' . $_861549254['CODE'] . '#'] = $_861549254['NAME'];
             }
         }
         if (!is_array($_277830158['NAME_LANG'])) {
@@ -475,7 +475,7 @@ class CKitMultiRegions
             } else {
                 $_1223839210[$_792887050] = $_792887050;
                 $_192101498[] = $_1379108498[$_792887050];
-                $_792887050 = \COption::GetOptionString('kit.multiregions', 'lang_syn_' . $_792887050, '');
+                $_792887050 = \COption::GetOptionString('ammina.regions', 'lang_syn_' . $_792887050, '');
             }
         }
         if (!isset($_1223839210['ru'])) {
@@ -491,12 +491,12 @@ class CKitMultiRegions
     {
         $_1427624177 = new CPHPCache();
         $_192101498 = array();
-        if ($_1427624177->InitCache(3600 * 24, 'kit_all_geocontentid', 'kit/multiregions')) {
+        if ($_1427624177->InitCache(3600 * 24, 'ammina_all_geocontentid', 'ammina/regions')) {
             $_1228595998 = $_1427624177->GetVars();
             $_192101498 = $_1228595998['IDS'];
         }
         if ($_1427624177->StartDataCache()) {
-            $_905724234 = \Kit\MultiRegions\ContentTypesTable::getList(array('select' => array('ID', 'NAME')));
+            $_905724234 = \Ammina\Regions\ContentTypesTable::getList(array('select' => array('ID', 'NAME')));
             while ($_735282879 = $_905724234->fetch()) {
                 $_192101498[$_735282879['ID']] = $_735282879['NAME'];
             }
@@ -567,10 +567,10 @@ class CKitMultiRegions
             CJSCore::Init(array('jquery2'));
             ob_start();
             echo '<hr/>';
-            $_1429214694 = \Kit\MultiRegions\VariableTable::getList(array('order' => array('CODE' => 'ASC',),));
+            $_1429214694 = \Ammina\Regions\VariableTable::getList(array('order' => array('CODE' => 'ASC',),));
             while ($_861549254 = $_1429214694->fetch()) { ?>
                 <a title="<?= $_861549254['DESCRIPTION'] ?>"
-                   href="javascript:PutString('#KIT_MULTIREGIONS_<?= $_861549254['CODE'] ?>#')">#KIT_MULTIREGIONS_<?= $_861549254['CODE'] ?>
+                   href="javascript:PutString('#AMMINA_REGIONS_<?= $_861549254['CODE'] ?>#')">#AMMINA_REGIONS_<?= $_861549254['CODE'] ?>
                     #</a> - <?= $_861549254['NAME'] ?>
                 <br/>
             <? }
@@ -598,8 +598,8 @@ class CKitMultiRegions
         $_1041176984 = $APPLICATION->GetCurPageParam();
         if (amreg_strpos($_1041176984, '/bitrix/admin/sale_order_edit.php') === 0) {
             \CJSCore::Init(array('jquery2'));
-            \Bitrix\Main\Page\Asset::getInstance()->addJs('/bitrix/js/kit.multiregions/admin/queryfield.js');
-            $APPLICATION->SetAdditionalCSS('/bitrix/themes/.default/kit.multiregions.css');
+            \Bitrix\Main\Page\Asset::getInstance()->addJs('/bitrix/js/ammina.regions/admin/queryfield.js');
+            $APPLICATION->SetAdditionalCSS('/bitrix/themes/.default/ammina.regions.css');
             $_1354194682 = array();
             $_614805236 = CSaleOrderProps::GetList(array(), array('CODE' => 'SYS_DOMAIN'));
             while ($_85797636 = $_614805236->Fetch()) {
@@ -614,8 +614,8 @@ class CKitMultiRegions
                         $("input[name='PROPERTIES[<?=$_1960254778?>]']").data("min-length", "0");
                         $("input[name='PROPERTIES[<?=$_1960254778?>]']").data("cnt", "30");
                         $("input[name='PROPERTIES[<?=$_1960254778?>]']").attr("autocomplete", "off");
-                        $("input[name='PROPERTIES[<?=$_1960254778?>]']").wrap('<div class="bammultiregionsadm-area-item"></div>');
-                        $("input[name='PROPERTIES[<?=$_1960254778?>]']").kitMultiRegionsAdminQueryField();
+                        $("input[name='PROPERTIES[<?=$_1960254778?>]']").wrap('<div class="bamregionsadm-area-item"></div>');
+                        $("input[name='PROPERTIES[<?=$_1960254778?>]']").amminaRegionsAdminQueryField();
                         <? } ?>
                     });
                 </script>
@@ -631,8 +631,8 @@ class CKitMultiRegions
         global $APPLICATION;
         if (amreg_strpos($APPLICATION->GetCurPage(), '/bitrix/admin/sale_order_edit.php') === 0 && $_REQUEST['ID'] > 0 && $_REQUEST['refresh_data_and_save'] == 'Y') {
             $_160692516 = CSaleOrder::GetByID($_REQUEST['ID']);
-            if ($_160692516 && $_160692516['CURRENCY'] != $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY']) {
-                CSaleOrder::Update($_REQUEST['ID'], array('CURRENCY' => $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY'],));
+            if ($_160692516 && $_160692516['CURRENCY'] != $GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY']) {
+                CSaleOrder::Update($_REQUEST['ID'], array('CURRENCY' => $GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'],));
             }
             return;
         }
@@ -685,16 +685,16 @@ class CKitMultiRegions
                     $_1937110160 = amreg_strpos($_993497444, "'", $_1937464415 + 12);
                     $_917118445 = amreg_substr($_993497444, $_1937464415 + 12, $_1937110160 - $_1937464415 - 12);
                     if (in_array($_917118445, self::$_1408898308)) {
-                        $_651496756 = array('TEXT' => Loc::getMessage('kit.multiregions_SEO_MENU_TITLE'), 'MENU' => array(),);
-                        $_1429214694 = \Kit\MultiRegions\VariableTable::getList(array('order' => array('CODE' => 'ASC',),));
+                        $_651496756 = array('TEXT' => Loc::getMessage('ammina.regions_SEO_MENU_TITLE'), 'MENU' => array(),);
+                        $_1429214694 = \Ammina\Regions\VariableTable::getList(array('order' => array('CODE' => 'ASC',),));
                         while ($_861549254 = $_1429214694->fetch()) {
-                            $_651496756['MENU'][] = array('TEXT' => $_861549254['NAME'], 'ONCLICK' => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#KIT_MULTIREGIONS_" . $_861549254["CODE"] . "#', '" . $_917118445 . "', '" . amreg_substr($_917118445, 4) . "')",);
+                            $_651496756['MENU'][] = array('TEXT' => $_861549254['NAME'], 'ONCLICK' => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#AMMINA_REGIONS_" . $_861549254["CODE"] . "#', '" . $_917118445 . "', '" . amreg_substr($_917118445, 4) . "')",);
                         }
                         $_651496756['MENU'][] = array('SEPARATOR' => 'Y');
                         $_1388636660 = self::getAllGeocontentId();
                         foreach ($_1388636660 as $_1521960729 => $_1636743103) {
-                            $_651496756["MENU"][] = array("TEXT" => Loc::getMessage("kit.multiregions_GEOCONTENT_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103, "ONCLICK" => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#KIT_GC_" . $_1521960729 . "#', '" . Loc::getMessage("kit.multiregions_GEOCONTENT_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103 . "', '" . amreg_substr($_917118445, 4) . "')",);
-                            $_651496756["MENU"][] = array("TEXT" => Loc::getMessage("kit.multiregions_GEOCONTENT_NOHTML_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103, "ONCLICK" => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#KIT_GC_" . $_1521960729 . "_NOHTML#', '" . Loc::getMessage("kit.multiregions_GEOCONTENT_NOHTML_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103 . "', '" . amreg_substr($_917118445, 4) . "')",);
+                            $_651496756["MENU"][] = array("TEXT" => Loc::getMessage("ammina.regions_GEOCONTENT_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103, "ONCLICK" => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#AMMINA_GC_" . $_1521960729 . "#', '" . Loc::getMessage("ammina.regions_GEOCONTENT_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103 . "', '" . amreg_substr($_917118445, 4) . "')",);
+                            $_651496756["MENU"][] = array("TEXT" => Loc::getMessage("ammina.regions_GEOCONTENT_NOHTML_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103, "ONCLICK" => "InheritedPropertiesTemplates.insertIntoInheritedPropertiesTemplate('#AMMINA_GC_" . $_1521960729 . "_NOHTML#', '" . Loc::getMessage("ammina.regions_GEOCONTENT_NOHTML_SEO_NAME") . " [" . $_1521960729 . "]: " . $_1636743103 . "', '" . amreg_substr($_917118445, 4) . "')",);
                         }
                         $_993497444 = amreg_substr($_993497444, 0, $_918434772) . ',' . CUtil::PhpToJSObject($_651496756) . amreg_substr($_993497444, $_918434772);
                     }
@@ -704,9 +704,9 @@ class CKitMultiRegions
             }
         }
         if (amreg_strpos($APPLICATION->GetCurPage(), '/bitrix/admin/') === false) {
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/urlrewrite.multiregions.php')) {
-                $_507454388 = @include($_SERVER['DOCUMENT_ROOT'] . '/urlrewrite.multiregions.php');
-                $_455398214 = $GLOBALS['KIT_MULTIREGIONS']['SYS_PATHCODE'];
+            if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/urlrewrite.regions.php')) {
+                $_507454388 = @include($_SERVER['DOCUMENT_ROOT'] . '/urlrewrite.regions.php');
+                $_455398214 = $GLOBALS['AMMINA_REGIONS']['SYS_PATHCODE'];
                 if (!empty($_507454388) && amreg_strlen($_455398214) > 0 && isset($_507454388[$_455398214])) {
                     $_1329901037 = array();
                     preg_match_all("/]*href=['\"]([^'\"]+)['\"][^<>]*>/si" . BX_UTF_PCRE_MODIFIER, $_993497444, $_1329901037);
@@ -748,23 +748,23 @@ class CKitMultiRegions
         }
         if ($_626299312 instanceof Sale\Order) {
             list($_645390032) = self::doGetPropertiesOrder($_626299312->getPersonTypeId());
-            if ($GLOBALS['KIT_MULTIREGIONS']['SYS_SALE_UID'] > 0) {
-                $_626299312->setField('RESPONSIBLE_ID', $GLOBALS['KIT_MULTIREGIONS']['SYS_SALE_UID']);
+            if ($GLOBALS['AMMINA_REGIONS']['SYS_SALE_UID'] > 0) {
+                $_626299312->setField('RESPONSIBLE_ID', $GLOBALS['AMMINA_REGIONS']['SYS_SALE_UID']);
             }
-            if ($GLOBALS['KIT_MULTIREGIONS']['SYS_SALE_COMPANY_ID'] > 0) {
-                $_626299312->setField('COMPANY_ID', $GLOBALS['KIT_MULTIREGIONS']['SYS_SALE_COMPANY_ID']);
+            if ($GLOBALS['AMMINA_REGIONS']['SYS_SALE_COMPANY_ID'] > 0) {
+                $_626299312->setField('COMPANY_ID', $GLOBALS['AMMINA_REGIONS']['SYS_SALE_COMPANY_ID']);
             }
             $_24940383 = $_626299312->getPropertyCollection();
             if ($_645390032 > 0) {
                 $_1761620925 = $_24940383->getItemByOrderPropertyId($_645390032);
                 if ($_1761620925) {
-                    $_1761620925->setValue('[' . $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'] . '] ' . $GLOBALS['KIT_MULTIREGIONS']['SYS_NAME'] . ' (' . $GLOBALS['KIT_MULTIREGIONS']['SYS_DOMAIN'] . ')');
+                    $_1761620925->setValue('[' . $GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'] . '] ' . $GLOBALS['AMMINA_REGIONS']['SYS_NAME'] . ' (' . $GLOBALS['AMMINA_REGIONS']['SYS_DOMAIN'] . ')');
                 } else {
                     $_1852781578 = Sale\Internals\OrderPropsGroupTable::getList(array('filter' => array('PERSON_TYPE_ID' => $_626299312->getPersonTypeId(),), 'order' => array('SORT' => 'ASC'),))->fetch();
                     $_1188265940 = $_1852781578['ID'];
-                    $_978627392 = array('ID' => $_645390032, 'PERSON_TYPE_ID' => $_626299312->getPersonTypeId(), 'NAME' => Loc::getMessage('kit.multiregions_ORDER_PROP_SYS_DOMAIN_NAME'), 'TYPE' => 'STRING', 'REQUIRED' => 'N', 'DEFAULT_VALUE' => '', 'SORT' => '10000', 'USER_PROPS' => 'N', 'IS_LOCATION' => 'N', 'PROPS_GROUP_ID' => $_1188265940, 'DESCRIPTION' => Loc::getMessage('kit.multiregions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'), 'IS_EMAIL' => 'N', 'IS_PROFILE_NAME' => 'N', 'IS_PAYER' => 'N', 'IS_LOCATION4TAX' => 'N', 'IS_FILTERED' => 'Y', 'CODE' => 'SYS_DOMAIN', 'IS_ZIP' => 'N', 'IS_PHONE' => 'N', 'IS_ADDRESS' => 'N', 'ACTIVE' => 'Y', 'UTIL' => 'Y', 'MULTIPLE' => 'N', 'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,);
+                    $_978627392 = array('ID' => $_645390032, 'PERSON_TYPE_ID' => $_626299312->getPersonTypeId(), 'NAME' => Loc::getMessage('ammina.regions_ORDER_PROP_SYS_DOMAIN_NAME'), 'TYPE' => 'STRING', 'REQUIRED' => 'N', 'DEFAULT_VALUE' => '', 'SORT' => '10000', 'USER_PROPS' => 'N', 'IS_LOCATION' => 'N', 'PROPS_GROUP_ID' => $_1188265940, 'DESCRIPTION' => Loc::getMessage('ammina.regions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'), 'IS_EMAIL' => 'N', 'IS_PROFILE_NAME' => 'N', 'IS_PAYER' => 'N', 'IS_LOCATION4TAX' => 'N', 'IS_FILTERED' => 'Y', 'CODE' => 'SYS_DOMAIN', 'IS_ZIP' => 'N', 'IS_PHONE' => 'N', 'IS_ADDRESS' => 'N', 'ACTIVE' => 'Y', 'UTIL' => 'Y', 'MULTIPLE' => 'N', 'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,);
                     $_255664061 = $_24940383->createItem($_978627392);
-                    $_255664061->setValue('[' . $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'] . '] ' . $GLOBALS['KIT_MULTIREGIONS']['SYS_NAME'] . ' (' . $GLOBALS['KIT_MULTIREGIONS']['SYS_DOMAIN'] . ')');
+                    $_255664061->setValue('[' . $GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'] . '] ' . $GLOBALS['AMMINA_REGIONS']['SYS_NAME'] . ' (' . $GLOBALS['AMMINA_REGIONS']['SYS_DOMAIN'] . ')');
                 }
             }
         }
@@ -780,7 +780,7 @@ class CKitMultiRegions
             } else {
                 $_1852781578 = Sale\Internals\OrderPropsGroupTable::getList(array('filter' => array('PERSON_TYPE_ID' => $_1964698255,), 'order' => array('SORT' => 'ASC'),))->fetch();
                 $_1188265940 = $_1852781578['ID'];
-                $_978627392 = array('PERSON_TYPE_ID' => $_1964698255, 'NAME' => Loc::getMessage('kit.multiregions_ORDER_PROP_SYS_DOMAIN_NAME'), 'TYPE' => 'STRING', 'REQUIRED' => 'N', 'DEFAULT_VALUE' => '', 'SORT' => '10000', 'USER_PROPS' => 'N', 'IS_LOCATION' => 'N', 'PROPS_GROUP_ID' => $_1188265940, 'DESCRIPTION' => Loc::getMessage('kit.multiregions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'), 'IS_EMAIL' => 'N', 'IS_PROFILE_NAME' => 'N', 'IS_PAYER' => 'N', 'IS_LOCATION4TAX' => 'N', 'IS_FILTERED' => 'Y', 'CODE' => 'SYS_DOMAIN', 'IS_ZIP' => 'N', 'IS_PHONE' => 'N', 'IS_ADDRESS' => 'N', 'ACTIVE' => 'Y', 'UTIL' => 'Y', 'MULTIPLE' => 'N', 'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,);
+                $_978627392 = array('PERSON_TYPE_ID' => $_1964698255, 'NAME' => Loc::getMessage('ammina.regions_ORDER_PROP_SYS_DOMAIN_NAME'), 'TYPE' => 'STRING', 'REQUIRED' => 'N', 'DEFAULT_VALUE' => '', 'SORT' => '10000', 'USER_PROPS' => 'N', 'IS_LOCATION' => 'N', 'PROPS_GROUP_ID' => $_1188265940, 'DESCRIPTION' => Loc::getMessage('ammina.regions_ORDER_PROP_SYS_DOMAIN_DESCRIPTION'), 'IS_EMAIL' => 'N', 'IS_PROFILE_NAME' => 'N', 'IS_PAYER' => 'N', 'IS_LOCATION4TAX' => 'N', 'IS_FILTERED' => 'Y', 'CODE' => 'SYS_DOMAIN', 'IS_ZIP' => 'N', 'IS_PHONE' => 'N', 'IS_ADDRESS' => 'N', 'ACTIVE' => 'Y', 'UTIL' => 'Y', 'MULTIPLE' => 'N', 'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,);
                 $_1168412246 = Sale\Internals\OrderPropsTable::add($_978627392);
                 if ($_1168412246->isSuccess()) {
                     $_192101498[] = $_1168412246->getId();
@@ -804,9 +804,9 @@ class CKitMultiRegions
             foreach ($GLOBALS['AMR_TEMPLATES'] as $_304928896 => $_173724304) {
                 $_978627392[amreg_substr($_304928896, 1, amreg_strlen($_304928896) - 2)] = $_173724304;
             }
-            if (isset($GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#']) && strlen($GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#']) > 0) {
-                $_978627392['DEFAULT_EMAIL_FROM'] = $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#'];
-                $_978627392['SALE_EMAIL'] = $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#'];
+            if (isset($GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#']) && strlen($GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#']) > 0) {
+                $_978627392['DEFAULT_EMAIL_FROM'] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#'];
+                $_978627392['SALE_EMAIL'] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#'];
             }
         }
     }
@@ -838,8 +838,8 @@ class CKitMultiRegions
         if ($_640395638 === false) {
             $_640395638 = SITE_ID;
         }
-        if (!empty($GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY'])) {
-            Catalog\Product\Price\Calculation::setConfig(array('CURRENCY' => $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENCY'],));
+        if (!empty($GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'])) {
+            Catalog\Product\Price\Calculation::setConfig(array('CURRENCY' => $GLOBALS['AMMINA_REGIONS']['SYS_CURRENCY'],));
         }
         $_1711073079 = Catalog\Product\Price\Calculation::getCurrency();
         if (empty($_1711073079)) {
@@ -974,8 +974,8 @@ class CKitMultiRegions
             $_192101498['DISCOUNT_LIST'] = $_875534319['DISCOUNT_LIST'];
         }
         unset($_875534319);
-        if (function_exists('kitMultiRegionsUserGetOptimalPriceCustom')) {
-            $_192101498 = kitMultiRegionsUserGetOptimalPriceCustom($_192101498);
+        if (function_exists('amminaRegionsUserGetOptimalPriceCustom')) {
+            $_192101498 = amminaRegionsUserGetOptimalPriceCustom($_192101498);
         }
         return $_192101498;
     }
@@ -992,8 +992,8 @@ class CKitMultiRegions
             $_1581054291[$_100089795] = array();
             if (self::isIMExists()) {
                 $_1068539535 = array('@GROUP_ID' => $_710407941, '=ACCESS' => Catalog\GroupAccessTable::ACCESS_BUY);
-                if (!empty($GLOBALS['KIT_MULTIREGIONS']['SYS_PRICES'])) {
-                    $_1068539535['CATALOG_GROUP_ID'] = $GLOBALS['KIT_MULTIREGIONS']['SYS_PRICES'];
+                if (!empty($GLOBALS['AMMINA_REGIONS']['SYS_PRICES'])) {
+                    $_1068539535['CATALOG_GROUP_ID'] = $GLOBALS['AMMINA_REGIONS']['SYS_PRICES'];
                 }
                 $_1870553090 = Catalog\GroupAccessTable::getList(array('select' => array('CATALOG_GROUP_ID'), 'filter' => $_1068539535, 'order' => array('CATALOG_GROUP_ID' => 'ASC'),));
                 while ($_1595048371 = $_1870553090->fetch()) {
@@ -1080,7 +1080,7 @@ class CKitMultiRegions
     public static function OnBeforeBasketItemSetFields(Main\Event $_1575820058)
     {
         $_626299312 = $_1575820058->getParameter("ENTITY");
-        $_626299312->setField('PRODUCT_PROVIDER_CLASS', '\Kit\MultiRegions\Catalog\Product\CatalogProvider');
+        $_626299312->setField('PRODUCT_PROVIDER_CLASS', '\Ammina\Regions\Catalog\Product\CatalogProvider');
         return new \Bitrix\Main\EventResult(\Bitrix\Main\EventResult::SUCCESS);
     }
 
@@ -1107,15 +1107,15 @@ class CKitMultiRegions
     public static function getStoreQuantityForCurrentDomain($_817442822)
     {
         $_192101498 = array("STORES" => array(), "QUANTITY" => 0,);
-        if (!empty($GLOBALS['KIT_MULTIREGIONS']['SYS_STORES']) && self::isIMExists()) {
-            $_1335583448 = CCatalogStoreProduct::GetList(array(), array('PRODUCT_ID' => $_817442822, 'STORE_ID' => $GLOBALS['KIT_MULTIREGIONS']['SYS_STORES']), false, false, array('ID', 'STORE_ID', 'PRODUCT_ID', 'AMOUNT'));
+        if (!empty($GLOBALS['AMMINA_REGIONS']['SYS_STORES']) && self::isIMExists()) {
+            $_1335583448 = CCatalogStoreProduct::GetList(array(), array('PRODUCT_ID' => $_817442822, 'STORE_ID' => $GLOBALS['AMMINA_REGIONS']['SYS_STORES']), false, false, array('ID', 'STORE_ID', 'PRODUCT_ID', 'AMOUNT'));
             while ($_870753748 = $_1335583448->Fetch()) {
                 $_192101498['STORES'][$_870753748['STORE_ID']] += $_870753748['AMOUNT'];
                 $_192101498['QUANTITY'] += $_870753748['AMOUNT'];
             }
         }
-        if (function_exists('kitMultiRegionsGetStoreQuantityForCurrentDomainCustom')) {
-            $_192101498 = kitMultiRegionsGetStoreQuantityForCurrentDomainCustom($_817442822, $_192101498);
+        if (function_exists('amminaRegionsGetStoreQuantityForCurrentDomainCustom')) {
+            $_192101498 = amminaRegionsGetStoreQuantityForCurrentDomainCustom($_817442822, $_192101498);
         }
         return $_192101498;
     }
@@ -1135,26 +1135,26 @@ class CKitMultiRegions
 
     public static function getBaseDomain()
     {
-        $_89171257 = amreg_strtolower($_SERVER[COption::GetOptionString("kit.multiregions", "host_var_name", "HTTP_HOST")]);
+        $_89171257 = amreg_strtolower($_SERVER[COption::GetOptionString("ammina.regions", "host_var_name", "HTTP_HOST")]);
         if (amreg_strpos($_89171257, 'www.') === 0) {
             $_89171257 = amreg_substr($_89171257, 4);
         }
-        return COption::GetOptionString('kit.multiregions', 'base_domain', $_89171257);
+        return COption::GetOptionString('ammina.regions', 'base_domain', $_89171257);
     }
 
     public static function showSupportForm()
     {
         return;
-        if (COption::GetOptionString('kit.multiregions', 'show_support_form', 'Y') == 'Y') {
+        if (COption::GetOptionString('ammina.regions', 'show_support_form', 'Y') == 'Y') {
             $_1427624177 = new CPHPCache();
             $_646376707 = '';
-            if ($_1427624177->InitCache(3600 * 24, 'kit_support', 'kit/support')) {
+            if ($_1427624177->InitCache(3600 * 24, 'ammina_support', 'ammina/support')) {
                 $_1228595998 = $_1427624177->GetVars();
                 $_646376707 = $_1228595998['CODE'];
             }
             if ($_1427624177->StartDataCache()) {
                 $_1902979446 = new Main\Web\HttpClient(array('redirect' => true, 'redirectMax' => 10, 'socketTimeout' => 15, 'streamTimeout' => 15, 'disableSslVerification' => true,));
-                $_646376707 = $_1902979446->get('https://www.kit24.ru/upload/support.widget.txt');
+                $_646376707 = $_1902979446->get('https://www.ammina24.ru/upload/support.widget.txt');
                 $_178418630 = intval($_1902979446->getStatus());
                 if ($_178418630 != 200) {
                     $_646376707 = '';
@@ -1173,20 +1173,20 @@ class CKitMultiRegions
         if (amreg_strpos($APPLICATION->GetCurPage(), '/bitrix/admin/') !== 0) {
             return;
         }
-        $_770909146 = intval(COption::GetOptionInt('kit', 'notify_next_time', 0));
+        $_770909146 = intval(COption::GetOptionInt('ammina', 'notify_next_time', 0));
         if ($_770909146 <= 0 || $_770909146 <= time()) {
             $_1902979446 = new \Bitrix\Main\Web\HttpClient(array('redirect' => true, 'redirectMax' => 10, 'socketTimeout' => 15, 'streamTimeout' => 15, 'disableSslVerification' => true,));
-            $_646376707 = $_1902979446->get('https://www.kit.ru/local/notify/old.txt');
+            $_646376707 = $_1902979446->get('https://www.ammina.ru/local/notify/old.txt');
             $_962473201 = false;
             $_178418630 = intval($_1902979446->getStatus());
             if ($_178418630 == 200) {
                 $_962473201 = intval($_646376707);
             }
             if ($_962473201 > 0) {
-                $_371767960 = intval(COption::GetOptionInt('kit', 'notify_old', 0));
+                $_371767960 = intval(COption::GetOptionInt('ammina', 'notify_old', 0));
                 $_441905100 = array();
                 if ($_371767960 <= 0) {
-                    $_112455662 = $_1902979446->get('https://www.kit.ru/local/notify/req.json');
+                    $_112455662 = $_1902979446->get('https://www.ammina.ru/local/notify/req.json');
                     $_178418630 = intval($_1902979446->getStatus());
                     if ($_178418630 == 200) {
                         $_1882211949 = @\Bitrix\Main\Web\Json::decode($_112455662);
@@ -1202,16 +1202,16 @@ class CKitMultiRegions
                         self::doShowNotify($_559936486);
                     }
                 }
-                COption::SetOptionInt('kit', 'notify_old', $_962473201);
+                COption::SetOptionInt('ammina', 'notify_old', $_962473201);
             }
         }
-        COption::SetOptionInt('kit', 'notify_next_time', time() + 10800);
+        COption::SetOptionInt('ammina', 'notify_next_time', time() + 10800);
     }
 
     public static function doShowNotify($_1753102121)
     {
         $_1902979446 = new \Bitrix\Main\Web\HttpClient(array('redirect' => true, 'redirectMax' => 10, 'socketTimeout' => 15, 'streamTimeout' => 15, 'disableSslVerification' => true,));
-        $_112455662 = $_1902979446->get('https://www.kit.ru/local/notify/' . $_1753102121 . '.json');
+        $_112455662 = $_1902979446->get('https://www.ammina.ru/local/notify/' . $_1753102121 . '.json');
         $_178418630 = intval($_1902979446->getStatus());
         if ($_178418630 == 200) {
             $_1882211949 = @\Bitrix\Main\Web\Json::decode($_112455662);
@@ -1242,17 +1242,17 @@ class CKitMultiRegions
 
     static function OnBeforeOrderAccountNumberSet($_1221305337, $type)
     {
-        global $KIT_MULTIREGIONS_STOP_ORDER_PREFIX;
-        if ($KIT_MULTIREGIONS_STOP_ORDER_PREFIX === true) {
+        global $AMMINA_REGIONS_STOP_ORDER_PREFIX;
+        if ($AMMINA_REGIONS_STOP_ORDER_PREFIX === true) {
             return null;
         }
-        if ($KIT_MULTIREGIONS_STOP_ORDER_PREFIX !== true) {
-            $KIT_MULTIREGIONS_STOP_ORDER_PREFIX = true;
+        if ($AMMINA_REGIONS_STOP_ORDER_PREFIX !== true) {
+            $AMMINA_REGIONS_STOP_ORDER_PREFIX = true;
             $_104444584 = Sale\Order::load($_1221305337);
             $_34608506 = Sale\Internals\AccountNumberGenerator::generateForOrder($_104444584);
             if (amreg_strlen($_34608506) > 0) {
-                if ($GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'] > 0) {
-                    $_277830158 = \Kit\MultiRegions\DomainTable::getList(array('filter' => array('ID' => $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'])))->fetch();
+                if ($GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'] > 0) {
+                    $_277830158 = \Ammina\Regions\DomainTable::getList(array('filter' => array('ID' => $GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'])))->fetch();
                     if ($_277830158) {
                         if (amreg_strpos($_34608506, '#ORDER_PREFIX#') !== false) {
                             $_34608506 = str_replace('#ORDER_PREFIX#', $_277830158['ORDER_PREFIX'], $_34608506);
@@ -1262,7 +1262,7 @@ class CKitMultiRegions
                     }
                 }
             }
-            $KIT_MULTIREGIONS_STOP_ORDER_PREFIX = false;
+            $AMMINA_REGIONS_STOP_ORDER_PREFIX = false;
             return $_34608506;
         }
         return null;
@@ -1271,7 +1271,7 @@ class CKitMultiRegions
     public static function getAllAllowLang()
     {
         if (self::$_1659335636 === false) {
-            $_1652331271 = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+            $_1652331271 = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
             $_1082253201 = \CLanguage::GetList($_305016526, $_1793258654, array());
             while ($_872372867 = $_1082253201->Fetch()) {
                 if ($_872372867['LID'] == 'ru' || !in_array($_872372867['LID'], $_1652331271)) {
@@ -1300,9 +1300,9 @@ class CKitMultiRegions
                     $_527060322['C_FIELDS'][$_998666078] = $_173724304;
                 }
             }
-            if (isset($GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#']) && strlen($GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#']) > 0) {
-                $_527060322['C_FIELDS']['DEFAULT_EMAIL_FROM'] = $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#'];
-                $_527060322['C_FIELDS']['SALE_EMAIL'] = $GLOBALS['AMR_TEMPLATES']['#KIT_MULTIREGIONS_SYS_DEFAULT_EMAIL#'];
+            if (isset($GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#']) && strlen($GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#']) > 0) {
+                $_527060322['C_FIELDS']['DEFAULT_EMAIL_FROM'] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#'];
+                $_527060322['C_FIELDS']['SALE_EMAIL'] = $GLOBALS['AMR_TEMPLATES']['#AMMINA_REGIONS_SYS_DEFAULT_EMAIL#'];
             }
         }
         $_387263782->modifyFields($_527060322);
@@ -1310,55 +1310,55 @@ class CKitMultiRegions
     }
 }
 
-CKitMultiRegions::doCheckNotify();
-CModule::AddAutoloadClasses('kit.multiregions',
+CAmminaRegions::doCheckNotify();
+CModule::AddAutoloadClasses('ammina.regions',
     array(
-        'Kit\MultiRegions\CountryTable' => 'lib/country.php',
-        'Kit\MultiRegions\CountryLangTable' => 'lib/country.lang.php',
-        'Kit\MultiRegions\RegionTable' => 'lib/region.php',
-        'Kit\MultiRegions\RegionLangTable' => 'lib/region.lang.php',
-        'Kit\MultiRegions\CityTable' => 'lib/city.php',
-        'Kit\MultiRegions\CityLangTable' => 'lib/city.lang.php',
-        'Kit\MultiRegions\BlockTable' => 'lib/block.php',
-        'Kit\MultiRegions\ContentTypesTable' => 'lib/content.types.php',
-        'Kit\MultiRegions\ContentTable' => 'lib/content.php',
-        'Kit\MultiRegions\DomainTable' => 'lib/domain.php',
-        'Kit\MultiRegions\DomainLocationTable' => 'lib/domain.location.php',
-        'Kit\MultiRegions\DomainVariableTable' => 'lib/domain.variable.php',
-        'Kit\MultiRegions\VariableTable' => 'lib/variable.php',
-        'Kit\MultiRegions\PriceTable' => 'lib/price.php',
-        'Kit\MultiRegions\Import' => 'lib/import.php',
-        'Kit\MultiRegions\GeoIPHandler' => 'lib/geoip.php',
-        'Kit\MultiRegions\Agent\Price' => 'lib/agent/price.php',
-        'Kit\MultiRegions\Agent\DomainAvailable' => 'lib/agent/domain.available.php',
-        'Kit\MultiRegions\Agent\SiteMapGenerate' => 'lib/agent/sitemap.generate.php',
-        'Kit\MultiRegions\IblockProp\Domain' => 'lib/iblock.prop/domain.php',
-        'Kit\MultiRegions\IblockProp\Country' => 'lib/iblock.prop/country.php',
-        'Kit\MultiRegions\IblockProp\Region' => 'lib/iblock.prop/region.php',
-        'Kit\MultiRegions\IblockProp\City' => 'lib/iblock.prop/city.php',
-        'Kit\MultiRegions\UserProp\Domain' => 'lib/user.prop/domain.php',
-        'Kit\MultiRegions\UserProp\Country' => 'lib/user.prop/country.php',
-        'Kit\MultiRegions\UserProp\Region' => 'lib/user.prop/region.php',
-        'Kit\MultiRegions\UserProp\City' => 'lib/user.prop/city.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Country' => 'lib/helpers/admin/blocks/country.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\CountryMap' => 'lib/helpers/admin/blocks/country.map.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Region' => 'lib/helpers/admin/blocks/region.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\City' => 'lib/helpers/admin/blocks/city.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\CityMap' => 'lib/helpers/admin/blocks/city.map.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\CityLoad' => 'lib/helpers/admin/blocks/city.load.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\ContentTypes' => 'lib/helpers/admin/blocks/content.types.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Content' => 'lib/helpers/admin/blocks/content.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\ContentExt' => 'lib/helpers/admin/blocks/content.ext.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Variable' => 'lib/helpers/admin/blocks/variable.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Domain' => 'lib/helpers/admin/blocks/domain.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\DomainLocation' => 'lib/helpers/admin/blocks/domain.location.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\DomainVariable' => 'lib/helpers/admin/blocks/domain.variable.php',
-        'Kit\MultiRegions\Helpers\Admin\Blocks\Price' => 'lib/helpers/admin/blocks/price.php',
-        'CKitMultiRegionsSaleCondCtrlDomain' => 'lib/salecondition/domain.php',
-        'Kit\MultiRegions\Rules\Sale\CompanyRules\Domain' => 'lib/rules/sale/company.rules/domain.php',
-        'Kit\MultiRegions\Rules\Sale\DeliveryRestrictions\Domain' => 'lib/rules/sale/delivery.restrictions/domain.php',
-        'Kit\MultiRegions\Rules\Sale\PaySystemRestrictions\Domain' => 'lib/rules/sale/paysystem.restrictions/domain.php',
-        'Kit\MultiRegions\Catalog\Product\CatalogProvider' => 'lib/catalog/product/catalog.provider.php',
+        'Ammina\Regions\CountryTable' => 'lib/country.php',
+        'Ammina\Regions\CountryLangTable' => 'lib/country.lang.php',
+        'Ammina\Regions\RegionTable' => 'lib/region.php',
+        'Ammina\Regions\RegionLangTable' => 'lib/region.lang.php',
+        'Ammina\Regions\CityTable' => 'lib/city.php',
+        'Ammina\Regions\CityLangTable' => 'lib/city.lang.php',
+        'Ammina\Regions\BlockTable' => 'lib/block.php',
+        'Ammina\Regions\ContentTypesTable' => 'lib/content.types.php',
+        'Ammina\Regions\ContentTable' => 'lib/content.php',
+        'Ammina\Regions\DomainTable' => 'lib/domain.php',
+        'Ammina\Regions\DomainLocationTable' => 'lib/domain.location.php',
+        'Ammina\Regions\DomainVariableTable' => 'lib/domain.variable.php',
+        'Ammina\Regions\VariableTable' => 'lib/variable.php',
+        'Ammina\Regions\PriceTable' => 'lib/price.php',
+        'Ammina\Regions\Import' => 'lib/import.php',
+        'Ammina\Regions\GeoIPHandler' => 'lib/geoip.php',
+        'Ammina\Regions\Agent\Price' => 'lib/agent/price.php',
+        'Ammina\Regions\Agent\DomainAvailable' => 'lib/agent/domain.available.php',
+        'Ammina\Regions\Agent\SiteMapGenerate' => 'lib/agent/sitemap.generate.php',
+        'Ammina\Regions\IblockProp\Domain' => 'lib/iblock.prop/domain.php',
+        'Ammina\Regions\IblockProp\Country' => 'lib/iblock.prop/country.php',
+        'Ammina\Regions\IblockProp\Region' => 'lib/iblock.prop/region.php',
+        'Ammina\Regions\IblockProp\City' => 'lib/iblock.prop/city.php',
+        'Ammina\Regions\UserProp\Domain' => 'lib/user.prop/domain.php',
+        'Ammina\Regions\UserProp\Country' => 'lib/user.prop/country.php',
+        'Ammina\Regions\UserProp\Region' => 'lib/user.prop/region.php',
+        'Ammina\Regions\UserProp\City' => 'lib/user.prop/city.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Country' => 'lib/helpers/admin/blocks/country.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\CountryMap' => 'lib/helpers/admin/blocks/country.map.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Region' => 'lib/helpers/admin/blocks/region.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\City' => 'lib/helpers/admin/blocks/city.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\CityMap' => 'lib/helpers/admin/blocks/city.map.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\CityLoad' => 'lib/helpers/admin/blocks/city.load.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\ContentTypes' => 'lib/helpers/admin/blocks/content.types.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Content' => 'lib/helpers/admin/blocks/content.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\ContentExt' => 'lib/helpers/admin/blocks/content.ext.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Variable' => 'lib/helpers/admin/blocks/variable.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Domain' => 'lib/helpers/admin/blocks/domain.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\DomainLocation' => 'lib/helpers/admin/blocks/domain.location.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\DomainVariable' => 'lib/helpers/admin/blocks/domain.variable.php',
+        'Ammina\Regions\Helpers\Admin\Blocks\Price' => 'lib/helpers/admin/blocks/price.php',
+        'CAmminaRegionsSaleCondCtrlDomain' => 'lib/salecondition/domain.php',
+        'Ammina\Regions\Rules\Sale\CompanyRules\Domain' => 'lib/rules/sale/company.rules/domain.php',
+        'Ammina\Regions\Rules\Sale\DeliveryRestrictions\Domain' => 'lib/rules/sale/delivery.restrictions/domain.php',
+        'Ammina\Regions\Rules\Sale\PaySystemRestrictions\Domain' => 'lib/rules/sale/paysystem.restrictions/domain.php',
+        'Ammina\Regions\Catalog\Product\CatalogProvider' => 'lib/catalog/product/catalog.provider.php',
         'morphos\BaseInflection' => 'lib/external/Morphos/BaseInflection.php',
         'morphos\Cases' => 'lib/external/Morphos/Cases.php',
         'morphos\CasesHelper' => 'lib/external/Morphos/CasesHelper.php',

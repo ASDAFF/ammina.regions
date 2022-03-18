@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `am_multiregions_block` (
+CREATE TABLE IF NOT EXISTS `am_regions_block` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `BLOCK_START_1` tinyint(3) UNSIGNED NOT NULL,
   `BLOCK_START_2` tinyint(3) UNSIGNED NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_block` (
   KEY `IX_BLOCK_END` (`BLOCK_END`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_city` (
+CREATE TABLE IF NOT EXISTS `am_regions_city` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `REGION_ID` int(11) DEFAULT NULL,
   `NAME` varchar(255) DEFAULT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_city` (
   KEY `IX_EXT_ID` (`EXT_ID`) USING BTREE
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_city_lang` (
+CREATE TABLE IF NOT EXISTS `am_regions_city_lang` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `CITY_ID` int(11) NOT NULL,
   `LID` char(2) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_city_lang` (
   KEY `IX_LIDNAME` (`LID`,`NAME`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_content` (
+CREATE TABLE IF NOT EXISTS `am_regions_content` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `SITE_ID` CHAR(2) NULL DEFAULT NULL,
   `TYPE_ID` int(11) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_content` (
   KEY `IX_DOMAIN_ID` (`DOMAIN_ID`) USING BTREE
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_content_types` (
+CREATE TABLE IF NOT EXISTS `am_regions_content_types` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255)  NOT NULL,
   `IDENT` varchar(255)  NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_content_types` (
   PRIMARY KEY (`ID`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_country` (
+CREATE TABLE IF NOT EXISTS `am_regions_country` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `CODE` varchar(2)  DEFAULT NULL,
   `CONTINENT` varchar(2) DEFAULT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_country` (
   KEY `IX_EXT_ID` (`EXT_ID`) USING BTREE
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_country_lang` (
+CREATE TABLE IF NOT EXISTS `am_regions_country_lang` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `COUNTRY_ID` int(11) NOT NULL,
   `LID` char(2) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_country_lang` (
   KEY `IX_LIDNAME` (`LID`,`NAME`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_domain` (
+CREATE TABLE IF NOT EXISTS `am_regions_domain` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255)  NOT NULL,
   `NAME_LANG` LONGTEXT NULL DEFAULT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_domain` (
   KEY `IX_DOMAIN` (`DOMAIN`) USING BTREE
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_domain_loc` (
+CREATE TABLE IF NOT EXISTS `am_regions_domain_loc` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `DOMAIN_ID` int(11) NOT NULL,
   `COUNTRY_ID` int(11) DEFAULT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_domain_loc` (
   PRIMARY KEY (`ID`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_domain_var` (
+CREATE TABLE IF NOT EXISTS `am_regions_domain_var` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `DOMAIN_ID` int(11) NOT NULL,
   `VARIABLE_ID` int(11) NOT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_domain_var` (
   PRIMARY KEY (`ID`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_price` (
+CREATE TABLE IF NOT EXISTS `am_regions_price` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ACTIVE` char(1)  NOT NULL DEFAULT 'Y',
   `SORT` int(11) NOT NULL DEFAULT '100',
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_price` (
   PRIMARY KEY (`ID`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_region` (
+CREATE TABLE IF NOT EXISTS `am_regions_region` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `COUNTRY_ID` int(11) DEFAULT NULL,
   `CODE` varchar(10) DEFAULT NULL,
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_region` (
   KEY `IX_EXT_ID` (`EXT_ID`) USING BTREE
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_region_lang` (
+CREATE TABLE IF NOT EXISTS `am_regions_region_lang` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `REGION_ID` int(11) NOT NULL,
   `LID` char(2) NOT NULL,
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `am_multiregions_region_lang` (
   KEY `IX_LIDNAME` (`LID`,`NAME`)
 );
 
-CREATE TABLE IF NOT EXISTS `am_multiregions_variable` (
+CREATE TABLE IF NOT EXISTS `am_regions_variable` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) NOT NULL,
   `DESCRIPTION` text,

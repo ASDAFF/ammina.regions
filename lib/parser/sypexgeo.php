@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions\Parser;
+namespace Ammina\Regions\Parser;
 
 use Bitrix\Main\Web\HttpClient;
 
@@ -274,12 +274,12 @@ class SypexGeo extends Base
 		'SS',
 	);
 	protected $range, $b_idx_len, $m_idx_len, $db_items, $id_len, $block_len, $max_region, $max_city, $max_country, $country_size, $batch_mode, $memory_mode, $pack, $b_idx_str,
-		$m_idx_str, $db_begin, $b_idx_arr, $db, $multiregions_db, $cities_db, $info, $ip1c;
+		$m_idx_str, $db_begin, $b_idx_arr, $db, $regions_db, $cities_db, $info, $ip1c;
 	protected $fCityFile = null;
 
 	protected function setDefaultOptions()
 	{
-		$this->strDataLocalDir = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/";
+		$this->strDataLocalDir = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/";
 		CheckDirPath($this->strDataLocalDir);
 		CheckDirPath($this->strDataLocalDir . "info/");
 		CheckDirPath($this->strDataLocalDir . "city/");
@@ -432,12 +432,12 @@ class SypexGeo extends Base
 		}
 		if ($this->memory_mode) {
 			$this->db = fread($this->fCityFile, $this->db_items * $this->block_len);
-			$this->multiregions_db = $info['region_size'] > 0 ? fread($this->fCityFile, $info['region_size']) : '';
+			$this->regions_db = $info['region_size'] > 0 ? fread($this->fCityFile, $info['region_size']) : '';
 			$this->cities_db = $info['city_size'] > 0 ? fread($this->fCityFile, $info['city_size']) : '';
 		}
 		$this->info = $info;
-		$this->info['multiregions_begin'] = $this->db_begin + $this->db_items * $this->block_len;
-		$this->info['cities_begin'] = $this->info['multiregions_begin'] + $info['region_size'];
+		$this->info['regions_begin'] = $this->db_begin + $this->db_items * $this->block_len;
+		$this->info['cities_begin'] = $this->info['regions_begin'] + $info['region_size'];
 	}
 
 	protected function search_idx($ipn, $min, $max)
@@ -490,25 +490,25 @@ class SypexGeo extends Base
 
 	protected function get_num($ip)
 	{
-		$ip1n = (int)$ip; // Первый байт
+		$ip1n = (int)$ip; // РџРµСЂРІС‹Р№ Р±Р°Р№С‚
 		if ($ip1n == 0 || $ip1n == 10 || $ip1n == 127 || $ip1n >= $this->b_idx_len || false === ($ipn = ip2long($ip))) {
 			return false;
 		}
 		$ipn = pack('N', $ipn);
 		$this->ip1c = chr($ip1n);
-		// Находим блок данных в индексе первых байт
+		// РќР°С…РѕРґРёРј Р±Р»РѕРє РґР°РЅРЅС‹С… РІ РёРЅРґРµРєСЃРµ РїРµСЂРІС‹С… Р±Р°Р№С‚
 		if ($this->batch_mode) {
 			$blocks = array('min' => $this->b_idx_arr[$ip1n - 1], 'max' => $this->b_idx_arr[$ip1n]);
 		} else {
 			$blocks = unpack("Nmin/Nmax", substr($this->b_idx_str, ($ip1n - 1) * 4, 8));
 		}
 		if ($blocks['max'] - $blocks['min'] > $this->range) {
-			// Ищем блок в основном индексе
+			// РС‰РµРј Р±Р»РѕРє РІ РѕСЃРЅРѕРІРЅРѕРј РёРЅРґРµРєСЃРµ
 			$part = $this->search_idx($ipn, floor($blocks['min'] / $this->range), floor($blocks['max'] / $this->range) - 1);
-			// Нашли номер блока в котором нужно искать IP, теперь находим нужный блок в БД
+			// РќР°С€Р»Рё РЅРѕРјРµСЂ Р±Р»РѕРєР° РІ РєРѕС‚РѕСЂРѕРј РЅСѓР¶РЅРѕ РёСЃРєР°С‚СЊ IP, С‚РµРїРµСЂСЊ РЅР°С…РѕРґРёРј РЅСѓР¶РЅС‹Р№ Р±Р»РѕРє РІ Р‘Р”
 			$min = $part > 0 ? $part * $this->range : 0;
 			$max = $part > $this->m_idx_len ? $this->db_items : ($part + 1) * $this->range;
-			// Нужно проверить чтобы блок не выходил за пределы блока первого байта
+			// РќСѓР¶РЅРѕ РїСЂРѕРІРµСЂРёС‚СЊ С‡С‚РѕР±С‹ Р±Р»РѕРє РЅРµ РІС‹С…РѕРґРёР» Р·Р° РїСЂРµРґРµР»С‹ Р±Р»РѕРєР° РїРµСЂРІРѕРіРѕ Р±Р°Р№С‚Р°
 			if ($min < $blocks['min']) {
 				$min = $blocks['min'];
 			}
@@ -520,7 +520,7 @@ class SypexGeo extends Base
 			$max = $blocks['max'];
 		}
 		$len = $max - $min;
-		// Находим нужный диапазон в БД
+		// РќР°С…РѕРґРёРј РЅСѓР¶РЅС‹Р№ РґРёР°РїР°Р·РѕРЅ РІ Р‘Р”
 		if ($this->memory_mode) {
 			return $this->search_db($this->db, $ipn, $min, $max);
 		} else {
@@ -534,9 +534,9 @@ class SypexGeo extends Base
 		$raw = '';
 		if ($seek && $max) {
 			if ($this->memory_mode) {
-				$raw = substr($type == 1 ? $this->multiregions_db : $this->cities_db, $seek, $max);
+				$raw = substr($type == 1 ? $this->regions_db : $this->cities_db, $seek, $max);
 			} else {
-				fseek($this->fCityFile, $this->info[$type == 1 ? 'multiregions_begin' : 'cities_begin'] + $seek);
+				fseek($this->fCityFile, $this->info[$type == 1 ? 'regions_begin' : 'cities_begin'] + $seek);
 				$raw = fread($this->fCityFile, $max);
 			}
 		}

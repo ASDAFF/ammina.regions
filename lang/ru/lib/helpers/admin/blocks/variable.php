@@ -1,9 +1,9 @@
 <?
 
-$MESS['KIT_MULTIREGIONS_FIELD_NAME'] = "Название";
-$MESS['KIT_MULTIREGIONS_FIELD_DESCRIPTION'] = "Описание";
-$MESS['KIT_MULTIREGIONS_FIELD_CODE'] = "Код";
-$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM'] = "Системная переменная";
-$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_Y'] = "Системная";
-$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_E'] = "Системная (редактируемая)";
-$MESS['KIT_MULTIREGIONS_FIELD_IS_SYSTEM_N'] = "Пользовательская";
+$MESS['AMMINA_REGIONS_FIELD_NAME'] = "Название";
+$MESS['AMMINA_REGIONS_FIELD_DESCRIPTION'] = "Описание";
+$MESS['AMMINA_REGIONS_FIELD_CODE'] = "Код";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM'] = "Системная переменная";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_Y'] = "Системная";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_E'] = "Системная (редактируемая)";
+$MESS['AMMINA_REGIONS_FIELD_IS_SYSTEM_N'] = "Пользовательская";

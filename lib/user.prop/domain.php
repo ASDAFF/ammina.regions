@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions\UserProp;
+namespace Ammina\Regions\UserProp;
 
 use Bitrix\Main\Localization\Loc;
 use \Bitrix\Main\UserField\TypeBase;
@@ -9,14 +9,14 @@ Loc::loadMessages(__FILE__);
 
 class Domain extends TypeBase
 {
-	const USER_TYPE = 'KitMultiRegionsDomain';
+	const USER_TYPE = 'AmminaRegionsDomain';
 
 	public static function GetUserTypeDescription()
 	{
 		return array(
 			"USER_TYPE_ID" => self::USER_TYPE,
 			"CLASS_NAME" => __CLASS__,
-			"DESCRIPTION" => Loc::getMessage("KIT_REGION_USERPROP_DOMAIN_DESCRIPTION"),
+			"DESCRIPTION" => Loc::getMessage("AMMINA_REGION_USERPROP_DOMAIN_DESCRIPTION"),
 			"BASE_TYPE" => \CUserTypeManager::BASE_TYPE_INT,
 		);
 	}
@@ -41,11 +41,11 @@ class Domain extends TypeBase
 			$arHtmlControl['VALUE_TEXT'] = self::getTextValue($arHtmlControl["VALUE"]);
 		}
 		?>
-		<div class="bammultiregionsadm-area-item">
+		<div class="bamregionsadm-area-item">
 			<input type="hidden" name="<?= htmlspecialcharsbx($arHtmlControl["NAME"]) ?>" id="<?= htmlspecialcharsbx($ident) ?>" value="<?= $arHtmlControl["VALUE"] ?>"/>
 			<input type="text" name="TEXTFIELD_<?= htmlspecialcharsbx($arHtmlControl["NAME"]) ?>" id="TEXTFIELD_<?= htmlspecialcharsbx($ident) ?>" size="50" value="<?= $arHtmlControl['VALUE_TEXT'] ?>" data-action="domain" data-result-id="<?= htmlspecialcharsbx($ident) ?>" data-min-length="0" data-cnt="30" class="amr-request-field" autocomplete="off"<?= ($arUserField["EDIT_IN_LIST"] != "Y" ? 'disabled="disabled" ' : '') ?> />
 		</div>
-		<div clas="bammultiregionsadm-area-item-clear"></div>
+		<div clas="bamregionsadm-area-item-clear"></div>
 		<?
 		$strResult = ob_get_contents();
 		ob_end_clean();
@@ -100,7 +100,7 @@ class Domain extends TypeBase
 			</tr>
 			<tr>
 				<td style="padding-top: 6px;">
-					<input type="button" value="<?= Loc::getMessage("USER_TYPE_PROP_ADD") ?>" onClick="addNewRow('table_<?= $arUserField["FIELD_NAME"] ?>', '<?= $FIELD_NAME_X ?>|<?= $arUserField["FIELD_NAME"] ?>|<?= $arUserField["FIELD_NAME"] ?>_old_id');$('#table_<?= $arUserField["FIELD_NAME"] ?> .amr-request-field:last').kitMultiRegionsAdminQueryField();">
+					<input type="button" value="<?= Loc::getMessage("USER_TYPE_PROP_ADD") ?>" onClick="addNewRow('table_<?= $arUserField["FIELD_NAME"] ?>', '<?= $FIELD_NAME_X ?>|<?= $arUserField["FIELD_NAME"] ?>|<?= $arUserField["FIELD_NAME"] ?>_old_id');$('#table_<?= $arUserField["FIELD_NAME"] ?> .amr-request-field:last').amminaRegionsAdminQueryField();">
 				</td>
 			</tr>
 		</table>
@@ -115,7 +115,7 @@ class Domain extends TypeBase
 		$strResult = '';
 		$arResult = self::GetPropertyValue($arUserField, $arHtmlControl);
 		if (is_array($arResult)) {
-			$strResult = '<a href="/bitrix/admin/kit.multiregions.domain.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
+			$strResult = '<a href="/bitrix/admin/ammina.regions.domain.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
 		}
 		return $strResult;
 	}
@@ -136,8 +136,8 @@ class Domain extends TypeBase
 	{
 		global $APPLICATION;
 		\CJSCore::Init(array("jquery2"));
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/queryfield.js");
-		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/kit.multiregions.css");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/queryfield.js");
+		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/ammina.regions.css");
 	}
 
 	protected static function getTextValue($ID)
@@ -152,7 +152,7 @@ class Domain extends TypeBase
 			$arFilter = array(
 				"ID" => $ID,
 			);
-			$arItem = \Kit\MultiRegions\DomainTable::getList(array(
+			$arItem = \Ammina\Regions\DomainTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 			))->fetch();

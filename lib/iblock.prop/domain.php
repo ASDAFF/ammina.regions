@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions\IblockProp;
+namespace Ammina\Regions\IblockProp;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Iblock\PropertyTable;
@@ -9,14 +9,14 @@ Loc::loadMessages(__FILE__);
 
 class Domain
 {
-	const USER_TYPE = 'KitMultiRegionsDomain';
+	const USER_TYPE = 'AmminaRegionsDomain';
 
 	public static function GetUserTypeDescription()
 	{
 		return array(
 			"PROPERTY_TYPE" => PropertyTable::TYPE_NUMBER,
 			"USER_TYPE" => self::USER_TYPE,
-			"DESCRIPTION" => Loc::getMessage("KIT_REGION_IBPROP_DOMAIN_DESCRIPTION"),
+			"DESCRIPTION" => Loc::getMessage("AMMINA_REGION_IBPROP_DOMAIN_DESCRIPTION"),
 			//"CheckFields" => array(__CLASS__, "CheckFields"),
 			//"GetLength" => array(__CLASS__, "GetLength"),
 			//"ConvertToDB" => array(__CLASS__, "ConvertToDB"),
@@ -44,11 +44,11 @@ class Domain
 			$arValue['VALUE_TEXT'] = self::getTextValue($arValue['VALUE']);
 		}
 		?>
-		<div class="bammultiregionsadm-area-item">
+		<div class="bamregionsadm-area-item">
 			<input type="hidden" name="<?= htmlspecialcharsbx($arHTMLControlName['VALUE']) ?>" id="<?= htmlspecialcharsbx($ident) ?>" value="<?= $arValue['VALUE'] ?>"/>
 			<input type="text" name="TEXTFIELD_<?= htmlspecialcharsbx($arHTMLControlName['VALUE']) ?>" id="TEXTFIELD_<?= htmlspecialcharsbx($ident) ?>" size="50" value="<?= $arValue['VALUE_TEXT'] ?>" data-action="domain" data-result-id="<?= htmlspecialcharsbx($ident) ?>" data-min-length="0" data-cnt="30" class="amr-request-field" autocomplete="off" />
 		</div>
-		<div clas="bammultiregionsadm-area-item-clear"></div>
+		<div clas="bamregionsadm-area-item-clear"></div>
 		<?
 		$strResult = ob_get_contents();
 		ob_end_clean();
@@ -71,11 +71,11 @@ class Domain
 				$arOneValue['VALUE_TEXT'] = self::getTextValue($arOneValue['VALUE']);
 			}
 			?>
-			<div class="bammultiregionsadm-area-item">
+			<div class="bamregionsadm-area-item">
 				<input type="hidden" name="<?= htmlspecialcharsbx($strFieldName) ?>" id="<?= htmlspecialcharsbx($ident) ?>" value="<?= $arOneValue['VALUE'] ?>"/>
 				<input type="text" name="TEXTFIELD_<?= htmlspecialcharsbx($strFieldName) ?>" id="TEXTFIELD_<?= htmlspecialcharsbx($ident) ?>" size="50" value="<?= $arOneValue['VALUE_TEXT'] ?>" data-action="domain" data-result-id="<?= htmlspecialcharsbx($ident) ?>" data-min-length="0" data-cnt="30" class="amr-request-field" autocomplete="off" />
 			</div>
-			<div clas="bammultiregionsadm-area-item-clear"></div>
+			<div clas="bamregionsadm-area-item-clear"></div>
 			<?
 		}
 
@@ -86,11 +86,11 @@ class Domain
 				$ident = str_replace("[", "_", $ident);
 				$ident = str_replace("]", "_", $ident);
 				?>
-				<div class="bammultiregionsadm-area-item">
+				<div class="bamregionsadm-area-item">
 					<input type="hidden" name="<?= htmlspecialcharsbx($strFieldName) ?>" id="<?= htmlspecialcharsbx($ident) ?>" value=""/>
 					<input type="text" name="TEXTFIELD_<?= htmlspecialcharsbx($strFieldName) ?>" id="TEXTFIELD_<?= htmlspecialcharsbx($ident) ?>" size="50" value="" data-action="domain" data-result-id="<?= htmlspecialcharsbx($ident) ?>" data-min-length="0" data-cnt="30" class="amr-request-field" autocomplete="off" />
 				</div>
-				<div clas="bammultiregionsadm-area-item-clear"></div>
+				<div clas="bamregionsadm-area-item-clear"></div>
 				<?
 			}
 		}
@@ -111,8 +111,8 @@ class Domain
 	{
 		global $APPLICATION;
 		\CJSCore::Init(array("jquery2"));
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/queryfield.js");
-		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/kit.multiregions.css");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/queryfield.js");
+		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/ammina.regions.css");
 	}
 
 	protected static function getTextValue($ID)
@@ -127,7 +127,7 @@ class Domain
 			$arFilter = array(
 				"ID" => $ID,
 			);
-			$arItem = \Kit\MultiRegions\DomainTable::getList(array(
+			$arItem = \Ammina\Regions\DomainTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 			))->fetch();
@@ -146,7 +146,7 @@ class Domain
 		$strResult = '';
 		$arResult = self::GetPropertyValue($arProperty, $arValue);
 		if (is_array($arResult)) {
-			$strResult = '<a href="/bitrix/admin/kit.multiregions.domain.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
+			$strResult = '<a href="/bitrix/admin/ammina.regions.domain.edit.php?ID=' . $arResult['ID'] . '" title="' . Loc::getMessage("MAIN_EDIT") . '">' . $arResult['NAME'] . '</a>';
 		}
 		return $strResult;
 	}

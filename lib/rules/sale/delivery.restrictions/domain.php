@@ -1,8 +1,8 @@
 <?
 
-namespace Kit\MultiRegions\Rules\Sale\DeliveryRestrictions;
+namespace Ammina\Regions\Rules\Sale\DeliveryRestrictions;
 
-use Kit\MultiRegions\DomainTable;
+use Ammina\Regions\DomainTable;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Sale\Services\Base;
 use Bitrix\Sale\Delivery\Restrictions;
@@ -17,19 +17,19 @@ class Domain extends Restrictions\Base
 		return new \Bitrix\Main\EventResult(
 			\Bitrix\Main\EventResult::SUCCESS,
 			array(
-				'\Kit\MultiRegions\Rules\Sale\DeliveryRestrictions\Domain' => '/bitrix/modules/kit.multiregions/lib/rules/sale/delivery.restrictions/domain.php',
+				'\Ammina\Regions\Rules\Sale\DeliveryRestrictions\Domain' => '/bitrix/modules/ammina.regions/lib/rules/sale/delivery.restrictions/domain.php',
 			)
 		);
 	}
 
 	public static function getClassTitle()
 	{
-		return Loc::getMessage("KIT_MULTIREGIONS_COMPANY_RULES_DOMAIN_NAME");
+		return Loc::getMessage("AMMINA_REGIONS_COMPANY_RULES_DOMAIN_NAME");
 	}
 
 	public static function getClassDescription()
 	{
-		return Loc::getMessage("KIT_MULTIREGIONS_COMPANY_RULES_DOMAIN_DESCRIPTION");
+		return Loc::getMessage("AMMINA_REGIONS_COMPANY_RULES_DOMAIN_DESCRIPTION");
 	}
 
 	public static function check($params, array $restrictionParams, $serviceId = 0)
@@ -42,7 +42,7 @@ class Domain extends Restrictions\Base
 
 	protected static function extractParams(Entity $entity)
 	{
-		return $GLOBALS['KIT_MULTIREGIONS']['SYS_CURRENT_DOMAIN_ID'];
+		return $GLOBALS['AMMINA_REGIONS']['SYS_CURRENT_DOMAIN_ID'];
 	}
 
 	public static function getParamsStructure($entityId = 0)
@@ -59,7 +59,7 @@ class Domain extends Restrictions\Base
 			"DOMAIN" => array(
 				"TYPE" => "ENUM",
 				'MULTIPLE' => 'Y',
-				"LABEL" => Loc::getMessage("KIT_MULTIREGIONS_COMPANY_RULES_DOMAIN_PARAMETERS_DOMAIN"),
+				"LABEL" => Loc::getMessage("AMMINA_REGIONS_COMPANY_RULES_DOMAIN_PARAMETERS_DOMAIN"),
 				"OPTIONS" => $arDomainList,
 			),
 		);

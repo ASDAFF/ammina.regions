@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Event;
@@ -14,7 +14,7 @@ class RegionTable extends DataManager
 
 	public static function getTableName()
 	{
-		return 'am_multiregions_region';
+		return 'am_regions_region';
 	}
 
 	public static function getMap()
@@ -29,7 +29,7 @@ class RegionTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'COUNTRY' => array(
-				'data_type' => '\Kit\MultiRegions\Country',
+				'data_type' => '\Ammina\Regions\Country',
 				'reference' => array('=this.COUNTRY_ID' => 'ref.ID'),
 			),
 			'CODE' => array(
@@ -55,7 +55,7 @@ class RegionTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'CITY' => array(
-				'data_type' => '\Kit\MultiRegions\City',
+				'data_type' => '\Ammina\Regions\City',
 				'reference' => array(
 					'=this.ID' => 'ref.REGION_ID'
 				)
@@ -68,7 +68,7 @@ class RegionTable extends DataManager
 				)
 			),
 			'REGION_LANG' => array(
-				'data_type' => '\Kit\MultiRegions\RegionLang',
+				'data_type' => '\Ammina\Regions\RegionLang',
 				'reference' => array(
 					'=this.ID' => 'ref.REGION_ID'
 				)
@@ -82,7 +82,7 @@ class RegionTable extends DataManager
 	{
 		$result = parent::getList($parameters);
 		/*$result->addFetchDataModifier(function (&$data) use ($parameters) {
-			\CKitMultiRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
+			\CAmminaRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
 		});*/
 		return $result;
 	}
@@ -153,7 +153,7 @@ class RegionTable extends DataManager
 				$arCurrentLang[$ar['LID']] = $ar['ID'];
 			}
 
-			$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+			$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 			$rDbLang = \CLanguage::GetList($b, $o, array());
 			while ($arDbLang = $rDbLang->Fetch()) {
 				if ($arDbLang['LID'] == "ru" || !in_array($arDbLang['LID'], $arAllowLangs)) {

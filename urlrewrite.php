@@ -1,18 +1,18 @@
 <?
 error_reporting(7);
-@include_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/kit.multiregions/mbfunc.php");
-if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.multiregions.php")) {
-	$arMultiRegionsUrl = @include($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.multiregions.php");
-	$_SERVER['REQUIRED_KIT_REGION_CODE'] = '-';
-	$_SERVER['REQUIRED_KIT_DOMAIN_ID'] = $arMultiRegionsUrl['-'][0]['ID'];
-	foreach ($arMultiRegionsUrl as $regionUrlPath => $arRegionalUrl) {
+@include_once($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/ammina.regions/mbfunc.php");
+if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.regions.php")) {
+	$arRegionsUrl = @include($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.regions.php");
+	$_SERVER['REQUIRED_AMMINA_REGION_CODE'] = '-';
+	$_SERVER['REQUIRED_AMMINA_DOMAIN_ID'] = $arRegionsUrl['-'][0]['ID'];
+	foreach ($arRegionsUrl as $regionUrlPath => $arRegionalUrl) {
 		foreach ($arRegionalUrl as $k => $v) {
 			if ($v["REGIONAL"] == $v["ORIGINAL"]) {
 				continue;
 			}
 			if (amreg_strpos($_SERVER['REQUEST_URI'], $v['REGIONAL']) === 0) {
-				$_SERVER['REQUIRED_KIT_REGION_CODE'] = $regionUrlPath;
-				$_SERVER['REQUIRED_KIT_DOMAIN_ID'] = $v['ID'];
+				$_SERVER['REQUIRED_AMMINA_REGION_CODE'] = $regionUrlPath;
+				$_SERVER['REQUIRED_AMMINA_DOMAIN_ID'] = $v['ID'];
 				$checkUrl = $_SERVER['REDIRECT_URL'];
 				if ($_SERVER['REDIRECT_URL'] == "/bitrix/urlrewrite.php") {
 					$checkUrl = $_SERVER['REQUEST_URI'];

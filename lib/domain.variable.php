@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Catalog\GroupTable;
 use Bitrix\Main\ORM\Data\DataManager;
@@ -11,7 +11,7 @@ class DomainVariableTable extends DataManager
 {
 	public static function getTableName()
 	{
-		return 'am_multiregions_domain_var';
+		return 'am_regions_domain_var';
 	}
 
 	public static function getMap()
@@ -26,14 +26,14 @@ class DomainVariableTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'DOMAIN' => array(
-				'data_type' => '\Kit\MultiRegions\Domain',
+				'data_type' => '\Ammina\Regions\Domain',
 				'reference' => array('=this.DOMAIN_ID' => 'ref.ID'),
 			),
 			'VARIABLE_ID' => array(
 				'data_type' => 'integer',
 			),
 			'VARIABLE' => array(
-				'data_type' => '\Kit\MultiRegions\Variable',
+				'data_type' => '\Ammina\Regions\Variable',
 				'reference' => array('=this.VARIABLE_ID' => 'ref.ID'),
 			),
 			'VALUE' => array(
@@ -166,9 +166,9 @@ class DomainVariableTable extends DataManager
 	public static function doFillAllSystemVariables($DOMAIN_ID)
 	{
 		$arAllSystemVariables = array();
-		$arAllowLang = \CKitMultiRegions::getAllAllowLang();
+		$arAllowLang = \CAmminaRegions::getAllAllowLang();
 
-		$rVariable = \Kit\MultiRegions\VariableTable::getList(array(
+		$rVariable = \Ammina\Regions\VariableTable::getList(array(
 			"filter" => array(
 				"IS_SYSTEM" => "Y",
 			),
@@ -321,19 +321,19 @@ class DomainVariableTable extends DataManager
 		}
 
 		foreach ($arAllVariables as $k => $v) {
-			$rVariable = \Kit\MultiRegions\DomainVariableTable::getList(array(
+			$rVariable = \Ammina\Regions\DomainVariableTable::getList(array(
 				"filter" => array(
 					"VARIABLE_ID" => $k,
 					"DOMAIN_ID" => $DOMAIN_ID,
 				),
 			));
 			if ($arVariable = $rVariable->fetch()) {
-				\Kit\MultiRegions\DomainVariableTable::update($arVariable['ID'], array(
+				\Ammina\Regions\DomainVariableTable::update($arVariable['ID'], array(
 					"VALUE" => $v,
 					"VALUE_LANG" => $arAllVariablesByLang[$k]
 				));
 			} else {
-				\Kit\MultiRegions\DomainVariableTable::add(array(
+				\Ammina\Regions\DomainVariableTable::add(array(
 					"VARIABLE_ID" => $k,
 					"DOMAIN_ID" => $DOMAIN_ID,
 					"VALUE" => $v,
@@ -356,7 +356,7 @@ class DomainVariableTable extends DataManager
 			"REGION_LOCATION_ID" => "REGION.LOCATION_ID",
 			"COUNTRY_LOCATION_ID" => "REGION.COUNTRY.LOCATION_ID",
 		);
-		$arCity = \Kit\MultiRegions\CityTable::getList(array(
+		$arCity = \Ammina\Regions\CityTable::getList(array(
 			"filter" => array(
 				"ID" => $ID,
 			),
@@ -378,7 +378,7 @@ class DomainVariableTable extends DataManager
 			"REGION_LOCATION_ID" => "LOCATION_ID",
 			"COUNTRY_LOCATION_ID" => "COUNTRY.LOCATION_ID",
 		);
-		$arRegion = \Kit\MultiRegions\RegionTable::getList(array(
+		$arRegion = \Ammina\Regions\RegionTable::getList(array(
 			"filter" => array(
 				"ID" => $ID,
 			),
@@ -397,7 +397,7 @@ class DomainVariableTable extends DataManager
 			"COUNTRY_NAME" => "NAME",
 			"COUNTRY_LOCATION_ID" => "LOCATION_ID",
 		);
-		$arCountry = \Kit\MultiRegions\CountryTable::getList(array(
+		$arCountry = \Ammina\Regions\CountryTable::getList(array(
 			"filter" => array(
 				"ID" => $ID,
 			),
@@ -411,9 +411,9 @@ class DomainVariableTable extends DataManager
 
 	protected static function normalizeCityNames($arCity, $lang = LANGUAGE_ID)
 	{
-		$arCity['CITY_NAME'] = \CKitMultiRegions::getFirstNotEmpty(CityLangTable::getLangNames($arCity['CITY_ID'], $lang));
-		$arCity['REGION_NAME'] = \CKitMultiRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arCity['REGION_ID'], $lang));
-		$arCity['COUNTRY_NAME'] = \CKitMultiRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCity['COUNTRY_ID'], $lang));
+		$arCity['CITY_NAME'] = \CAmminaRegions::getFirstNotEmpty(CityLangTable::getLangNames($arCity['CITY_ID'], $lang));
+		$arCity['REGION_NAME'] = \CAmminaRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arCity['REGION_ID'], $lang));
+		$arCity['COUNTRY_NAME'] = \CAmminaRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCity['COUNTRY_ID'], $lang));
 
 		$arNames = array(
 			$arCity['COUNTRY_NAME'],
@@ -444,8 +444,8 @@ class DomainVariableTable extends DataManager
 
 	protected static function normalizeRegionNames($arRegion, $lang = LANGUAGE_ID)
 	{
-		$arRegion['REGION_NAME'] = \CKitMultiRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arRegion['REGION_ID'], $lang));
-		$arRegion['COUNTRY_NAME'] = \CKitMultiRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arRegion['COUNTRY_ID'], $lang));
+		$arRegion['REGION_NAME'] = \CAmminaRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arRegion['REGION_ID'], $lang));
+		$arRegion['COUNTRY_NAME'] = \CAmminaRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arRegion['COUNTRY_ID'], $lang));
 
 		$arNames = array(
 			$arRegion['COUNTRY_NAME'],
@@ -468,7 +468,7 @@ class DomainVariableTable extends DataManager
 
 	protected static function normalizeCountryNames($arCountry, $lang = LANGUAGE_ID)
 	{
-		$arCountry['COUNTRY_NAME'] = \CKitMultiRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCountry['COUNTRY_ID'], $lang));
+		$arCountry['COUNTRY_NAME'] = \CAmminaRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arCountry['COUNTRY_ID'], $lang));
 		$arNames = array(
 			$arCountry['COUNTRY_NAME'],
 		);

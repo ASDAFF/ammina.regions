@@ -1,15 +1,15 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
-use Kit\MultiRegions\Parser\SypexGeo;
+use Ammina\Regions\Parser\SypexGeo;
 use Bitrix\Main\ORM\Data\DataManager;
 
 class BlockTable extends DataManager
 {
 	public static function getTableName()
 	{
-		return 'am_multiregions_block';
+		return 'am_regions_block';
 	}
 
 	public static function getMap()
@@ -54,7 +54,7 @@ class BlockTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'CITY' => array(
-				'data_type' => '\Kit\MultiRegions\City',
+				'data_type' => '\Ammina\Regions\City',
 				'reference' => array('=this.CITY_ID' => 'ref.ID'),
 			),
 		);
@@ -74,7 +74,7 @@ class BlockTable extends DataManager
 				$IP = $_SERVER['REMOTE_ADDR'];
 			}
 		}
-		if (\COption::GetOptionString("kit.multiregions", "not_load_ip_block", "Y") == "Y") {
+		if (\COption::GetOptionString("ammina.regions", "not_load_ip_block", "Y") == "Y") {
 			/**
 			 * @var SypexGeo
 			 */
@@ -239,9 +239,9 @@ class BlockTable extends DataManager
 						$arResult['COUNTRY'][amreg_substr($k, 8)] = $v;
 					}
 				}
-				$arResult['CITY']['NAME'] = \CKitMultiRegions::getFirstNotEmpty(CityLangTable::getLangNames($arResult['CITY']['ID']));
-				$arResult['REGION']['NAME'] = \CKitMultiRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arResult['REGION']['ID']));
-				$arResult['COUNTRY']['NAME'] = \CKitMultiRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arResult['COUNTRY']['ID']));
+				$arResult['CITY']['NAME'] = \CAmminaRegions::getFirstNotEmpty(CityLangTable::getLangNames($arResult['CITY']['ID']));
+				$arResult['REGION']['NAME'] = \CAmminaRegions::getFirstNotEmpty(RegionLangTable::getLangNames($arResult['REGION']['ID']));
+				$arResult['COUNTRY']['NAME'] = \CAmminaRegions::getFirstNotEmpty(CountryLangTable::getLangNames($arResult['COUNTRY']['ID']));
 			}
 		}
 		return $arResult;

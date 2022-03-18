@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Event;
@@ -13,7 +13,7 @@ class CityTable extends DataManager
 
 	public static function getTableName()
 	{
-		return 'am_multiregions_city';
+		return 'am_regions_city';
 	}
 
 	public static function getMap()
@@ -28,7 +28,7 @@ class CityTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'REGION' => array(
-				'data_type' => '\Kit\MultiRegions\Region',
+				'data_type' => '\Ammina\Regions\Region',
 				'reference' => array('=this.REGION_ID' => 'ref.ID'),
 			),
 			'NAME' => array(
@@ -62,7 +62,7 @@ class CityTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'CITY_LANG' => array(
-				'data_type' => '\Kit\MultiRegions\CityLang',
+				'data_type' => '\Ammina\Regions\CityLang',
 				'reference' => array(
 					'=this.ID' => 'ref.CITY_ID'
 				)
@@ -76,7 +76,7 @@ class CityTable extends DataManager
 	{
 		$result = parent::getList($parameters);
 		/*$result->addFetchDataModifier(function (&$data) use ($parameters) {
-			\CKitMultiRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
+			\CAmminaRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
 		});*/
 		return $result;
 	}
@@ -147,7 +147,7 @@ class CityTable extends DataManager
 				$arCurrentLang[$ar['LID']] = $ar['ID'];
 			}
 
-			$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+			$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 			$rDbLang = \CLanguage::GetList($b, $o, array());
 			while ($arDbLang = $rDbLang->Fetch()) {
 				if ($arDbLang['LID'] == "ru" || !in_array($arDbLang['LID'], $arAllowLangs)) {

@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 
@@ -8,7 +8,7 @@ class PriceTable extends DataManager
 {
 	public static function getTableName()
 	{
-		return 'am_multiregions_price';
+		return 'am_regions_price';
 	}
 
 	public static function getMap()

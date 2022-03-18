@@ -1,2 +1,2 @@
 <?
-define("ADMIN_MODULE_NAME", "kit.multiregions");
+define("ADMIN_MODULE_NAME", "ammina.regions");

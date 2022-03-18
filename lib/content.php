@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\EventResult;
@@ -10,7 +10,7 @@ class ContentTable extends DataManager
 {
 	public static function getTableName()
 	{
-		return 'am_multiregions_content';
+		return 'am_regions_content';
 	}
 
 	public static function getMap()
@@ -32,35 +32,35 @@ class ContentTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'TYPE' => array(
-				'data_type' => '\Kit\MultiRegions\ContentTypes',
+				'data_type' => '\Ammina\Regions\ContentTypes',
 				'reference' => array('=this.TYPE_ID' => 'ref.ID'),
 			),
 			'COUNTRY_ID' => array(
 				'data_type' => 'integer',
 			),
 			'COUNTRY' => array(
-				'data_type' => '\Kit\MultiRegions\Country',
+				'data_type' => '\Ammina\Regions\Country',
 				'reference' => array('=this.COUNTRY_ID' => 'ref.ID'),
 			),
 			'REGION_ID' => array(
 				'data_type' => 'integer',
 			),
 			'REGION' => array(
-				'data_type' => '\Kit\MultiRegions\Region',
+				'data_type' => '\Ammina\Regions\Region',
 				'reference' => array('=this.REGION_ID' => 'ref.ID'),
 			),
 			'CITY_ID' => array(
 				'data_type' => 'integer',
 			),
 			'CITY' => array(
-				'data_type' => '\Kit\MultiRegions\City',
+				'data_type' => '\Ammina\Regions\City',
 				'reference' => array('=this.CITY_ID' => 'ref.ID'),
 			),
 			'DOMAIN_ID' => array(
 				'data_type' => 'integer',
 			),
 			'DOMAIN' => array(
-				'data_type' => '\Kit\MultiRegions\Domain',
+				'data_type' => '\Ammina\Regions\Domain',
 				'reference' => array('=this.DOMAIN_ID' => 'ref.ID'),
 			),
 			"ACTIVE" => array(

@@ -1,9 +1,9 @@
 <?
 
-namespace Kit\MultiRegions\Agent;
+namespace Ammina\Regions\Agent;
 
-use Kit\MultiRegions\DomainTable;
-use Kit\MultiRegions\PriceTable;
+use Ammina\Regions\DomainTable;
+use Ammina\Regions\PriceTable;
 use Bitrix\Catalog\Model\Product;
 use Bitrix\Catalog\Product\Sku;
 use Bitrix\Catalog\ProductTable;
@@ -23,7 +23,7 @@ class DomainAvailable
 
 	public static function doExecute()
 	{
-		$iMemory = intval(\COption::GetOptionString("kit.multiregions", "agent_available_domain_memorylimit", ""));
+		$iMemory = intval(\COption::GetOptionString("ammina.regions", "agent_available_domain_memorylimit", ""));
 		if ($iMemory > 0) {
 			@ini_set("memory_limit", $iMemory . "M");
 		}
@@ -36,42 +36,42 @@ class DomainAvailable
 			self::$arCurrentAgent = \CAgent::GetList(
 				array(),
 				array(
-					"NAME" => '\Kit\MultiRegions\Agent\DomainAvailable::doExecute();',
-					"MODULE_ID" => "kit.multiregions",
+					"NAME" => '\Ammina\Regions\Agent\DomainAvailable::doExecute();',
+					"MODULE_ID" => "ammina.regions",
 				)
 			)->Fetch();
-			if (\COption::GetOptionString("kit.multiregions", "agent_available_domain_emptyexec", "N") == "Y") {
-				\COption::SetOptionString("kit.multiregions", "agent_available_domain_emptyexec", "N");
+			if (\COption::GetOptionString("ammina.regions", "agent_available_domain_emptyexec", "N") == "Y") {
+				\COption::SetOptionString("ammina.regions", "agent_available_domain_emptyexec", "N");
 			} elseif ((defined("BX_CRONTAB") && BX_CRONTAB === true) || (defined("CHK_EVENT") && CHK_EVENT === true)) {
 				if (self::$arCurrentAgent) {
 					\CAgent::Update(self::$arCurrentAgent['ID'], array("NEXT_EXEC" => ConvertTimeStamp(time() + 3600 * 12, "FULL")));
 				}
-				if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("kit.multiregions", "agent_available_domain_period", 180) * 60) {
+				if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("ammina.regions", "agent_available_domain_period", 180) * 60) {
 					\CAgent::Update(
 						self::$arCurrentAgent['ID'],
 						array(
-							"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "agent_available_domain_period", 180) * 60,
+							"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "agent_available_domain_period", 180) * 60,
 						)
 					);
 					self::$bSetEmptyNext = true;
 				}
 				self::doExecuteWithCron();
 			} else {
-				if (\COption::GetOptionString("kit.multiregions", "agent_available_domain_onlycron", "N") != "Y") {
-					if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("kit.multiregions", "agent_available_domain_period_steps", 30)) {
+				if (\COption::GetOptionString("ammina.regions", "agent_available_domain_onlycron", "N") != "Y") {
+					if (self::$arCurrentAgent['ID'] > 0 && self::$arCurrentAgent['AGENT_INTERVAL'] != \COption::GetOptionString("ammina.regions", "agent_available_domain_period_steps", 30)) {
 						\CAgent::Update(
 							self::$arCurrentAgent['ID'],
 							array(
-								"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "agent_available_domain_period_steps", 30),
+								"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "agent_available_domain_period_steps", 30),
 							)
 						);
-						$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("kit.multiregions", "agent_available_domain_period_steps", 30), "FULL");
+						$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("ammina.regions", "agent_available_domain_period_steps", 30), "FULL");
 					}
 					self::doExecuteWithHit();
 				}
 			}
 		}
-		return '\Kit\MultiRegions\Agent\DomainAvailable::doExecute();';
+		return '\Ammina\Regions\Agent\DomainAvailable::doExecute();';
 	}
 
 	public static function doManualExecuteFull()
@@ -79,22 +79,22 @@ class DomainAvailable
 		self::doCheckCatalogProperties();
 		self::doLoadStores();
 		self::doLoadDomain();
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		$arFilter = self::getBaseFilterElements(true);
 		$rElements = \CIBlockElement::GetList(array("ID" => "ASC"), $arFilter, false, false, array("ID"));
 		while ($arElement = $rElements->Fetch()) {
 			self::doCheckElement($arElement['ID']);
 		}
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "N");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "N");
 		$arFilter = self::getBaseFilterElements(false);
 		$rElements = \CIBlockElement::GetList(array("ID" => "ASC"), $arFilter, false, false, array("ID"));
 		while ($arElement = $rElements->Fetch()) {
 			self::doCheckElement($arElement['ID']);
 		}
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 	}
 
 	protected static function getBaseFilterElements($onlySku = true)
@@ -102,7 +102,7 @@ class DomainAvailable
 		$arResult = array(
 			"IBLOCK_ID" => array(-1),
 		);
-		if (\CKitMultiRegions::isIMExists()) {
+		if (\CAmminaRegions::isIMExists()) {
 			$rCatalog = \CCatalog::GetList();
 			while ($arCatalog = $rCatalog->Fetch()) {
 				self::$arCatalog[$arCatalog['IBLOCK_ID']] = $arCatalog;
@@ -125,24 +125,24 @@ class DomainAvailable
 		self::doCheckCatalogProperties();
 		self::doLoadStores();
 		self::doLoadDomain();
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		$arFilter = self::getBaseFilterElements(true);
 		$rElements = \CIBlockElement::GetList(array("ID" => "ASC"), $arFilter, false, false, array("ID"));
 		while ($arElement = $rElements->Fetch()) {
 			self::doCheckElement($arElement['ID']);
 		}
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "N");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "N");
 		$arFilter = self::getBaseFilterElements(false);
 		$rElements = \CIBlockElement::GetList(array("ID" => "ASC"), $arFilter, false, false, array("ID"));
 		while ($arElement = $rElements->Fetch()) {
 			self::doCheckElement($arElement['ID']);
 		}
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		if (self::$bSetEmptyNext) {
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_emptyexec", "Y");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_emptyexec", "Y");
 		}
 	}
 
@@ -150,10 +150,10 @@ class DomainAvailable
 	{
 		self::doLoadStores();
 		self::doLoadDomain();
-		$endTime = time() + \COption::GetOptionString("kit.multiregions", "agent_available_domain_maxtime_step", 5);
-		$isSkuWork = \COption::GetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		$endTime = time() + \COption::GetOptionString("ammina.regions", "agent_available_domain_maxtime_step", 5);
+		$isSkuWork = \COption::GetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		if ($isSkuWork == "Y") {
-			$nextId = \COption::GetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
+			$nextId = \COption::GetOptionString("ammina.regions", "agent_available_domain_nextId", "");
 			$arFilter = self::getBaseFilterElements(true);
 			if ($nextId > 0) {
 				$arFilter['>ID'] = $nextId;
@@ -164,16 +164,16 @@ class DomainAvailable
 			while ($arElement = $rElements->Fetch()) {
 				self::doCheckElement($arElement['ID']);
 				if (time() >= $endTime) {
-					\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", $arElement['ID']);
+					\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", $arElement['ID']);
 					return;
 				}
 			}
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "0");
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "N");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "0");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "N");
 			$isSkuWork = "N";
 		}
 		if ($isSkuWork == "N") {
-			$nextId = \COption::GetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
+			$nextId = \COption::GetOptionString("ammina.regions", "agent_available_domain_nextId", "");
 			$arFilter = self::getBaseFilterElements(false);
 			if ($nextId > 0) {
 				$arFilter['>ID'] = $nextId;
@@ -182,28 +182,28 @@ class DomainAvailable
 			while ($arElement = $rElements->Fetch()) {
 				self::doCheckElement($arElement['ID']);
 				if (time() >= $endTime) {
-					\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", $arElement['ID']);
+					\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", $arElement['ID']);
 					return;
 				}
 			}
 		}
 
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "0");
-		\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "0");
+		\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		if (self::$arCurrentAgent['ID'] > 0) {
 			\CAgent::Update(
 				self::$arCurrentAgent['ID'],
 				array(
-					"AGENT_INTERVAL" => \COption::GetOptionString("kit.multiregions", "agent_available_domain_period", 180) * 60,
+					"AGENT_INTERVAL" => \COption::GetOptionString("ammina.regions", "agent_available_domain_period", 180) * 60,
 				)
 			);
-			$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("kit.multiregions", "agent_available_domain_period", 180) * 60, "FULL");
+			$GLOBALS['ARG_SETAGENT_NEXT'][self::$arCurrentAgent['ID']] = ConvertTimeStamp(time() + \COption::GetOptionString("ammina.regions", "agent_available_domain_period", 180) * 60, "FULL");
 		}
 	}
 
 	protected static function doCheckCatalogProperties()
 	{
-		if (\CKitMultiRegions::isIMExists()) {
+		if (\CAmminaRegions::isIMExists()) {
 			$rCatalog = \CCatalog::GetList();
 			while ($arCatalog = $rCatalog->Fetch()) {
 				$arProp = \CIBlockProperty::GetList(
@@ -212,20 +212,20 @@ class DomainAvailable
 						"IBLOCK_ID" => $arCatalog['IBLOCK_ID'],
 						"CODE" => "SYS_DOMAIN_AVAILABLE",
 						"MULTIPLE" => "Y",
-						"USER_TYPE" => "KitMultiRegionsDomain",
+						"USER_TYPE" => "AmminaRegionsDomain",
 					)
 				)->Fetch();
 				if (!$arProp) {
 					$arFields = array(
 						"IBLOCK_ID" => $arCatalog['IBLOCK_ID'],
-						"NAME" => Loc::getMessage("kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_NAME"),
+						"NAME" => Loc::getMessage("ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_NAME"),
 						"SORT" => 100000,
 						"CODE" => "SYS_DOMAIN_AVAILABLE",
 						"MULTIPLE" => "Y",
 						"MULTIPLE_CNT" => 0,
 						"ACTIVE" => "Y",
 						"PROPERTY_TYPE" => "N",
-						"USER_TYPE" => "KitMultiRegionsDomain",
+						"USER_TYPE" => "AmminaRegionsDomain",
 					);
 					$oProp = new \CIBlockProperty();
 					$oProp->Add($arFields);
@@ -242,7 +242,7 @@ class DomainAvailable
 				if (!$arProp) {
 					$arFields = array(
 						"IBLOCK_ID" => $arCatalog['IBLOCK_ID'],
-						"NAME" => Loc::getMessage("kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_SORT_NAME"),
+						"NAME" => Loc::getMessage("ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_SORT_NAME"),
 						"SORT" => 100010,
 						"CODE" => "SYS_DOMAIN_AVAILABLE_SORT",
 						"MULTIPLE" => "Y",
@@ -266,7 +266,7 @@ class DomainAvailable
 				if (!$arProp) {
 					$arFields = array(
 						"IBLOCK_ID" => $arCatalog['IBLOCK_ID'],
-						"NAME" => Loc::getMessage("kit.multiregions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_LIST_NAME"),
+						"NAME" => Loc::getMessage("ammina.regions_IBLOCK_PROPERTY_SYS_DOMAIN_AVAILABLE_LIST_NAME"),
 						"SORT" => 100010,
 						"CODE" => "SYS_DOMAIN_AVAILABLE_LIST",
 						"MULTIPLE" => "Y",
@@ -280,10 +280,10 @@ class DomainAvailable
 					$iPropId = $arProp['ID'];
 				}
 
-				$arProps = explode("|", \COption::GetOptionString("kit.multiregions", "iblock_prop_domains"));
+				$arProps = explode("|", \COption::GetOptionString("ammina.regions", "iblock_prop_domains"));
 				if (!in_array($iPropId, $arProps)) {
 					$arProps[] = $iPropId;
-					\COption::SetOptionString("kit.multiregions", "iblock_prop_domains", implode("|", $arProps));
+					\COption::SetOptionString("ammina.regions", "iblock_prop_domains", implode("|", $arProps));
 					DomainTable::doCheckIBlockPropsList();
 				}
 			}
@@ -292,7 +292,7 @@ class DomainAvailable
 
 	protected static function doLoadStores()
 	{
-		if (\CKitMultiRegions::isIMExists()) {
+		if (\CAmminaRegions::isIMExists()) {
 			$rStores = \CCatalogStore::GetList(array());
 			while ($arStore = $rStores->Fetch()) {
 				self::$arStores[$arStore['ID']] = $arStore;
@@ -320,7 +320,7 @@ class DomainAvailable
 	protected static function doCheckElement($ID)
 	{
 		$arEl = false;
-		if (\COption::GetOptionString("kit.multiregions", "agent_available_domain_sum_storesku", "N") == "Y" && \COption::GetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y") == "N") {
+		if (\COption::GetOptionString("ammina.regions", "agent_available_domain_sum_storesku", "N") == "Y" && \COption::GetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y") == "N") {
 			$arCurrentCatalog = false;
 			$arEl = \CIBlockElement::GetList(array(), array("ID" => $ID), false, false, array("ID", "IBLOCK_ID"))->Fetch();
 			if ($arEl) {
@@ -344,7 +344,7 @@ class DomainAvailable
 				foreach (self::$arStores as $k => $v) {
 					$arSetQntByStore[$v['ID']] = false;
 				}
-				if (!empty($arAllItemsId) && \CKitMultiRegions::isIMExists()) {
+				if (!empty($arAllItemsId) && \CAmminaRegions::isIMExists()) {
 					$rCatalogStore = \CCatalogStoreProduct::GetList(array(), array("@PRODUCT_ID" => array_keys($arAllItemsId)));
 					while ($arCatalogStore = $rCatalogStore->Fetch()) {
 						$arQntByStore[$arCatalogStore['PRODUCT_ID']][$arCatalogStore['STORE_ID']] += $arCatalogStore['AMOUNT'];
@@ -387,13 +387,13 @@ class DomainAvailable
 				foreach (self::$arStores as $k => $v) {
 					$arQntByStore[$v['ID']] = 0;
 				}
-				if (!empty($arAllSkuId) && \CKitMultiRegions::isIMExists()) {
+				if (!empty($arAllSkuId) && \CAmminaRegions::isIMExists()) {
 					$rCatalogStore = \CCatalogStoreProduct::GetList(array(), array("PRODUCT_ID" => $arAllSkuId));
 					while ($arCatalogStore = $rCatalogStore->Fetch()) {
 						$arQntByStore[$arCatalogStore['STORE_ID']] += $arCatalogStore['AMOUNT'];
 					}
 					/*}
-					if (\CKitMultiRegions::isIMExists()) {*/
+					if (\CAmminaRegions::isIMExists()) {*/
 					foreach ($arQntByStore as $storeId => $amount) {
 						$arCatalogStore = \CCatalogStoreProduct::GetList(array(), array("PRODUCT_ID" => $ID, "STORE_ID" => $storeId))->Fetch();
 						if ($arCatalogStore) {
@@ -412,12 +412,12 @@ class DomainAvailable
 			}
 		}
 
-		$not_use_quantity_trace = (\COption::GetOptionString("kit.multiregions", "agent_available_domain_not_use_quantity_trace", "N") == "Y");
-		$not_use_can_buy_zero = (\COption::GetOptionString("kit.multiregions", "agent_available_domain_not_use_can_buy_zero", "N") == "Y");
+		$not_use_quantity_trace = (\COption::GetOptionString("ammina.regions", "agent_available_domain_not_use_quantity_trace", "N") == "Y");
+		$not_use_can_buy_zero = (\COption::GetOptionString("ammina.regions", "agent_available_domain_not_use_can_buy_zero", "N") == "Y");
 		$totalCnt = 0;
 		$arAllowDomains = array();
 		$arDisallowDomains = array();
-		if (\CKitMultiRegions::isIMExists()) {
+		if (\CAmminaRegions::isIMExists()) {
 			$arProduct = ProductTable::getRowById($ID);
 			if ($arProduct['QUANTITY_TRACE'] == ProductTable::STATUS_DEFAULT) {
 				$arProduct['QUANTITY_TRACE'] = self::$defaultProductSettings['QUANTITY_TRACE'];
@@ -464,7 +464,7 @@ class DomainAvailable
 			$arVal[] = $arEnum[$v];
 		}
 		$obElement->SetPropertyValueCode($ID, "SYS_DOMAIN_AVAILABLE_LIST", $arVal);
-		if (\COption::GetOptionString("kit.multiregions", "agent_available_domain_sum_quantity_by_store", "N") == "Y" && \CKitMultiRegions::isIMExists()) {
+		if (\COption::GetOptionString("ammina.regions", "agent_available_domain_sum_quantity_by_store", "N") == "Y" && \CAmminaRegions::isIMExists()) {
 			if ($arProduct) {
 				Product::update($ID, array("QUANTITY" => $totalCnt));
 			} else {

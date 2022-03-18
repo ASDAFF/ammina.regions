@@ -2,7 +2,7 @@
 
 use Bitrix\Main\Localization\Loc;
 
-$module_id = "kit.multiregions";
+$module_id = "ammina.regions";
 CModule::IncludeModule($module_id);
 
 $modulePermissions = $APPLICATION->GetGroupRight($module_id);
@@ -14,7 +14,7 @@ if ($modulePermissions >= "R") {
 	$arAllCountryCode = explode(",", "AD,AE,AF,AG,AI,AL,AM,AO,AQ,AR,AS,AT,AU,AW,AX,AZ,BA,BB,BD,BE,BF,BG,BH,BI,BJ,BL,BM,BN,BO,BQ,BR,BS,BT,BW,BY,BZ,CA,CC,CD,CF,CG,CH,CI,CK,CL,CM,CN,CO,CR,CU,CV,CW,CX,CY,CZ,DE,DJ,DK,DM,DO,DZ,EC,EE,EG,ER,ES,ET,FI,FJ,FK,FM,FO,FR,GA,GB,GD,GE,GF,GG,GH,GI,GL,GM,GN,GP,GQ,GR,GS,GT,GU,GW,GY,HK,HN,HR,HT,HU,ID,IE,IL,IM,IN,IO,IQ,IR,IS,IT,JE,JM,JO,JP,KE,KG,KH,KI,KM,KN,KP,KR,KW,KY,KZ,LA,LB,LC,LI,LK,LR,LS,LT,LU,LV,LY,MA,MC,MD,ME,MF,MG,MH,MK,ML,MM,MN,MO,MP,MQ,MR,MS,MT,MU,MV,MW,MX,MY,MZ,NA,NC,NE,NF,NG,NI,NL,NO,NP,NR,NU,NZ,OM,PA,PE,PF,PG,PH,PK,PL,PM,PN,PR,PS,PT,PW,PY,QA,RE,RO,RS,RU,RW,SA,SB,SC,SD,SE,SG,SH,SI,SJ,SK,SL,SM,SN,SO,SR,SS,ST,SV,SX,SY,SZ,TC,TD,TF,TG,TH,TJ,TK,TL,TM,TN,TO,TR,TT,TV,TW,TZ,UA,UG,UM,US,UY,UZ,VA,VC,VE,VG,VI,VN,VU,WF,WS,XK,YE,YT,ZA,ZM,ZW");
 	$arAllCountry = array();
 	foreach ($arAllCountryCode as $strCode) {
-		$arAllCountry[$strCode] = Loc::getMessage("kit.multiregions_OPTION_COUNTRY_" . $strCode);
+		$arAllCountry[$strCode] = Loc::getMessage("ammina.regions_OPTION_COUNTRY_" . $strCode);
 	}
 	asort($arAllCountry, SORT_ASC);
 	$arAllPropList = array();
@@ -53,7 +53,7 @@ if ($modulePermissions >= "R") {
 
 	$arPricesDefault = array();
 	$arStoresDefault = array();
-	if (\CKitMultiRegions::isIMExists()) {
+	if (\CAmminaRegions::isIMExists()) {
 		$rPrices = \CCatalogGroup::GetList(
 			array(
 				"SORT" => "ASC",
@@ -70,7 +70,7 @@ if ($modulePermissions >= "R") {
 	}
 
 	$arExternalLang = array();
-	$arExternalLangForSyn = array("" => Loc::getMessage("kit.multiregions_OPTION_PLEASE_SELECT"));
+	$arExternalLangForSyn = array("" => Loc::getMessage("ammina.regions_OPTION_PLEASE_SELECT"));
 	$arExternalLangForSynList = array();
 	$rLang = CLanguage::GetList($b, $o, array());
 	while ($arLang = $rLang->Fetch()) {
@@ -83,11 +83,11 @@ if ($modulePermissions >= "R") {
 	}
 
 	$arAllOptions = array(
-		array("use_one_domain", Loc::getMessage("kit.multiregions_OPTION_USE_ONE_DOMAIN"), "N", array("checkbox")),
-		array("use_rus_domain", Loc::getMessage("kit.multiregions_OPTION_USE_RUS_DOMAIN"), "N", array("checkbox")),
-		array("host_var_name", Loc::getMessage("kit.multiregions_OPTION_HOST_VAR_NAME"), "HTTP_HOST", array("text", 30)),
-		array("only_exists_domains", Loc::getMessage("kit.multiregions_OPTION_ONLY_EXISTS_DOMAINS"), "Y", array("checkbox")),
-		array("use_lang", Loc::getMessage("kit.multiregions_OPTION_USE_LANG"), "", array("selectboxm2"), $arExternalLang),
+		array("use_one_domain", Loc::getMessage("ammina.regions_OPTION_USE_ONE_DOMAIN"), "N", array("checkbox")),
+		array("use_rus_domain", Loc::getMessage("ammina.regions_OPTION_USE_RUS_DOMAIN"), "N", array("checkbox")),
+		array("host_var_name", Loc::getMessage("ammina.regions_OPTION_HOST_VAR_NAME"), "HTTP_HOST", array("text", 30)),
+		array("only_exists_domains", Loc::getMessage("ammina.regions_OPTION_ONLY_EXISTS_DOMAINS"), "Y", array("checkbox")),
+		array("use_lang", Loc::getMessage("ammina.regions_OPTION_USE_LANG"), "", array("selectboxm2"), $arExternalLang),
 	);
 	$arCurrentUseLang = explode("|", COption::GetOptionString($module_id, "use_lang", ""));
 	$arCurrentUseLang[] = "ru";
@@ -98,82 +98,82 @@ if ($modulePermissions >= "R") {
 		$tmpLang = $arExternalLangForSyn;
 		unset($tmpLang[$lang]);
 		$arAllOptions[] = array(
-			"lang_syn_" . $lang, Loc::getMessage("kit.multiregions_OPTION_LANG_SYNONYM") . " " . $arExternalLangForSynList[$lang], "", array("selectbox"), $tmpLang
+			"lang_syn_" . $lang, Loc::getMessage("ammina.regions_OPTION_LANG_SYNONYM") . " " . $arExternalLangForSynList[$lang], "", array("selectbox"), $tmpLang
 		);
 	}
 	$arAllOptions = array_merge($arAllOptions, array(
-		//array("show_support_form", Loc::getMessage("kit.multiregions_OPTION_SHOW_SUPPORT_FORM"), "Y", array("checkbox")),
-		//array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_PATHURL")),
-		array("use_path_domain", Loc::getMessage("kit.multiregions_OPTION_USE_PATH_DOMAIN"), "N", array("checkbox")),
-		array("pathdomain_list", Loc::getMessage("kit.multiregions_OPTION_PATHDOMAIN_LIST"), "", array("textarea", 6, 50)),
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_ORDER_PREFIX")),
-		array("use_order_prefix", Loc::getMessage("kit.multiregions_OPTION_USE_ORDER_PREFIX"), "N", array("checkbox")),
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_IMPORT")),
-		array("not_load_ip_block", Loc::getMessage("kit.multiregions_OPTION_NOT_LOAD_IP_BLOCK"), "Y", array("checkbox")),
-		array("only_country", Loc::getMessage("kit.multiregions_OPTION_ONLY_COUNTRY"), "", array("selectboxm"), $arAllCountry),
-		array("iblock_prop_domains", Loc::getMessage("kit.multiregions_OPTION_IBLOCK_PROP_DOMAINS"), "", array("selectboxprop"), $arAllPropList),
+		//array("show_support_form", Loc::getMessage("ammina.regions_OPTION_SHOW_SUPPORT_FORM"), "Y", array("checkbox")),
+		//array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_PATHURL")),
+		array("use_path_domain", Loc::getMessage("ammina.regions_OPTION_USE_PATH_DOMAIN"), "N", array("checkbox")),
+		array("pathdomain_list", Loc::getMessage("ammina.regions_OPTION_PATHDOMAIN_LIST"), "", array("textarea", 6, 50)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_ORDER_PREFIX")),
+		array("use_order_prefix", Loc::getMessage("ammina.regions_OPTION_USE_ORDER_PREFIX"), "N", array("checkbox")),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_IMPORT")),
+		array("not_load_ip_block", Loc::getMessage("ammina.regions_OPTION_NOT_LOAD_IP_BLOCK"), "Y", array("checkbox")),
+		array("only_country", Loc::getMessage("ammina.regions_OPTION_ONLY_COUNTRY"), "", array("selectboxm"), $arAllCountry),
+		array("iblock_prop_domains", Loc::getMessage("ammina.regions_OPTION_IBLOCK_PROP_DOMAINS"), "", array("selectboxprop"), $arAllPropList),
 		array(
 			"mode_import",
-			Loc::getMessage("kit.multiregions_OPTION_MODE_IMPORT"),
+			Loc::getMessage("ammina.regions_OPTION_MODE_IMPORT"),
 			"2",
 			array("selectbox"),
 			array(
-				0 => Loc::getMessage("kit.multiregions_OPTION_MODE_IMPORT_FILE"),
-				1 => Loc::getMessage("kit.multiregions_OPTION_MODE_IMPORT_MEMORY"),
-				2 => Loc::getMessage("kit.multiregions_OPTION_MODE_IMPORT_BATCH"),
+				0 => Loc::getMessage("ammina.regions_OPTION_MODE_IMPORT_FILE"),
+				1 => Loc::getMessage("ammina.regions_OPTION_MODE_IMPORT_MEMORY"),
+				2 => Loc::getMessage("ammina.regions_OPTION_MODE_IMPORT_BATCH"),
 			)
 		),
 
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_DOMAIN_ONECLICK")),
-		array("base_domain", Loc::getMessage("kit.multiregions_OPTION_BASE_DOMAIN"), $strDomain, array("text", 50)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_DOMAIN_ONECLICK")),
+		array("base_domain", Loc::getMessage("ammina.regions_OPTION_BASE_DOMAIN"), $strDomain, array("text", 50)),
 		array(
 			"base_sid",
-			Loc::getMessage("kit.multiregions_OPTION_BASE_SID"),
+			Loc::getMessage("ammina.regions_OPTION_BASE_SID"),
 			"",
 			array("selectbox"),
 			$arSitesSelect
 		),
-		array("make_settings_sitemap", Loc::getMessage("kit.multiregions_OPTION_MAKE_SETTINGS_SITEMAP"), "Y", array("checkbox")),
-		array("make_robots_file", Loc::getMessage("kit.multiregions_OPTION_MAKE_ROBOTS_FILE"), "Y", array("checkbox")),
-		array("prices_default", Loc::getMessage("kit.multiregions_OPTION_PRICES_DEFAULT"), "", array("selectboxm2"), $arPricesDefault),
-		array("stores_default", Loc::getMessage("kit.multiregions_OPTION_STORES_DEFAULT"), "", array("selectboxm2"), $arStoresDefault),
+		array("make_settings_sitemap", Loc::getMessage("ammina.regions_OPTION_MAKE_SETTINGS_SITEMAP"), "Y", array("checkbox")),
+		array("make_robots_file", Loc::getMessage("ammina.regions_OPTION_MAKE_ROBOTS_FILE"), "Y", array("checkbox")),
+		array("prices_default", Loc::getMessage("ammina.regions_OPTION_PRICES_DEFAULT"), "", array("selectboxm2"), $arPricesDefault),
+		array("stores_default", Loc::getMessage("ammina.regions_OPTION_STORES_DEFAULT"), "", array("selectboxm2"), $arStoresDefault),
 
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_PRICE_AGENT")),
-		array("priceagent_active", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_ACTIVE"), "N", array("checkbox")),
-		array("priceagent_onlycron", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_ONLYCRON"), "N", array("checkbox")),
-		array("priceagent_period", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_PERIOD"), "180", array("text", 10)),
-		array("priceagent_maxtime_step", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_MAXTIME_STEP"), "5", array("text", 10)),
-		array("priceagent_period_steps", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_PERIOD_STEPS"), "30", array("text", 10)),
-		array("priceagent_memorylimit", Loc::getMessage("kit.multiregions_OPTION_PRICEAGENT_MEMORYLIMIT"), "", array("text", 10)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_PRICE_AGENT")),
+		array("priceagent_active", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_ACTIVE"), "N", array("checkbox")),
+		array("priceagent_onlycron", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_ONLYCRON"), "N", array("checkbox")),
+		array("priceagent_period", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_PERIOD"), "180", array("text", 10)),
+		array("priceagent_maxtime_step", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_MAXTIME_STEP"), "5", array("text", 10)),
+		array("priceagent_period_steps", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_PERIOD_STEPS"), "30", array("text", 10)),
+		array("priceagent_memorylimit", Loc::getMessage("ammina.regions_OPTION_PRICEAGENT_MEMORYLIMIT"), "", array("text", 10)),
 
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_AGENT_AVAILABLE")),
-		array("agent_available_domain_active", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_ACTIVE"), "N", array("checkbox")),
-		array("agent_available_domain_sum_storesku", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_SUM_STORESKU"), "N", array("checkbox")),
-		array("agent_available_domain_sum_quantity_by_store", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_SUM_QUANTITY_BY_STORE"), "N", array("checkbox")),
-		array("agent_available_domain_not_use_quantity_trace", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_NOT_USE_QUANTITY_TRACE"), "N", array("checkbox")),
-		array("agent_available_domain_not_use_can_buy_zero", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_NOT_USE_CAN_BUY_ZERO"), "N", array("checkbox")),
-		array("agent_available_domain_onlycron", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_ONLYCRON"), "N", array("checkbox")),
-		array("agent_available_domain_period", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_PERIOD"), "180", array("text", 10)),
-		array("agent_available_domain_maxtime_step", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_MAXTIME_STEP"), "5", array("text", 10)),
-		array("agent_available_domain_period_steps", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_PERIOD_STEPS"), "30", array("text", 10)),
-		array("agent_available_domain_memorylimit", Loc::getMessage("kit.multiregions_OPTION_AGENT_AVAILABLE_DOMAIN_MEMORYLIMIT"), "", array("text", 10)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_AGENT_AVAILABLE")),
+		array("agent_available_domain_active", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_ACTIVE"), "N", array("checkbox")),
+		array("agent_available_domain_sum_storesku", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_SUM_STORESKU"), "N", array("checkbox")),
+		array("agent_available_domain_sum_quantity_by_store", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_SUM_QUANTITY_BY_STORE"), "N", array("checkbox")),
+		array("agent_available_domain_not_use_quantity_trace", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_NOT_USE_QUANTITY_TRACE"), "N", array("checkbox")),
+		array("agent_available_domain_not_use_can_buy_zero", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_NOT_USE_CAN_BUY_ZERO"), "N", array("checkbox")),
+		array("agent_available_domain_onlycron", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_ONLYCRON"), "N", array("checkbox")),
+		array("agent_available_domain_period", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_PERIOD"), "180", array("text", 10)),
+		array("agent_available_domain_maxtime_step", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_MAXTIME_STEP"), "5", array("text", 10)),
+		array("agent_available_domain_period_steps", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_PERIOD_STEPS"), "30", array("text", 10)),
+		array("agent_available_domain_memorylimit", Loc::getMessage("ammina.regions_OPTION_AGENT_AVAILABLE_DOMAIN_MEMORYLIMIT"), "", array("text", 10)),
 
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_PRODUCT_PROVIDER")),
-		array("product_provider_active", Loc::getMessage("kit.multiregions_OPTION_PRODUCT_PROVIDER_ACTIVE"), "N", array("checkbox")),
-		array("event_get_optimal_price", Loc::getMessage("kit.multiregions_OPTION_EVENT_GET_OPTIMAL_PRICE"), "Y", array("checkbox")),
-		//array("product_provider_update_exists", Loc::getMessage("kit.multiregions_OPTION_PRODUCT_PROVIDER_UPDATE_EXISTS_RECORD"), "N", Array("checkbox")),
-		//array("product_provider_class_name", Loc::getMessage("kit.multiregions_OPTION_PRODUCT_PROVIDER_CLASS_NAME"), "", Array("text", 50)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_PRODUCT_PROVIDER")),
+		array("product_provider_active", Loc::getMessage("ammina.regions_OPTION_PRODUCT_PROVIDER_ACTIVE"), "N", array("checkbox")),
+		array("event_get_optimal_price", Loc::getMessage("ammina.regions_OPTION_EVENT_GET_OPTIMAL_PRICE"), "Y", array("checkbox")),
+		//array("product_provider_update_exists", Loc::getMessage("ammina.regions_OPTION_PRODUCT_PROVIDER_UPDATE_EXISTS_RECORD"), "N", Array("checkbox")),
+		//array("product_provider_class_name", Loc::getMessage("ammina.regions_OPTION_PRODUCT_PROVIDER_CLASS_NAME"), "", Array("text", 50)),
 
-		array("separator", Loc::getMessage("kit.multiregions_OPTION_SEPARATOR_AGENT_SITEMAP")),
-		array("sitemapagent_active", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_ACTIVE"), "N", array("checkbox")),
-		array("sitemapagent_onlycron", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_ONLYCRON"), "N", array("checkbox")),
-		array("sitemapagent_period", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_PERIOD"), "60", array("text", 10)),
-		array("sitemapagent_period_run", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_PERIOD_RUN"), "7", array("text", 10)),
-		array("sitemapagent_memorylimit", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_MEMORYLIMIT"), "", array("text", 10)),
-		array("sitemapagent_take_prop", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_TAKE_PROP"), "N", array("checkbox")),
-		array("sitemapagent_prop_domain_available", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_PROP_DOMAIN_AVAILABLE"), "SYS_DOMAIN_AVAILABLE", array("textarea", 4, 40)),
-		array("sitemapagent_prop_show_domain", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_PROP_SHOW_DOMAIN"), "SYS_SHOW_DOMAIN", array("textarea", 4, 40)),
-		array("sitemapagent_prop_hide_domain", Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_PROP_HIDE_DOMAIN"), "SYS_HIDE_DOMAIN", array("textarea", 4, 40)),
+		array("separator", Loc::getMessage("ammina.regions_OPTION_SEPARATOR_AGENT_SITEMAP")),
+		array("sitemapagent_active", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_ACTIVE"), "N", array("checkbox")),
+		array("sitemapagent_onlycron", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_ONLYCRON"), "N", array("checkbox")),
+		array("sitemapagent_period", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_PERIOD"), "60", array("text", 10)),
+		array("sitemapagent_period_run", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_PERIOD_RUN"), "7", array("text", 10)),
+		array("sitemapagent_memorylimit", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_MEMORYLIMIT"), "", array("text", 10)),
+		array("sitemapagent_take_prop", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_TAKE_PROP"), "N", array("checkbox")),
+		array("sitemapagent_prop_domain_available", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_PROP_DOMAIN_AVAILABLE"), "SYS_DOMAIN_AVAILABLE", array("textarea", 4, 40)),
+		array("sitemapagent_prop_show_domain", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_PROP_SHOW_DOMAIN"), "SYS_SHOW_DOMAIN", array("textarea", 4, 40)),
+		array("sitemapagent_prop_hide_domain", Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_PROP_HIDE_DOMAIN"), "SYS_HIDE_DOMAIN", array("textarea", 4, 40)),
 	));
 
 	$strWarning = "";
@@ -222,7 +222,7 @@ if ($modulePermissions >= "R") {
 				}
 				$arData = array_values($arData);
 				$arNewData = array();
-				$rDomains = \Kit\MultiRegions\DomainTable::getList(
+				$rDomains = \Ammina\Regions\DomainTable::getList(
 					array(
 						"filter" => array("ACTIVE" => "Y"),
 						"select" => array("ID", "PATHCODE")
@@ -251,20 +251,20 @@ if ($modulePermissions >= "R") {
 					}
 				}
 				krsort($arNewData);
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.multiregions.php", '<' . '? return ' . var_export($arNewData, true) . ';');
+				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/urlrewrite.regions.php", '<' . '? return ' . var_export($arNewData, true) . ';');
 			}
 			COption::SetOptionString($module_id, $name, $val, $option[1]);
 		}
 		$arAgent = CAgent::GetList(
 			array(),
 			array(
-				"NAME" => '\Kit\MultiRegions\Agent\Price::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\Price::doExecute();',
 				"MODULE_ID" => $module_id,
 			)
 		)->Fetch();
 		if (COption::GetOptionString($module_id, "priceagent_active", "N") == "Y") {
 			$arFields = array(
-				"NAME" => '\Kit\MultiRegions\Agent\Price::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\Price::doExecute();',
 				"MODULE_ID" => $module_id,
 				"ACTIVE" => "Y",
 				"SORT" => 100,
@@ -278,8 +278,8 @@ if ($modulePermissions >= "R") {
 			} else {
 				CAgent::Add($arFields);
 			}
-			\COption::SetOptionString("kit.multiregions", "priceagent_nextId", "");
-			\COption::SetOptionString("kit.multiregions", "priceagent_emptyexec", "N");
+			\COption::SetOptionString("ammina.regions", "priceagent_nextId", "");
+			\COption::SetOptionString("ammina.regions", "priceagent_emptyexec", "N");
 		} else {
 			if ($arAgent) {
 				CAgent::Delete($arAgent['ID']);
@@ -289,13 +289,13 @@ if ($modulePermissions >= "R") {
 		$arAgent = CAgent::GetList(
 			array(),
 			array(
-				"NAME" => '\Kit\MultiRegions\Agent\DomainAvailable::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\DomainAvailable::doExecute();',
 				"MODULE_ID" => $module_id,
 			)
 		)->Fetch();
 		if (COption::GetOptionString($module_id, "agent_available_domain_active", "N") == "Y") {
 			$arFields = array(
-				"NAME" => '\Kit\MultiRegions\Agent\DomainAvailable::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\DomainAvailable::doExecute();',
 				"MODULE_ID" => $module_id,
 				"ACTIVE" => "Y",
 				"SORT" => 100,
@@ -309,9 +309,9 @@ if ($modulePermissions >= "R") {
 			} else {
 				CAgent::Add($arFields);
 			}
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_nextId", "");
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_emptyexec", "N");
-			\COption::SetOptionString("kit.multiregions", "agent_available_domain_checkSku", "Y");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_nextId", "");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_emptyexec", "N");
+			\COption::SetOptionString("ammina.regions", "agent_available_domain_checkSku", "Y");
 		} else {
 			if ($arAgent) {
 				CAgent::Delete($arAgent['ID']);
@@ -319,34 +319,34 @@ if ($modulePermissions >= "R") {
 		}
 		if (COption::GetOptionString($module_id, "product_provider_active", "N") == "Y") {
 			$eventManager = \Bitrix\Main\EventManager::getInstance();
-			$eventManager->registerEventHandler('sale', 'OnBeforeSaleBasketItemSetFields', $module_id, '\CKitMultiRegions', 'OnBeforeBasketItemSetFields');
-			$eventManager->registerEventHandler('sale', 'OnSaleBasketItemRefreshData', $module_id, '\CKitMultiRegions', 'OnSaleBasketItemRefreshData');
+			$eventManager->registerEventHandler('sale', 'OnBeforeSaleBasketItemSetFields', $module_id, '\CAmminaRegions', 'OnBeforeBasketItemSetFields');
+			$eventManager->registerEventHandler('sale', 'OnSaleBasketItemRefreshData', $module_id, '\CAmminaRegions', 'OnSaleBasketItemRefreshData');
 		} else {
 			$eventManager = \Bitrix\Main\EventManager::getInstance();
-			$eventManager->unregisterEventHandler('sale', 'OnBeforeSaleBasketItemSetFields', $module_id, '\CKitMultiRegions', 'OnBeforeBasketItemSetFields');
-			$eventManager->unregisterEventHandler('sale', 'OnSaleBasketItemRefreshData', $module_id, '\CKitMultiRegions', 'OnSaleBasketItemRefreshData');
+			$eventManager->unregisterEventHandler('sale', 'OnBeforeSaleBasketItemSetFields', $module_id, '\CAmminaRegions', 'OnBeforeBasketItemSetFields');
+			$eventManager->unregisterEventHandler('sale', 'OnSaleBasketItemRefreshData', $module_id, '\CAmminaRegions', 'OnSaleBasketItemRefreshData');
 		}
 		if (COption::GetOptionString($module_id, "event_get_optimal_price", "Y") == "Y") {
-			RegisterModuleDependences('catalog', 'OnGetOptimalPrice', "kit.multiregions", 'CKitMultiRegions', 'OnGetOptimalPrice');
+			RegisterModuleDependences('catalog', 'OnGetOptimalPrice', "ammina.regions", 'CAmminaRegions', 'OnGetOptimalPrice');
 		} else {
-			UnRegisterModuleDependences('catalog', 'OnGetOptimalPrice', "kit.multiregions", 'CKitMultiRegions', 'OnGetOptimalPrice');
+			UnRegisterModuleDependences('catalog', 'OnGetOptimalPrice', "ammina.regions", 'CAmminaRegions', 'OnGetOptimalPrice');
 		}
 		if (COption::GetOptionString($module_id, "use_order_prefix", "N") == "Y") {
-			RegisterModuleDependences('sale', 'OnBeforeOrderAccountNumberSet', "kit.multiregions", 'CKitMultiRegions', 'OnBeforeOrderAccountNumberSet');
+			RegisterModuleDependences('sale', 'OnBeforeOrderAccountNumberSet', "ammina.regions", 'CAmminaRegions', 'OnBeforeOrderAccountNumberSet');
 		} else {
-			UnRegisterModuleDependences('sale', 'OnBeforeOrderAccountNumberSet', "kit.multiregions", 'CKitMultiRegions', 'OnBeforeOrderAccountNumberSet');
+			UnRegisterModuleDependences('sale', 'OnBeforeOrderAccountNumberSet', "ammina.regions", 'CAmminaRegions', 'OnBeforeOrderAccountNumberSet');
 		}
 
 		$arAgent = CAgent::GetList(
 			array(),
 			array(
-				"NAME" => '\Kit\MultiRegions\Agent\SiteMapGenerate::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\SiteMapGenerate::doExecute();',
 				"MODULE_ID" => $module_id,
 			)
 		)->Fetch();
 		if (COption::GetOptionString($module_id, "sitemapagent_active", "N") == "Y") {
 			$arFields = array(
-				"NAME" => '\Kit\MultiRegions\Agent\SiteMapGenerate::doExecute();',
+				"NAME" => '\Ammina\Regions\Agent\SiteMapGenerate::doExecute();',
 				"MODULE_ID" => $module_id,
 				"ACTIVE" => "Y",
 				"SORT" => 100,
@@ -384,18 +384,18 @@ if ($modulePermissions >= "R") {
 	$aTabs = array();
 	$aTabs[] = array(
 		'DIV' => 'edit1',
-		'TAB' => Loc::getMessage('kit.multiregions_TAB_SETTINGS_TITLE'),
-		'TITLE' => Loc::getMessage('kit.multiregions_TAB_SETTINGS_DESC'),
+		'TAB' => Loc::getMessage('ammina.regions_TAB_SETTINGS_TITLE'),
+		'TITLE' => Loc::getMessage('ammina.regions_TAB_SETTINGS_DESC'),
 	);
 	$aTabs[] = array(
 		'DIV' => 'edit2',
-		'TAB' => Loc::getMessage('kit.multiregions_TAB_SUPPORT_TITLE'),
-		'TITLE' => Loc::getMessage('kit.multiregions_TAB_SUPPORT_DESC'),
+		'TAB' => Loc::getMessage('ammina.regions_TAB_SUPPORT_TITLE'),
+		'TITLE' => Loc::getMessage('ammina.regions_TAB_SUPPORT_DESC'),
 	);
 	$aTabs[] = array(
 		'DIV' => 'editrights',
-		'TAB' => Loc::getMessage('kit.multiregions_TAB_RIGHTS_TITLE'),
-		'TITLE' => Loc::getMessage('kit.multiregions_TAB_RIGHTS_DESC'),
+		'TAB' => Loc::getMessage('ammina.regions_TAB_RIGHTS_TITLE'),
+		'TITLE' => Loc::getMessage('ammina.regions_TAB_RIGHTS_DESC'),
 	);
 	$tabControl = new CAdminTabControl('tabControl', $aTabs);
 
@@ -422,19 +422,19 @@ if ($modulePermissions >= "R") {
 							echo "<label for=\"" . htmlspecialcharsbx($Option[0]) . "\">" . $Option[1] . "</label>";
 							if ($Option[0] == "use_path_domain") {
 								?><br>
-								<small><?= Loc::getMessage("kit.multiregions_OPTION_USE_PATH_DOMAIN_NOTE") ?></small><?
+								<small><?= Loc::getMessage("ammina.regions_OPTION_USE_PATH_DOMAIN_NOTE") ?></small><?
 							} elseif ($Option[0] == "use_order_prefix") {
 								?><br>
-								<small><?= Loc::getMessage("kit.multiregions_OPTION_USE_ORDER_PREFIX_NOTE") ?></small><?
+								<small><?= Loc::getMessage("ammina.regions_OPTION_USE_ORDER_PREFIX_NOTE") ?></small><?
 							} elseif ($Option[0] == "sitemapagent_active") {
 								?><br>
-								<small><?= Loc::getMessage("kit.multiregions_OPTION_SITEMAPAGENT_ACTIVE_DESCRIPTION") ?></small><?
+								<small><?= Loc::getMessage("ammina.regions_OPTION_SITEMAPAGENT_ACTIVE_DESCRIPTION") ?></small><?
 							}
 						} else {
 							echo $Option[1];
 							if ($Option[0] == "pathdomain_list") {
 								?><br>
-								<small><?= Loc::getMessage("kit.multiregions_OPTION_PATHDOMAIN_LIST_NOTE") ?></small><?
+								<small><?= Loc::getMessage("ammina.regions_OPTION_PATHDOMAIN_LIST_NOTE") ?></small><?
 							}
 						}
 						?></td>
@@ -543,7 +543,7 @@ if ($modulePermissions >= "R") {
 		?>
 		<tr>
 			<td>
-				<? echo Loc::getMessage("kit.multiregions_TAB_SUPPORT_CONTENT"); ?>
+				<? echo Loc::getMessage("ammina.regions_TAB_SUPPORT_CONTENT"); ?>
 				<?
 				/*
 				if (COption::GetOptionString($module_id, "support", "N") != "Y") {
@@ -555,7 +555,7 @@ if ($modulePermissions >= "R") {
 							s.src = u + '?' + (Date.now() / 60000 | 0);
 							var h = d.getElementsByTagName('script')[0];
 							h.parentNode.insertBefore(s, h);
-						})(window, document, 'https://www.kit24.ru/upload/crm/site_button/loader_2_pyvnrh.js');
+						})(window, document, 'https://www.ammina24.ru/upload/crm/site_button/loader_2_pyvnrh.js');
 					</script>
 					<?
 				}
@@ -587,5 +587,5 @@ if ($modulePermissions >= "R") {
 		?>
 	</form>
 	<?
-	CKitMultiRegions::showSupportForm();
+	CAmminaRegions::showSupportForm();
 }

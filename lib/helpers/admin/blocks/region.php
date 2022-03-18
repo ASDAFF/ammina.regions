@@ -1,8 +1,8 @@
 <?php
 
-namespace Kit\MultiRegions\Helpers\Admin\Blocks;
+namespace Ammina\Regions\Helpers\Admin\Blocks;
 
-use Kit\MultiRegions\RegionLangTable;
+use Ammina\Regions\RegionLangTable;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
@@ -16,9 +16,9 @@ class Region
 	public static function getEdit($arItem)
 	{
 		global $APPLICATION;
-		$isSaleModule = \CKitMultiRegions::isIMExists();
+		$isSaleModule = \CAmminaRegions::isIMExists();
 		$strSelectCountry = '';
-		$rCountry = \Kit\MultiRegions\CountryTable::getList(array(
+		$rCountry = \Ammina\Regions\CountryTable::getList(array(
 			"select" => array("ID", "NAME"),
 			"order" => array("NAME" => "ASC"),
 		));
@@ -57,7 +57,7 @@ class Region
 			}
 		}
 		$arExternalLang = array();
-		$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+		$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 		$rLang = \CLanguage::GetList($b, $o, array());
 		while ($arLang = $rLang->Fetch()) {
 			if ($arLang['LID'] == "ru" || !in_array($arLang['LID'], $arAllowLangs)) {
@@ -68,7 +68,7 @@ class Region
 		$strLangEdit = '';
 		foreach ($arExternalLang as $k => $v) {
 			$strLangEdit .= '<tr>
-				<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_NAME") . ' (' . $v . '):</td>
+				<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_NAME") . ' (' . $v . '):</td>
 				<td class="adm-detail-content-cell-r">
 					<input type="text" class="adm-bus-input" name="FIELDS[LANG][' . $k . ']" maxlength="255" id="FIELD_LANG_' . $k . '" value="' . htmlspecialcharsbx($arCurrentLang[$k]) . '" />
 				</td>
@@ -82,42 +82,42 @@ class Region
 						<td class="adm-detail-content-cell-r">' . htmlspecialcharsbx($arItem['ID']) . '</td>
 					</tr>' : '') . '
 					<tr>
-						<td class="adm-detail-content-cell-l" width="40%">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_COUNTRY_ID") . ':</td>
+						<td class="adm-detail-content-cell-l" width="40%">' . Loc::getMessage("AMMINA_REGIONS_FIELD_COUNTRY_ID") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<select class="adm-bus-select" name="FIELDS[COUNTRY_ID]" id="FIELD_COUNTRY_ID">' . $strSelectCountry . '</select>
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_CODE") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_CODE") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[CODE]" maxlength="10" size="10" id="FIELD_CODE" value="' . htmlspecialcharsbx($arItem['CODE']) . '" />
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_NAME") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_NAME") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[NAME]" maxlength="255" id="FIELD_NAME" value="' . htmlspecialcharsbx($arItem['NAME']) . '" />
 						</td>
 					</tr>
 					' . $strLangEdit . '
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_OKATO") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_OKATO") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[OKATO]" id="FIELD_OKATO" value="' . htmlspecialcharsbx($arItem['OKATO']) . '" />
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_TIMEZONE") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_TIMEZONE") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[TIMEZONE]"id="FIELD_TIMEZONE" value="' . htmlspecialcharsbx($arItem['TIMEZONE']) . '" />
 						</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_LOCATION_ID") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_LOCATION_ID") . ':</td>
 						<td class="adm-detail-content-cell-r">' . ($strLocationContent ? $strLocationContent : '<input type="text" class="adm-bus-input" name="FIELDS[LOCATION_ID]"id="FIELD_LOCATION_ID" value="' . htmlspecialcharsbx($arItem['LOCATION_ID']) . '" />') . '</td>
 					</tr>
 					<tr>
-						<td class="adm-detail-content-cell-l">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_EXT_ID") . ':</td>
+						<td class="adm-detail-content-cell-l">' . Loc::getMessage("AMMINA_REGIONS_FIELD_EXT_ID") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[EXT_ID]"id="FIELD_EXT_ID" value="' . htmlspecialcharsbx($arItem['EXT_ID']) . '" disabled="disabled" />
 						</td>

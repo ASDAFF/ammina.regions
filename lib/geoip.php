@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\Service\GeoIp;
@@ -17,7 +17,7 @@ final class GeoIPHandler extends GeoIp\Base
 	 */
 	public function getTitle()
 	{
-		return Loc::getMessage("KIT_MULTIREGIONS_GEOIP_HANDLER_TITLE");
+		return Loc::getMessage("AMMINA_REGIONS_GEOIP_HANDLER_TITLE");
 	}
 
 	/**
@@ -25,7 +25,7 @@ final class GeoIPHandler extends GeoIp\Base
 	 */
 	public function getDescription()
 	{
-		return Loc::getMessage("KIT_MULTIREGIONS_GEOIP_HANDLER_DESCRIPTION");
+		return Loc::getMessage("AMMINA_REGIONS_GEOIP_HANDLER_DESCRIPTION");
 	}
 
 	public function getSupportedLanguages()
@@ -66,7 +66,7 @@ final class GeoIPHandler extends GeoIp\Base
 		$app = \Bitrix\Main\Application::getInstance();
 		$preventCity = intval($app->getContext()->getRequest()->getCookie("ARG_CITY"));
 
-		$arData = \Kit\MultiRegions\BlockTable::getCityByIP($ip, $preventCity);
+		$arData = \Ammina\Regions\BlockTable::getCityByIP($ip, $preventCity);
 		if (is_array($arData) && $arData['CITY']['ID'] > 0) {
 			if (amreg_strpos($arData['CITY']['NAME'], '(') !== false) {
 				$arData['CITY']['NAME'] = trim(amreg_substr($arData['CITY']['NAME'], 0, amreg_strpos($arData['CITY']['NAME'], '(') - 1));

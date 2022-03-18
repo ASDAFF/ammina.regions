@@ -3,19 +3,19 @@
 use Bitrix\Main\Localization\Loc;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-Bitrix\Main\Loader::includeModule('kit.multiregions');
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/kit.multiregions/prolog.php");
+Bitrix\Main\Loader::includeModule('ammina.regions');
+require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/ammina.regions/prolog.php");
 
 Loc::loadMessages(__FILE__);
 
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-$isSaleModule = CKitMultiRegions::isIMExists();
+$isSaleModule = CAmminaRegions::isIMExists();
 
-$sTableID = "tbl_kit_multiregions_city";
+$sTableID = "tbl_ammina_regions_city";
 
 $oSort = new CAdminSorting($sTableID, "BLOCK_START", "asc");
 $arOrder = (amreg_strtoupper($by) === "ID" ? array($by => $order) : array($by => $order, "ID" => "ASC"));
@@ -39,7 +39,7 @@ $arFilter = array(
 );
 
 $arCountryList = array();
-$rCountry = \Kit\MultiRegions\CountryTable::getList(array(
+$rCountry = \Ammina\Regions\CountryTable::getList(array(
 	"select" => array("ID", "NAME"),
 	"order" => array("NAME" => "ASC"),
 ));
@@ -47,7 +47,7 @@ while ($arCountry = $rCountry->fetch()) {
 	$arCountryList[$arCountry['ID']] = "[" . $arCountry['ID'] . "] " . $arCountry['NAME'];
 }
 $arRegionList = array();
-$rRegion = \Kit\MultiRegions\RegionTable::getList(array(
+$rRegion = \Ammina\Regions\RegionTable::getList(array(
 	"select" => array("ID", "NAME"),
 	"order" => array("NAME" => "ASC"),
 ));
@@ -57,7 +57,7 @@ while ($arRegion = $rRegion->fetch()) {
 $filterFields = array(
 	array(
 		"id" => "CITY.REGION.COUNTRY_ID",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_COUNTRY_ID"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_COUNTRY_ID"),
 		"filterable" => "",
 		"type" => "list",
 		"items" => $arCountryList,
@@ -66,7 +66,7 @@ $filterFields = array(
 	),
 	array(
 		"id" => "CITY.REGION_ID",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_REGION_ID"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_REGION_ID"),
 		"filterable" => "",
 		"type" => "list",
 		"items" => $arRegionList,
@@ -75,14 +75,14 @@ $filterFields = array(
 	),
 	array(
 		"id" => "CITY.NAME",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_CITY_NAME"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_CITY_NAME"),
 		"filterable" => "?",
 		"quickSearch" => "?",
 		"default" => true,
 	),
 	array(
 		"id" => "IP",
-		"name" => Loc::getMessage("KIT_MULTIREGIONS_FILTER_IP"),
+		"name" => Loc::getMessage("AMMINA_REGIONS_FILTER_IP"),
 		"filterable" => "",
 		"quickSearch" => "",
 		"default" => true,
@@ -106,79 +106,79 @@ if (isset($arFilter['IP'])) {
 $arHeader = array(
 	array(
 		"id" => "COUNTRY_ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_COUNTRY_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_COUNTRY_ID"),
 		"sort" => "CITY.REGION.COUNTRY.NAME",
 		"default" => true,
 	),
 	array(
 		"id" => "REGION_ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_REGION_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_REGION_ID"),
 		"sort" => "CITY.REGION.NAME",
 		"default" => true,
 	),
 	array(
 		"id" => "CITY_ID",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_CITY_ID"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_CITY_ID"),
 		"sort" => "CITY.NAME",
 		"default" => true,
 	),
 	array(
 		"id" => "BLOCK_START_1",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_START_1"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_START_1"),
 		"sort" => "BLOCK_START_1",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_START_2",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_START_2"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_START_2"),
 		"sort" => "BLOCK_START_2",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_START_3",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_START_3"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_START_3"),
 		"sort" => "BLOCK_START_3",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_START_4",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_START_4"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_START_4"),
 		"sort" => "BLOCK_START_4",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_END_1",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_END_1"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_END_1"),
 		"sort" => "BLOCK_END_1",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_END_2",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_END_2"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_END_2"),
 		"sort" => "BLOCK_END_2",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_END_3",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_END_3"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_END_3"),
 		"sort" => "BLOCK_END_3",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_END_4",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_END_4"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_END_4"),
 		"sort" => "BLOCK_END_4",
 		"default" => false,
 	),
 	array(
 		"id" => "BLOCK_START",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_START"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_START"),
 		"sort" => "BLOCK_START",
 		"default" => true,
 	),
 	array(
 		"id" => "BLOCK_END",
-		"content" => Loc::getMessage("KIT_MULTIREGIONS_FIELD_BLOCK_END"),
+		"content" => Loc::getMessage("AMMINA_REGIONS_FIELD_BLOCK_END"),
 		"sort" => "BLOCK_END",
 		"default" => true,
 	),
@@ -212,7 +212,7 @@ if ($usePageNavigation) {
 $totalCount = 0;
 $totalPages = 0;
 if ($usePageNavigation) {
-	$totalCount = \Kit\MultiRegions\BlockTable::getCount($getListParams['filter']);
+	$totalCount = \Ammina\Regions\BlockTable::getCount($getListParams['filter']);
 	if ($totalCount > 0) {
 		$totalPages = ceil($totalCount / $navyParams['SIZEN']);
 		if ($navyParams['PAGEN'] > $totalPages)
@@ -224,7 +224,7 @@ if ($usePageNavigation) {
 	$getListParams['offset'] = $navyParams['SIZEN'] * ($navyParams['PAGEN'] - 1);
 }
 
-$rsItems = \Kit\MultiRegions\BlockTable::getList($getListParams);
+$rsItems = \Ammina\Regions\BlockTable::getList($getListParams);
 $rsItems = new CAdminUiResult($rsItems, $sTableID);
 if ($usePageNavigation) {
 	$rsItems->NavStart($getListParams['limit'], $navyParams['SHOW_ALL'], $navyParams['PAGEN']);
@@ -238,9 +238,9 @@ $lAdmin->SetNavigationParams($rsItems);
 
 while ($arData = $rsItems->NavNext()) {
 	$row =& $lAdmin->AddRow($arData['ID'], $arData);
-	$row->AddViewField("COUNTRY_ID", $arData['COUNTRY_ID'] > 0 ? '[' . $arData['COUNTRY_ID'] . '] <a href="/bitrix/admin/kit.multiregions.country.edit.php?ID=' . $arData['COUNTRY_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['COUNTRY_NAME'] . '</a>' : "");
-	$row->AddViewField("REGION_ID", $arData['REGION_ID'] > 0 ? '[' . $arData['REGION_ID'] . '] <a href="/bitrix/admin/kit.multiregions.region.edit.php?ID=' . $arData['REGION_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['REGION_NAME'] . '</a>' : "");
-	$row->AddViewField("CITY_ID", $arData['CITY_ID'] > 0 ? '[' . $arData['CITY_ID'] . '] <a href="/bitrix/admin/kit.multiregions.city.edit.php?ID=' . $arData['CITY_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['CITY_NAME'] . '</a>' : "");
+	$row->AddViewField("COUNTRY_ID", $arData['COUNTRY_ID'] > 0 ? '[' . $arData['COUNTRY_ID'] . '] <a href="/bitrix/admin/ammina.regions.country.edit.php?ID=' . $arData['COUNTRY_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['COUNTRY_NAME'] . '</a>' : "");
+	$row->AddViewField("REGION_ID", $arData['REGION_ID'] > 0 ? '[' . $arData['REGION_ID'] . '] <a href="/bitrix/admin/ammina.regions.region.edit.php?ID=' . $arData['REGION_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['REGION_NAME'] . '</a>' : "");
+	$row->AddViewField("CITY_ID", $arData['CITY_ID'] > 0 ? '[' . $arData['CITY_ID'] . '] <a href="/bitrix/admin/ammina.regions.city.edit.php?ID=' . $arData['CITY_ID'] . '&lang=' . LANGUAGE_ID . '">' . $arData['CITY_NAME'] . '</a>' : "");
 	$ipStart = array();
 	$ip = $arData['BLOCK_START'];
 	$ipStart[0] = intval($ip / 16777216);
@@ -270,7 +270,7 @@ while ($arData = $rsItems->NavNext()) {
 			"ICON" => "view",
 			"TEXT" => Loc::getMessage("MAIN_ADMIN_MENU_VIEW"),
 			"DEFAULT" => true,
-			"ACTION" => $lAdmin->ActionRedirect("kit.multiregions.block.view.php?ID=" . $arData['ID'] . "&lang=" . LANGUAGE_ID),
+			"ACTION" => $lAdmin->ActionRedirect("ammina.regions.block.view.php?ID=" . $arData['ID'] . "&lang=" . LANGUAGE_ID),
 		);
 		*/
 	}
@@ -297,12 +297,12 @@ if ($modulePermissions >= "W") {
 
 $lAdmin->CheckListMode();
 
-$APPLICATION->SetTitle(Loc::getMessage("KIT_MULTIREGIONS_PAGE_TITLE"));
+$APPLICATION->SetTitle(Loc::getMessage("AMMINA_REGIONS_PAGE_TITLE"));
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
 $lAdmin->DisplayFilter($filterFields);
 
 $lAdmin->DisplayList();
-CKitMultiRegions::showSupportForm();
+CAmminaRegions::showSupportForm();
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

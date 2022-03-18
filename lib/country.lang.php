@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 
@@ -9,7 +9,7 @@ class CountryLangTable extends DataManager
 
 	public static function getTableName()
 	{
-		return 'am_multiregions_country_lang';
+		return 'am_regions_country_lang';
 	}
 
 	public static function getMap()
@@ -24,7 +24,7 @@ class CountryLangTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'COUNTRY' => array(
-				'data_type' => '\Kit\MultiRegions\Country',
+				'data_type' => '\Ammina\Regions\Country',
 				'reference' => array('=this.COUNTRY_ID' => 'ref.ID'),
 			),
 			'LID' => array(
@@ -61,6 +61,6 @@ class CountryLangTable extends DataManager
 		while ($arName = $rNames->fetch()) {
 			$arAllNames[$arName['LID']] = $arName['NAME'];
 		}
-		return \CKitMultiRegions::getListLangNames($arAllNames, $lang);
+		return \CAmminaRegions::getListLangNames($arAllNames, $lang);
 	}
 }

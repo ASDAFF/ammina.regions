@@ -1,11 +1,11 @@
 <?php
 
-namespace Kit\MultiRegions\Helpers\Admin\Blocks;
+namespace Ammina\Regions\Helpers\Admin\Blocks;
 
-use Kit\MultiRegions\CityTable;
-use Kit\MultiRegions\CountryTable;
-use Kit\MultiRegions\DomainLocationTable;
-use Kit\MultiRegions\RegionTable;
+use Ammina\Regions\CityTable;
+use Ammina\Regions\CountryTable;
+use Ammina\Regions\DomainLocationTable;
+use Ammina\Regions\RegionTable;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
@@ -21,17 +21,17 @@ class DomainLocation
 	{
 		global $APPLICATION;
 		\CJSCore::Init(array("jquery2"));
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/domain.location.js");
-		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/kit.multiregions.css");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/domain.location.js");
+		$APPLICATION->SetAdditionalCSS("/bitrix/themes/.default/ammina.regions.css");
 		/*
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/content.js");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/content.js");
 		*/
 		return '
 			<script type="text/javascript">
 				$(document).ready(function(){
-					$(".kit-multiregions-domain-location-table input[data-action=\'country\']").kitMultiRegionsAdminBlockContent();
-					$(".kit-multiregions-domain-location-table input[data-action=\'region\']").kitMultiRegionsAdminBlockContent();
-					$(".kit-multiregions-domain-location-table input[data-action=\'city\']").kitMultiRegionsAdminBlockContent();
+					$(".ammina-regions-domain-location-table input[data-action=\'country\']").amminaRegionsAdminBlockContent();
+					$(".ammina-regions-domain-location-table input[data-action=\'region\']").amminaRegionsAdminBlockContent();
+					$(".ammina-regions-domain-location-table input[data-action=\'city\']").amminaRegionsAdminBlockContent();
 				});
 			</script>
 		';
@@ -83,7 +83,7 @@ class DomainLocation
 				?>
 				<tr>
 					<td>
-						<div class="bammultiregionsadm-area-item">
+						<div class="bamregionsadm-area-item">
 							<input type="text" class="adm-bus-input" maxlength="255"
 								   id="FIELD_LOCATION_COUNTRY_<?= $arLoc['ID'] ?>"
 								   value="<?= htmlspecialcharsbx($arLoc['COUNTRY']) ?>" data-action="country"
@@ -94,7 +94,7 @@ class DomainLocation
 						</div>
 					</td>
 					<td>
-						<div class="bammultiregionsadm-area-item">
+						<div class="bamregionsadm-area-item">
 							<input type="text" class="adm-bus-input" maxlength="255"
 								   id="FIELD_LOCATION_REGION_<?= $arLoc['ID'] ?>"
 								   value="<?= htmlspecialcharsbx($arLoc['REGION']) ?>" data-action="region"
@@ -105,7 +105,7 @@ class DomainLocation
 						</div>
 					</td>
 					<td>
-						<div class="bammultiregionsadm-area-item">
+						<div class="bamregionsadm-area-item">
 							<input type="text" class="adm-bus-input" maxlength="255"
 								   id="FIELD_LOCATION_CITY_<?= $arLoc['ID'] ?>"
 								   value="<?= htmlspecialcharsbx($arLoc['CITY']) ?>" data-action="city"
@@ -124,32 +124,32 @@ class DomainLocation
 			ob_end_clean();
 		}
 		$result = '
-			<table border="0" cellspacing="5" cellpadding="5" width="100%" class="adm-detail-content-table edit-table kit-multiregions-domain-location-table">
+			<table border="0" cellspacing="5" cellpadding="5" width="100%" class="adm-detail-content-table edit-table ammina-regions-domain-location-table">
 				<thead>
 					<tr class="heading">
-						<td style="text-align: left !important;">' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_COUNTRY") . '</td>
-						<td style="text-align: left !important;">' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_REGION") . '</td>
-						<td style="text-align: left !important;">' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_CITY") . '</td>
-						<td>' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_DELETE") . '</td>					
+						<td style="text-align: left !important;">' . Loc::getMessage("AMMINA_REGIONS_HEADER_COUNTRY") . '</td>
+						<td style="text-align: left !important;">' . Loc::getMessage("AMMINA_REGIONS_HEADER_REGION") . '</td>
+						<td style="text-align: left !important;">' . Loc::getMessage("AMMINA_REGIONS_HEADER_CITY") . '</td>
+						<td>' . Loc::getMessage("AMMINA_REGIONS_HEADER_DELETE") . '</td>					
 					</tr>				
 				</thead>
 				<tbody data-next="1">
 				' . $strCurrentLocations . '
 					<tr>
 						<td>
-							<div class="bammultiregionsadm-area-item">
+							<div class="bamregionsadm-area-item">
 								<input type="text" class="adm-bus-input" maxlength="255" id="FIELD_LOCATION_COUNTRY_n0" value="" data-action="country" data-result-id="FIELD_LOCATION_COUNTRY_ID_n0" autocomplete="off" />
 								<input type="hidden" name="FIELDS[LOCATION][n0][COUNTRY_ID]" id="FIELD_LOCATION_COUNTRY_ID_n0" value="" />
 							</div>
 						</td>
 						<td>
-							<div class="bammultiregionsadm-area-item">
+							<div class="bamregionsadm-area-item">
 								<input type="text" class="adm-bus-input" maxlength="255" id="FIELD_LOCATION_REGION_n0" value="" data-action="region" data-result-id="FIELD_LOCATION_REGION_ID_n0" autocomplete="off" />
 								<input type="hidden" name="FIELDS[LOCATION][n0][REGION_ID]" id="FIELD_LOCATION_REGION_ID_n0" value="" />
 							</div>
 						</td>
 						<td>
-							<div class="bammultiregionsadm-area-item">
+							<div class="bamregionsadm-area-item">
 								<input type="text" class="adm-bus-input" maxlength="255" id="FIELD_LOCATION_CITY_n0" value="" data-action="city" data-result-id="FIELD_LOCATION_CITY_ID_n0" autocomplete="off" />
 								<input type="hidden" name="FIELDS[LOCATION][n0][CITY_ID]" id="FIELD_LOCATION_CITY_ID_n0" value="" />
 							</div>
@@ -163,7 +163,7 @@ class DomainLocation
 					<tr>
 						<td colspan="4" style="text-align: right; padding-top:20px;">
 							<div class="adm-workarea">
-								<input type="button" value="' . Loc::getMessage("KIT_MULTIREGIONS_BUTTON_ADD") . '" title="' . Loc::getMessage("KIT_MULTIREGIONS_BUTTON_ADD") . '" id="AR_DOMAIN_LOCATION_ADD" />
+								<input type="button" value="' . Loc::getMessage("AMMINA_REGIONS_BUTTON_ADD") . '" title="' . Loc::getMessage("AMMINA_REGIONS_BUTTON_ADD") . '" id="AR_DOMAIN_LOCATION_ADD" />
 							</div>
 						</td>
 					</tr>

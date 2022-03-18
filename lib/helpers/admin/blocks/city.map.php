@@ -1,6 +1,6 @@
 <?php
 
-namespace Kit\MultiRegions\Helpers\Admin\Blocks;
+namespace Ammina\Regions\Helpers\Admin\Blocks;
 
 use Bitrix\Main\Localization\Loc;
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Kit\MultiRegions\Helpers\Admin\Blocks;
+namespace Ammina\Regions\Helpers\Admin\Blocks;
 
-use Kit\MultiRegions\CityTable;
-use Kit\MultiRegions\CountryTable;
-use Kit\MultiRegions\DomainVariableTable;
-use Kit\MultiRegions\RegionTable;
-use Kit\MultiRegions\VariableTable;
+use Ammina\Regions\CityTable;
+use Ammina\Regions\CountryTable;
+use Ammina\Regions\DomainVariableTable;
+use Ammina\Regions\RegionTable;
+use Ammina\Regions\VariableTable;
 use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
@@ -21,7 +21,7 @@ class DomainVariable
 	public static function getScripts()
 	{
 		global $APPLICATION;
-		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/kit.multiregions/admin/domain.variable.js");
+		\Bitrix\Main\Page\Asset::getInstance()->addJs("/bitrix/js/ammina.regions/admin/domain.variable.js");
 	}
 
 	public static function getEdit($arItem)
@@ -39,7 +39,7 @@ class DomainVariable
 			}
 		}
 		$arExternalLang = array();
-		$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+		$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 		$rLang = \CLanguage::GetList($b, $o, array());
 		while ($arLang = $rLang->Fetch()) {
 			if ($arLang['LID'] == "ru" || !in_array($arLang['LID'], $arAllowLangs)) {
@@ -58,8 +58,8 @@ class DomainVariable
 			<tr>
 				<td>
 					<?= $arVariable['NAME'] ?><br/>
-					<small>#KIT_MULTIREGIONS_<?= $arVariable['CODE'] ?>#</small><br/>
-					<small>$GLOBALS['KIT_MULTIREGIONS']['<?= $arVariable['CODE'] ?>']</small>
+					<small>#AMMINA_REGIONS_<?= $arVariable['CODE'] ?>#</small><br/>
+					<small>$GLOBALS['AMMINA_REGIONS']['<?= $arVariable['CODE'] ?>']</small>
 				</td>
 				<td>
 					<?
@@ -154,18 +154,18 @@ class DomainVariable
 			<table border="0" cellspacing="0" cellpadding="0" width="100%" class="adm-detail-content-table edit-table">
 				<tbody>
 					<tr>
-						<td class="adm-detail-content-cell-l" width="40%">' . Loc::getMessage("KIT_MULTIREGIONS_FIELD_VARIABLE_SEPARATOR") . ':</td>
+						<td class="adm-detail-content-cell-l" width="40%">' . Loc::getMessage("AMMINA_REGIONS_FIELD_VARIABLE_SEPARATOR") . ':</td>
 						<td class="adm-detail-content-cell-r">
 							<input type="text" class="adm-bus-input" name="FIELDS[VARIABLE_SEPARATOR]" maxlength="255" id="FIELD_VARIABLE_SEPARATOR" value="' . htmlspecialcharsbx($arItem['VARIABLE_SEPARATOR']) . '" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<table border="0" cellspacing="5" cellpadding="5" width="100%" class="adm-detail-content-table edit-table kit-multiregions-domain-variable-table">
+			<table border="0" cellspacing="5" cellpadding="5" width="100%" class="adm-detail-content-table edit-table ammina-regions-domain-variable-table">
 				<thead>
 					<tr class="heading">
-						<td style="text-align: left !important;">' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_VARIABLE_NAME") . ', ' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_VARIABLE_TEMPLATE") . ', ' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_VARIABLE_GLOBALS") . '</td>
-						<td style="text-align: left !important;">' . Loc::getMessage("KIT_MULTIREGIONS_HEADER_VARIABLE_VALUE") . '</td>
+						<td style="text-align: left !important;">' . Loc::getMessage("AMMINA_REGIONS_HEADER_VARIABLE_NAME") . ', ' . Loc::getMessage("AMMINA_REGIONS_HEADER_VARIABLE_TEMPLATE") . ', ' . Loc::getMessage("AMMINA_REGIONS_HEADER_VARIABLE_GLOBALS") . '</td>
+						<td style="text-align: left !important;">' . Loc::getMessage("AMMINA_REGIONS_HEADER_VARIABLE_VALUE") . '</td>
 						' . $strLangTitles . '					
 					</tr>				
 				</thead>

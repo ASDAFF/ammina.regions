@@ -1,2 +1,2 @@
 <?
-$MESS['KIT_REGION_IBPROP_CITY_DESCRIPTION'] = "Kit.MultiRegions: Город";
+$MESS['AMMINA_REGION_IBPROP_CITY_DESCRIPTION'] = "Ammina.Regions: Город";

@@ -1,8 +1,8 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
-use Kit\MultiRegions\Parser\SypexGeo;
+use Ammina\Regions\Parser\SypexGeo;
 use Bitrix\Landing\Block;
 use Bitrix\Main\ORM\Fields\ExpressionField;
 use Bitrix\Main\Localization\Loc;
@@ -32,7 +32,7 @@ class Import
 		$this->NS = $NS;
 		$this->startTime = $startTime;
 		$this->oSypexGeo = new SypexGeo();
-		$this->arAllowCountryCode = explode("|", \COption::GetOptionString("kit.multiregions", "only_country", ""));
+		$this->arAllowCountryCode = explode("|", \COption::GetOptionString("ammina.regions", "only_country", ""));
 		foreach ($this->arAllowCountryCode as $k => $v) {
 			$this->arAllowCountryCode[$k] = trim($v);
 			if (amreg_strlen($this->arAllowCountryCode[$k]) <= 0) {
@@ -135,77 +135,77 @@ class Import
 	{
 		global $DB;
 		if (!$DB->Query("TRUNCATE TABLE `" . BlockTable::getTableName() . "`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_BLOCK");
 			return false;
 		}
 		$arIndexes = $this->getAllIndexesBlock();
 		if (in_array("IX_BLOCK_START_1", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_START_1`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_START_2", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_START_2`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_START_3", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_START_3`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_START_4", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_START_4`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_END_1", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_END_1`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_END_2", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_END_2`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_END_3", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_END_3`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_END_4", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_END_4`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_START", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_START`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if (in_array("IX_BLOCK_END", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` DROP KEY `IX_BLOCK_END`;", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_DROP_KEY_BLOCK");
 			return false;
 		}
 		if ($this->NS['DELETE_CITY'] === "Y") {
 			if (!$DB->Query("TRUNCATE TABLE `" . CityTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_CITY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_CITY");
 				return false;
 			}
 			if (!$DB->Query("TRUNCATE TABLE `" . CityLangTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_CITY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_CITY");
 				return false;
 			}
 			if (!$DB->Query("TRUNCATE TABLE `" . RegionTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_REGION");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_REGION");
 				return false;
 			}
 			if (!$DB->Query("TRUNCATE TABLE `" . RegionLangTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_REGION");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_REGION");
 				return false;
 			}
 			if (!$DB->Query("TRUNCATE TABLE `" . CountryTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_COUNTRY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_COUNTRY");
 				return false;
 			}
 			if (!$DB->Query("TRUNCATE TABLE `" . CountryLangTable::getTableName() . "`;", true)) {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_TRUNCATE_COUNTRY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_TRUNCATE_COUNTRY");
 				return false;
 			}
 		}
-		$this->doDeleteDirectory($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/");
+		$this->doDeleteDirectory($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/");
 		$this->NS['STEP'] = 1;
 		return true;
 	}
@@ -221,14 +221,14 @@ class Import
 			if ($bResult) {
 				$this->arImportData['LOADED_INFO_FILE'] = true;
 			} else {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP1_LOAD_INFO");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP1_LOAD_INFO");
 			}
 		} else {
 			$bResult = $this->oSypexGeo->doDownloadFileCity();
 			if ($bResult) {
 				$this->NS['STEP'] = 2;
 			} else {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP1_LOAD_CITY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP1_LOAD_CITY");
 			}
 		}
 		return $bResult;
@@ -245,14 +245,14 @@ class Import
 			if ($bResult) {
 				$this->arImportData['EXTRACT_INFO_FILE'] = true;
 			} else {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP2_EXTRACT_INFO");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP2_EXTRACT_INFO");
 			}
 		} else {
 			$bResult = $this->oSypexGeo->doExtractFileCity();
 			if ($bResult) {
 				$this->NS['STEP'] = 3;
 			} else {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP2_EXTRACT_CITY");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP2_EXTRACT_CITY");
 			}
 		}
 		return $bResult;
@@ -275,7 +275,7 @@ class Import
 		$strStart = "";
 		$strEnd = "";
 		$arEnd = array();
-		$this->oSypexGeo->loadCityFile(\COption::GetOptionString("kit.multiregions", "mode_import", SypexGeo::SXGEO_BATCH));
+		$this->oSypexGeo->loadCityFile(\COption::GetOptionString("ammina.regions", "mode_import", SypexGeo::SXGEO_BATCH));
 		for ($i1 = $arIP[0]; $i1 <= 255; $i1++) {
 			for ($i2 = $arIP[1]; $i2 <= 255; $i2++) {
 				for ($i3 = $arIP[2]; $i3 <= 255; $i3++) {
@@ -303,7 +303,7 @@ class Import
 							"EXT_ID" => $arCityData['country']['id'],
 						);
 						if (!$this->doCheckCountryDB($arFields)) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_COUNTRY");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_COUNTRY");
 							return false;
 						}
 						$COUNTRY_ID = $this->arCacheData['COUNTRY'][$arFields['EXT_ID']];
@@ -319,7 +319,7 @@ class Import
 							"EXT_ID" => $arCityData['region']['id'],
 						);
 						if (!$this->doCheckRegionDB($arFields)) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_REGION");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_REGION");
 							return false;
 						}
 						$REGION_ID = $this->arCacheData['REGION'][$arFields['EXT_ID']];
@@ -336,7 +336,7 @@ class Import
 							"EXT_ID" => $arCityData['city']['id'],
 						);
 						if (!$this->doCheckCityDB($arFields)) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_CITY");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_CITY");
 							return false;
 						}
 						$CITY_ID = $this->arCacheData['CITY'][$arFields['EXT_ID']];
@@ -356,7 +356,7 @@ class Import
 									return true;
 								}
 							} else {
-								$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_BLOCK");
+								$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_BLOCK");
 								return false;
 							}
 							if ($this->doEndTimeInterval()) {
@@ -375,7 +375,7 @@ class Import
 									return true;
 								}
 							} else {
-								$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_BLOCK");
+								$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_BLOCK");
 								return false;
 							}
 							if ($this->doEndTimeInterval()) {
@@ -396,7 +396,7 @@ class Import
 				$this->oSypexGeo->closeCityFile();
 				return true;
 			} else {
-				$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP3_CHECK_BLOCK");
+				$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP3_CHECK_BLOCK");
 				return false;
 			}
 		} else {
@@ -411,12 +411,12 @@ class Import
 	 */
 	protected function doStep4()
 	{
-		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/country.tsv";
+		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/country.tsv";
 		if (!defined("BX_UTF") || BX_UTF !== true) {
-			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/country.win.tsv")) {
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/country.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/country.tsv")));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/country.win.tsv")) {
+				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/country.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/country.tsv")));
 			}
-			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/country.win.tsv";
+			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/country.win.tsv";
 		}
 		if (!isset($this->arImportData['STEP4_TOTAL'])) {
 			$this->arImportData['STEP4_TOTAL'] = 0;
@@ -474,14 +474,14 @@ class Import
 					if (!empty($arUpdate)) {
 						$dbRes = CountryTable::update($arData['ID'], $arUpdate);
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP4_UPDATE_COUNTRY");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP4_UPDATE_COUNTRY");
 							return false;
 						}
 					}
 				} else {
 					$dbRes = CountryTable::add($arFields);
 					if (!$dbRes->isSuccess()) {
-						$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP4_ADD_COUNTRY");
+						$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP4_ADD_COUNTRY");
 						return false;
 					}
 				}
@@ -503,12 +503,12 @@ class Import
 	 */
 	protected function doStep5()
 	{
-		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/region.tsv";
+		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/region.tsv";
 		if (!defined("BX_UTF") || BX_UTF !== true) {
-			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/region.win.tsv")) {
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/region.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/region.tsv")));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/region.win.tsv")) {
+				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/region.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/region.tsv")));
 			}
-			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/region.win.tsv";
+			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/region.win.tsv";
 		}
 		if (!isset($this->arImportData['STEP5_TOTAL'])) {
 			$this->arImportData['STEP5_TOTAL'] = 0;
@@ -578,7 +578,7 @@ class Import
 					if (!empty($arUpdate)) {
 						$dbRes = RegionTable::update($arData['ID'], $arUpdate);
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP5_UPDATE_REGION");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP5_UPDATE_REGION");
 							return false;
 						}
 					}
@@ -586,7 +586,7 @@ class Import
 					if ($arFields['COUNTRY_ID'] > 0) {
 						$dbRes = RegionTable::add($arFields);
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP5_ADD_REGION");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP5_ADD_REGION");
 							return false;
 						}
 					}
@@ -609,12 +609,12 @@ class Import
 	 */
 	protected function doStep6()
 	{
-		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/city.tsv";
+		$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/city.tsv";
 		if (!defined("BX_UTF") || BX_UTF !== true) {
-			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/city.win.tsv")) {
-				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/city.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/city.tsv")));
+			if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/city.win.tsv")) {
+				file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/city.win.tsv", iconv("utf-8", "windows-1251", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/city.tsv")));
 			}
-			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/kit/multiregions/db/sypexgeo/info/city.win.tsv";
+			$strFile = $_SERVER['DOCUMENT_ROOT'] . "/bitrix/ammina/regions/db/sypexgeo/info/city.win.tsv";
 		}
 		if (!isset($this->arImportData['STEP6_TOTAL'])) {
 			$this->arImportData['STEP6_TOTAL'] = 0;
@@ -679,7 +679,7 @@ class Import
 					if (!empty($arUpdate)) {
 						$dbRes = CityTable::update($arData['ID'], $arUpdate);
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP6_UPDATE_CITY");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP6_UPDATE_CITY");
 							return false;
 						}
 					}
@@ -687,7 +687,7 @@ class Import
 					if ($arFields['REGION_ID'] > 0) {
 						$dbRes = CityTable::add($arFields);
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP6_ADD_CITY");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP6_ADD_CITY");
 							return false;
 						}
 					}
@@ -713,43 +713,43 @@ class Import
 		global $DB;
 		$arIndexes = $this->getAllIndexesBlock();
 		if (!in_array("IX_BLOCK_START_1", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_START_1` (`BLOCK_START_1`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_START_2", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_START_2` (`BLOCK_START_2`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_START_3", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_START_3` (`BLOCK_START_3`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_START_4", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_START_4` (`BLOCK_START_4`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_END_1", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_END_1` (`BLOCK_END_1`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_END_2", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_END_2` (`BLOCK_END_2`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_END_3", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_END_3` (`BLOCK_END_3`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_END_4", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_END_4` (`BLOCK_END_4`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_START", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_START` (`BLOCK_START`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		if (!in_array("IX_BLOCK_END", $arIndexes) && !$DB->Query("ALTER TABLE `" . BlockTable::getTableName() . "` ADD KEY `IX_BLOCK_END` (`BLOCK_END`);", true)) {
-			$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
+			$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_TABLE_ALTER_ADD_KEY_BLOCK");
 			return false;
 		}
 		$this->NS['STEP'] = 8;
@@ -810,7 +810,7 @@ class Import
 							"LOCATION_ID" => $arLocation['ID'],
 						));
 						if (!$dbRes->isSuccess()) {
-							$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP8_UPDATE_COUNTRY_LOCATION");
+							$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP8_UPDATE_COUNTRY_LOCATION");
 							return false;
 						}
 					}
@@ -965,7 +965,7 @@ class Import
 									"LOCATION_ID" => $arLocation['ID'],
 								));
 								if (!$dbRes->isSuccess()) {
-									$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP9_UPDATE_REGION_LOCATION");
+									$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP9_UPDATE_REGION_LOCATION");
 									return false;
 								}
 							}
@@ -1226,7 +1226,7 @@ class Import
 									"LOCATION_ID" => $arLocation['ID'],
 								));
 								if (!$dbRes->isSuccess()) {
-									$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP10_UPDATE_CITY_LOCATION");
+									$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP10_UPDATE_CITY_LOCATION");
 									return false;
 								}
 							}
@@ -1235,7 +1235,7 @@ class Import
 								"LOCATION_ID" => '0',
 							));
 							if (!$dbRes->isSuccess()) {
-								$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP10_UPDATE_CITY_LOCATION");
+								$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP10_UPDATE_CITY_LOCATION");
 								return false;
 							}
 						}
@@ -1387,7 +1387,7 @@ class Import
 							);
 							$dbRes = CityTable::add($arFields);
 							if (!$dbRes->isSuccess()) {
-								$this->arErrors[] = Loc::getMessage("kit.multiregions_ERROR_STEP11_ADD_CITY" . '<br/><pre>' . print_r($arLocation, true) . '</pre>');
+								$this->arErrors[] = Loc::getMessage("ammina.regions_ERROR_STEP11_ADD_CITY" . '<br/><pre>' . print_r($arLocation, true) . '</pre>');
 								return false;
 							}
 						}
@@ -1472,7 +1472,7 @@ class Import
 
 	protected function doCheckIPBlock($startIP, $endIP, $cityId)
 	{
-		if (\COption::GetOptionString("kit.multiregions", "not_load_ip_block", "Y") == "Y") {
+		if (\COption::GetOptionString("ammina.regions", "not_load_ip_block", "Y") == "Y") {
 			return true;
 		}
 		$arIP1 = explode(".", $startIP);
@@ -1541,7 +1541,7 @@ class Import
 		/**
 		 * @todo ƒобавить глобальную пользовательскую проверку переименований
 		 */
-		$arTmp = explode("===", Loc::getMessage("kit.multiregions_SYSTEM_REPLACE_REGION"));
+		$arTmp = explode("===", Loc::getMessage("ammina.regions_SYSTEM_REPLACE_REGION"));
 		$arData = array();
 		foreach ($arTmp as $v) {
 			$arV = explode("---", $v);
@@ -1561,8 +1561,8 @@ class Import
 
 	protected function doCheckCityData($arData)
 	{
-		if ($arData['region']['name_ru'] == Loc::getMessage("kit.multiregions_SYS_REPLACE_KRIM") || $arData['region']['name_en'] == "Avtonomna Respublika Krym") {
-			$arData['country']['name_ru'] = Loc::getMessage("kit.multiregions_SYS_REPLACE_KRIM_RUSSIA");
+		if ($arData['region']['name_ru'] == Loc::getMessage("ammina.regions_SYS_REPLACE_KRIM") || $arData['region']['name_en'] == "Avtonomna Respublika Krym") {
+			$arData['country']['name_ru'] = Loc::getMessage("ammina.regions_SYS_REPLACE_KRIM_RUSSIA");
 			$arData['country']['name_en'] = "Russia";
 			$arData['country']['iso'] = "RU";
 			$arCountry = CountryTable::getList(array(
@@ -1573,10 +1573,10 @@ class Import
 			))->fetch();
 			$arData['country']['id'] = $arCountry['EXT_ID'];
 			$arData['region']['iso'] = "RU-CR";
-			$arData['region']['name_ru'] = Loc::getMessage("kit.multiregions_SYS_REPLACE_KRIM_REGION");
+			$arData['region']['name_ru'] = Loc::getMessage("ammina.regions_SYS_REPLACE_KRIM_REGION");
 			$arData['region']['name_en'] = "Krym";
-		} elseif ($arData['region']['name_ru'] == Loc::getMessage("kit.multiregions_SYS_REPLACE_SEVASTOPOL") || $arData['region']['name_en'] == "Sevastopol'" || $arData['region']['name_en'] == "Sevastopol") {
-			$arData['country']['name_ru'] = Loc::getMessage("kit.multiregions_SYS_REPLACE_SEVASTOPOL_RUSSIA");
+		} elseif ($arData['region']['name_ru'] == Loc::getMessage("ammina.regions_SYS_REPLACE_SEVASTOPOL") || $arData['region']['name_en'] == "Sevastopol'" || $arData['region']['name_en'] == "Sevastopol") {
+			$arData['country']['name_ru'] = Loc::getMessage("ammina.regions_SYS_REPLACE_SEVASTOPOL_RUSSIA");
 			$arData['country']['name_en'] = "Russia";
 			$arData['country']['iso'] = "RU";
 			$arCountry = CountryTable::getList(array(
@@ -1587,7 +1587,7 @@ class Import
 			))->fetch();
 			$arData['country']['id'] = $arCountry['EXT_ID'];
 			$arData['region']['iso'] = "RU-SE";
-			$arData['region']['name_ru'] = Loc::getMessage("kit.multiregions_SYS_REPLACE_SEVASTOPOL_REGION");
+			$arData['region']['name_ru'] = Loc::getMessage("ammina.regions_SYS_REPLACE_SEVASTOPOL_REGION");
 			$arData['region']['name_en'] = "Sevastopol'";
 		}
 		return $arData;
@@ -1595,16 +1595,16 @@ class Import
 
 	protected function doCheckRegionDataFromCsv($arFields)
 	{
-		if ($arFields[3] == Loc::getMessage("kit.multiregions_SYS_REPLACE_KRIM") || $arFields[4] == "Avtonomna Respublika Krym") {
+		if ($arFields[3] == Loc::getMessage("ammina.regions_SYS_REPLACE_KRIM") || $arFields[4] == "Avtonomna Respublika Krym") {
 			$arFields[1] = "RU-CR";
 			$arFields[2] = "RU";
-			$arFields[3] = Loc::getMessage("kit.multiregions_SYS_REPLACE_KRIM_REGION");
+			$arFields[3] = Loc::getMessage("ammina.regions_SYS_REPLACE_KRIM_REGION");
 			$arFields[4] = "Krym";
 			$arFields[6] = "35";
-		} elseif ($arFields[3] == Loc::getMessage("kit.multiregions_SYS_REPLACE_SEVASTOPOL") || $arFields[4] == "Sevastopol'" || $arFields[4] == "Sevastopol") {
+		} elseif ($arFields[3] == Loc::getMessage("ammina.regions_SYS_REPLACE_SEVASTOPOL") || $arFields[4] == "Sevastopol'" || $arFields[4] == "Sevastopol") {
 			$arFields[1] = "RU-SE";
 			$arFields[2] = "RU";
-			$arFields[3] = Loc::getMessage("kit.multiregions_SYS_REPLACE_SEVASTOPOL_REGION");
+			$arFields[3] = Loc::getMessage("ammina.regions_SYS_REPLACE_SEVASTOPOL_REGION");
 			$arFields[4] = "Sevastopol'";
 			$arFields[6] = "35";
 		}

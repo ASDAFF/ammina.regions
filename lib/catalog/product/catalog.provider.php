@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions\Catalog\Product;
+namespace Ammina\Regions\Catalog\Product;
 
 use Bitrix\Catalog\Config\State;
 use Bitrix\Catalog\StoreProductTable;
@@ -19,7 +19,7 @@ class CatalogProvider extends \Bitrix\Catalog\Product\CatalogProvider
 
 		$arData = $oResult->getData();
 		foreach ($arData['PRODUCT_DATA_LIST'] as $k => $v) {
-			$arStoreData = \CKitMultiRegions::getStoreQuantityForCurrentDomain($k);
+			$arStoreData = \CAmminaRegions::getStoreQuantityForCurrentDomain($k);
 			foreach ($v['PRICE_LIST'] as $k1 => $v1) {
 				if ($v1['QUANTITY'] > $arStoreData['QUANTITY']) {
 					$arData['PRODUCT_DATA_LIST'][$k]['CAN_BUY'] = "N";
@@ -42,7 +42,7 @@ class CatalogProvider extends \Bitrix\Catalog\Product\CatalogProvider
 		$oResult = parent::getAvailableQuantity($products);
 		$arData = $oResult->getData();
 		foreach ($arData['AVAILABLE_QUANTITY_LIST'] as $k => $v) {
-			$arStoreData = \CKitMultiRegions::getStoreQuantityForCurrentDomain($k);
+			$arStoreData = \CAmminaRegions::getStoreQuantityForCurrentDomain($k);
 			if ($arData['AVAILABLE_QUANTITY_LIST'][$k] > $arStoreData['QUANTITY']) {
 				$arData['AVAILABLE_QUANTITY_LIST'][$k] = $arStoreData['QUANTITY'];
 			}
@@ -53,7 +53,7 @@ class CatalogProvider extends \Bitrix\Catalog\Product\CatalogProvider
 
 	protected function getStoreIds()
 	{
-		$arResult = $GLOBALS['KIT_MULTIREGIONS']['SYS_STORES'];
+		$arResult = $GLOBALS['AMMINA_REGIONS']['SYS_STORES'];
 		if (!is_array($arResult)) {
 			$arResult = array($arResult);
 		}

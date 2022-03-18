@@ -3,8 +3,8 @@
 use Bitrix\Main\Localization\Loc;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-Bitrix\Main\Loader::includeModule('kit.multiregions');
-require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/kit.multiregions/prolog.php");
+Bitrix\Main\Loader::includeModule('ammina.regions');
+require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/ammina.regions/prolog.php");
 
 Loc::loadMessages(__FILE__);
 $ID = isset($_REQUEST["ID"]) ? intval($_REQUEST["ID"]) : 0;
@@ -19,19 +19,19 @@ $isSavingOperation = (
 );
 
 $arUserGroups = $USER->GetUserGroupArray();
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
 
-$isSaleModule = CKitMultiRegions::isIMExists();
+$isSaleModule = CAmminaRegions::isIMExists();
 
 $needFieldsRestore = $_SERVER["REQUEST_METHOD"] == "POST" && !$isSavingOperation;
 $isNewItem = ($ID <= 0);
 $arCurrentItem = false;
 if ($ID > 0) {
-	$arCurrentItem = \Kit\MultiRegions\VariableTable::getById($ID)->fetch();
+	$arCurrentItem = \Ammina\Regions\VariableTable::getById($ID)->fetch();
 }
 if (!$arCurrentItem) {
 	$isNewItem = true;
@@ -43,13 +43,13 @@ if (!$arCurrentItem) {
 
 $result = new \Bitrix\Main\Entity\Result();
 
-$customTabber = new CAdminTabEngine("OnAdminKitMultiRegionsVariableEdit");
-$customDraggableBlocks = new CAdminDraggableBlockEngine('OnAdminKitMultiRegionsVariableEditDraggable');
+$customTabber = new CAdminTabEngine("OnAdminAmminaRegionsVariableEdit");
+$customDraggableBlocks = new CAdminDraggableBlockEngine('OnAdminAmminaRegionsVariableEditDraggable');
 
 if ($isSavingOperation) {
 
 	if ($arCurrentItem && $arCurrentItem['IS_SYSTEM'] == "Y") {
-		LocalRedirect("/bitrix/admin/kit.multiregions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
+		LocalRedirect("/bitrix/admin/ammina.regions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
 	}
 	$errorMessage = '';
 	if (!$customTabber->Check()) {
@@ -71,10 +71,10 @@ if ($isSavingOperation) {
 	}
 
 	if ($isNewItem) {
-		$oTableResult = \Kit\MultiRegions\VariableTable::add($_POST['FIELDS']);
+		$oTableResult = \Ammina\Regions\VariableTable::add($_POST['FIELDS']);
 		$ID = $oTableResult->getId();
 	} else {
-		$oTableResult = \Kit\MultiRegions\VariableTable::update($ID, $_POST['FIELDS']);
+		$oTableResult = \Ammina\Regions\VariableTable::update($ID, $_POST['FIELDS']);
 	}
 	if (!$oTableResult->isSuccess()) {
 		$arCurrentItem = $_POST['FIELDS'];
@@ -82,17 +82,17 @@ if ($isSavingOperation) {
 	}
 	if ($result->isSuccess()) {
 		if (isset($_POST["save"])) {
-			LocalRedirect("/bitrix/admin/kit.multiregions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
+			LocalRedirect("/bitrix/admin/ammina.regions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_", false));
 		} else {
-			LocalRedirect("/bitrix/admin/kit.multiregions.variable.edit.php?lang=" . LANGUAGE_ID . "&ID=" . $ID . GetFilterParams("filter_", false));
+			LocalRedirect("/bitrix/admin/ammina.regions.variable.edit.php?lang=" . LANGUAGE_ID . "&ID=" . $ID . GetFilterParams("filter_", false));
 		}
 	}
 }
 
 if ($ID > 0) {
-	$APPLICATION->SetTitle(Loc::getMessage("KIT_MULTIREGIONS_PAGE_TITLE_EDIT"));
+	$APPLICATION->SetTitle(Loc::getMessage("AMMINA_REGIONS_PAGE_TITLE_EDIT"));
 } else {
-	$APPLICATION->SetTitle(Loc::getMessage("KIT_MULTIREGIONS_PAGE_TITLE_ADD"));
+	$APPLICATION->SetTitle(Loc::getMessage("AMMINA_REGIONS_PAGE_TITLE_ADD"));
 }
 
 CUtil::InitJSCore();
@@ -105,9 +105,9 @@ Blocks\OrderBasket::getCatalogMeasures();
 $aMenu = array();
 $aMenu[] = array(
 	"ICON" => "btn_list",
-	"TEXT" => Loc::getMessage("KIT_MULTIREGIONS_TO_LIST"),
-	"TITLE" => Loc::getMessage("KIT_MULTIREGIONS_TO_LIST_TITLE"),
-	"LINK" => "/bitrix/admin/kit.multiregions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
+	"TEXT" => Loc::getMessage("AMMINA_REGIONS_TO_LIST"),
+	"TITLE" => Loc::getMessage("AMMINA_REGIONS_TO_LIST_TITLE"),
+	"LINK" => "/bitrix/admin/ammina.regions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
 );
 
 
@@ -132,10 +132,10 @@ $defaultBlocksPage = array(
 	"type",
 );
 
-$formId = "kit_multiregions_variable_edit";
+$formId = "ammina_regions_variable_edit";
 
 $aTabs = array(
-	array("DIV" => "tab_kit", "TAB" => Loc::getMessage("KIT_MULTIREGIONS_TAB_TYPE"), "SHOW_WRAP" => "N", "IS_DRAGGABLE" => "Y"),
+	array("DIV" => "tab_ammina", "TAB" => Loc::getMessage("AMMINA_REGIONS_TAB_TYPE"), "SHOW_WRAP" => "N", "IS_DRAGGABLE" => "Y"),
 );
 
 ?>
@@ -165,7 +165,7 @@ $aTabs = array(
 		if (isset($customFastNavItems[$item]))
 			$fastNavItems[$item] = $customFastNavItems[$item];
 		else {
-			$fastNavItems[$item] = Loc::getMessage("KIT_MULTIREGIONS_BLOCK_TITLE_" . toUpper($item));
+			$fastNavItems[$item] = Loc::getMessage("AMMINA_REGIONS_BLOCK_TITLE_" . toUpper($item));
 		}
 	}
 	?>
@@ -176,11 +176,11 @@ $aTabs = array(
 				<? $tabControl->DraggableBlocksStart(); ?>
 				<?
 				foreach ($blocksPage as $blockCode) {
-					echo '<a id="' . $blockCode . '" class="adm-kit-multiregions-fastnav-anchor"></a>';
+					echo '<a id="' . $blockCode . '" class="adm-ammina-regions-fastnav-anchor"></a>';
 					$tabControl->DraggableBlockBegin($fastNavItems[$blockCode], $blockCode);
 					switch ($blockCode) {
 						case "type":
-							echo \Kit\MultiRegions\Helpers\Admin\Blocks\Variable::getEdit($arCurrentItem);
+							echo \Ammina\Regions\Helpers\Admin\Blocks\Variable::getEdit($arCurrentItem);
 							break;
 						default:
 							echo $customDraggableBlocks->getBlockContent($blockCode, $tabControl->selectedTab);
@@ -198,12 +198,12 @@ $tabControl->EndTab();
 
 $tabControl->Buttons(
 	array(
-		"back_url" => "/bitrix/admin/kit.multiregions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
+		"back_url" => "/bitrix/admin/ammina.regions.variable.php?lang=" . LANGUAGE_ID . GetFilterParams("filter_"),
 		"disabled" => ($arCurrentItem['IS_SYSTEM'] == "Y"),
 	)
 
 );
 
 $tabControl->End();
-CKitMultiRegions::showSupportForm();
+CAmminaRegions::showSupportForm();
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

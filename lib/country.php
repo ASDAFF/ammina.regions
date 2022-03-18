@@ -1,6 +1,6 @@
 <?
 
-namespace Kit\MultiRegions;
+namespace Ammina\Regions;
 
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Event;
@@ -14,7 +14,7 @@ class CountryTable extends DataManager
 
 	public static function getTableName()
 	{
-		return 'am_multiregions_country';
+		return 'am_regions_country';
 	}
 
 	public static function getMap()
@@ -54,13 +54,13 @@ class CountryTable extends DataManager
 				'data_type' => 'integer',
 			),
 			'COUNTRY_LANG' => array(
-				'data_type' => '\Kit\MultiRegions\CountryLang',
+				'data_type' => '\Ammina\Regions\CountryLang',
 				'reference' => array(
 					'=this.ID' => 'ref.COUNTRY_ID'
 				)
 			),
 			'REGION' => array(
-				'data_type' => '\Kit\MultiRegions\Region',
+				'data_type' => '\Ammina\Regions\Region',
 				'reference' => array(
 					'=this.ID' => 'ref.COUNTRY_ID'
 				)
@@ -73,7 +73,7 @@ class CountryTable extends DataManager
 				)
 			),
 			'CITY' => array(
-				'data_type' => '\Kit\MultiRegions\City',
+				'data_type' => '\Ammina\Regions\City',
 				'reference' => array(
 					'=this.REGION.ID' => 'ref.REGION_ID'
 				)
@@ -94,7 +94,7 @@ class CountryTable extends DataManager
 	{
 		$result = parent::getList($parameters);
 		/*$result->addFetchDataModifier(function (&$data) use ($parameters) {
-			\CKitMultiRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
+			\CAmminaRegions::langNamesForResult($data, self::$langFields, isset($parameters['select']) ? $parameters['select'] : false);
 		});*/
 		return $result;
 	}
@@ -165,7 +165,7 @@ class CountryTable extends DataManager
 				$arCurrentLang[$ar['LID']] = $ar['ID'];
 			}
 
-			$arAllowLangs = explode("|", \COption::GetOptionString("kit.multiregions", "use_lang", ""));
+			$arAllowLangs = explode("|", \COption::GetOptionString("ammina.regions", "use_lang", ""));
 			$rDbLang = \CLanguage::GetList($b, $o, array());
 			while ($arDbLang = $rDbLang->Fetch()) {
 				if ($arDbLang['LID'] == "ru" || !in_array($arDbLang['LID'], $arAllowLangs)) {

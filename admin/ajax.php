@@ -3,11 +3,11 @@
 use Bitrix\Main\Localization\Loc;
 
 require_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_before.php");
-Bitrix\Main\Loader::includeModule('kit.multiregions');
+Bitrix\Main\Loader::includeModule('ammina.regions');
 
 Loc::loadMessages(__FILE__);
 
-$modulePermissions = $APPLICATION->GetGroupRight("kit.multiregions");
+$modulePermissions = $APPLICATION->GetGroupRight("ammina.regions");
 if ($modulePermissions < "W") {
 	$APPLICATION->AuthForm(Loc::getMessage("ACCESS_DENIED"));
 }
@@ -16,12 +16,12 @@ define("NO_KEEP_STATISTIC", true);
 define("NO_AGENT_STATISTIC", true);
 define("NO_AGENT_CHECK", true);
 define("NOT_CHECK_PERMISSIONS", true);
-$isSaleModule = CKitMultiRegions::isIMExists();
+$isSaleModule = CAmminaRegions::isIMExists();
 $arResult = array(
 	"STATUS" => "SUCCESS",
 );
 
-function amultiregions_doMarkSearchText($strName, $strQuery)
+function aregions_doMarkSearchText($strName, $strQuery)
 {
 	$test1 = amreg_strtolower($strName);
 	$test2 = amreg_strtolower($strQuery);
@@ -42,9 +42,9 @@ if (!defined("BX_UTF") || BX_UTF !== true) {
 if (in_array($_REQUEST['action'], array("country", "region", "city", "domain"))) {
 	$arResult['ITEMS'][0] = array(
 		"ID" => 0,
-		"NAME" => Loc::getMessage("KIT_MULTIREGIONS_NOT_SELECTED"),
-		"FULL_NAME" => Loc::getMessage("KIT_MULTIREGIONS_NOT_SELECTED"),
-		"FORMAT_NAME" => Loc::getMessage("KIT_MULTIREGIONS_NOT_SELECTED"),
+		"NAME" => Loc::getMessage("AMMINA_REGIONS_NOT_SELECTED"),
+		"FULL_NAME" => Loc::getMessage("AMMINA_REGIONS_NOT_SELECTED"),
+		"FORMAT_NAME" => Loc::getMessage("AMMINA_REGIONS_NOT_SELECTED"),
 	);
 	$cnt = intval($_REQUEST['cnt']);
 	if ($cnt <= 0 || $cnt > 100) {
@@ -75,7 +75,7 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 					),
 				);
 			}
-			$rItems = \Kit\MultiRegions\CountryTable::getList(array(
+			$rItems = \Ammina\Regions\CountryTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 				"limit" => $cnt,
@@ -90,10 +90,10 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 				$arItem['ID'] = $arItem['IDD'];
 				$arData = array(
 					"ID" => $arItem['ID'],
-					"NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\CountryLangTable::getLangNames($arItem['ID'])),
+					"NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\CountryLangTable::getLangNames($arItem['ID'])),
 				);
 				$arData['FULL_NAME'] = $arData['NAME'];
-				$arData['FORMAT_NAME'] = amultiregions_doMarkSearchText($arData['NAME'], $query);
+				$arData['FORMAT_NAME'] = aregions_doMarkSearchText($arData['NAME'], $query);
 				$arResult['ITEMS'][] = $arData;
 			}
 		} elseif ($_REQUEST['action'] == "region") {
@@ -115,7 +115,7 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 					),
 				);
 			}
-			$rItems = \Kit\MultiRegions\RegionTable::getList(array(
+			$rItems = \Ammina\Regions\RegionTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 				"limit" => $cnt,
@@ -130,11 +130,11 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 				$arItem['ID'] = $arItem['IDD'];
 				$arData = array(
 					"ID" => $arItem['ID'],
-					"NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\RegionLangTable::getLangNames($arItem['ID'])),
-					"COUNTRY_NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\CountryLangTable::getLangNames($arItem['COUNTRY_ID'])),
+					"NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\RegionLangTable::getLangNames($arItem['ID'])),
+					"COUNTRY_NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\CountryLangTable::getLangNames($arItem['COUNTRY_ID'])),
 				);
 				$arData['FULL_NAME'] = $arData['COUNTRY_NAME'] . ", " . $arData['NAME'];
-				$arData['FORMAT_NAME'] = amultiregions_doMarkSearchText($arData['NAME'], $query) . ", " . $arData['COUNTRY_NAME'];
+				$arData['FORMAT_NAME'] = aregions_doMarkSearchText($arData['NAME'], $query) . ", " . $arData['COUNTRY_NAME'];
 				$arResult['ITEMS'][] = $arData;
 			}
 		} elseif ($_REQUEST['action'] == "city") {
@@ -159,7 +159,7 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 				);
 			}
 
-			$rItems = \Kit\MultiRegions\CityTable::getList(array(
+			$rItems = \Ammina\Regions\CityTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 				"limit" => $cnt,
@@ -174,12 +174,12 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 				$arItem['ID'] = $arItem['IDD'];
 				$arData = array(
 					"ID" => $arItem['ID'],
-					"NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\CityLangTable::getLangNames($arItem['ID'])),
-					"REGION_NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\RegionLangTable::getLangNames($arItem['REGION_ID'])),
-					"COUNTRY_NAME" => CKitMultiRegions::getFirstNotEmpty(\Kit\MultiRegions\CountryLangTable::getLangNames($arItem['COUNTRY_ID'])),
+					"NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\CityLangTable::getLangNames($arItem['ID'])),
+					"REGION_NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\RegionLangTable::getLangNames($arItem['REGION_ID'])),
+					"COUNTRY_NAME" => CAmminaRegions::getFirstNotEmpty(\Ammina\Regions\CountryLangTable::getLangNames($arItem['COUNTRY_ID'])),
 				);
 				$arData['FULL_NAME'] = $arData['COUNTRY_NAME'] . ", " . $arData['REGION_NAME'] . ", " . $arData['NAME'];
-				$arData['FORMAT_NAME'] = amultiregions_doMarkSearchText($arData['NAME'], $query) . ", " . $arData['REGION_NAME'] . ", " . $arData['COUNTRY_NAME'];
+				$arData['FORMAT_NAME'] = aregions_doMarkSearchText($arData['NAME'], $query) . ", " . $arData['REGION_NAME'] . ", " . $arData['COUNTRY_NAME'];
 				$arResult['ITEMS'][] = $arData;
 			}
 		} elseif ($_REQUEST['action'] == "domain") {
@@ -213,7 +213,7 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 			if ($cnt <= 0 || $cnt > 100) {
 				$cnt = 50;
 			}
-			$rItems = \Kit\MultiRegions\DomainTable::getList(array(
+			$rItems = \Ammina\Regions\DomainTable::getList(array(
 				"filter" => $arFilter,
 				"select" => $arSelect,
 				"limit" => $cnt,
@@ -222,11 +222,11 @@ if (in_array($_REQUEST['action'], array("country", "region", "city", "domain")))
 			while ($arItem = $rItems->fetch()) {
 				$arData = array(
 					"ID" => $arItem['ID'],
-					"NAME" => \Kit\MultiRegions\DomainTable::getLangName($arItem['ID']),
+					"NAME" => \Ammina\Regions\DomainTable::getLangName($arItem['ID']),
 					"DOMAIN" => $arItem['DOMAIN'],
 				);
 				$arData['FULL_NAME'] = "[" . $arData['ID'] . "] " . $arData['NAME'] . " (" . $arData['DOMAIN'] . ")";
-				$arData['FORMAT_NAME'] = "[" . $arData['ID'] . "] " . amultiregions_doMarkSearchText($arData['NAME'], $query) . " (" . $arData['DOMAIN'] . ")";
+				$arData['FORMAT_NAME'] = "[" . $arData['ID'] . "] " . aregions_doMarkSearchText($arData['NAME'], $query) . " (" . $arData['DOMAIN'] . ")";
 				$arResult['ITEMS'][] = $arData;
 			}
 		}

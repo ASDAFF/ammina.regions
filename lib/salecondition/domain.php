@@ -8,7 +8,7 @@ use Bitrix\Main,
 use Bitrix\Sale\Discount\CumulativeCalculator;
 
 
-class CKitMultiRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
+class CAmminaRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
 {
 	public static function GetControlDescr()
 	{
@@ -24,7 +24,7 @@ class CKitMultiRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
 		$arResult = array(
 			'controlgroup' => true,
 			'group' => false,
-			'label' => Loc::getMessage('kit.multiregions_DISCOUNT_GROUP_LABEL'),
+			'label' => Loc::getMessage('ammina.regions_DISCOUNT_GROUP_LABEL'),
 			'showIn' => static::GetShowIn($arParams['SHOW_IN_GROUPS']),
 			'children' => array(),
 		);
@@ -71,7 +71,7 @@ class CKitMultiRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
 				if (isset($arControl['JS_VALUE']['multiple']) && 'Y' == $arControl['JS_VALUE']['multiple']) {
 					$boolMulti = true;
 				}
-				$currentDomain = '$GLOBALS[\'KIT_MULTIREGIONS\'][\'SYS_CURRENT_DOMAIN_ID\']';
+				$currentDomain = '$GLOBALS[\'AMMINA_REGIONS\'][\'SYS_CURRENT_DOMAIN_ID\']';
 				if (!$boolMulti) {
 					$strResult = str_replace(array('#FIELD#', '#VALUE#'), array($currentDomain, $arValues['value']), $arLogic['OP'][$arControl['MULTIPLE']]);
 				} else {
@@ -96,7 +96,7 @@ class CKitMultiRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
 	 */
 	public static function GetControls($strControlID = false)
 	{
-		$rDomains = \Kit\MultiRegions\DomainTable::getList(array(
+		$rDomains = \Ammina\Regions\DomainTable::getList(array(
 			"order" => array(
 				"NAME" => "ASC",
 			),
@@ -109,14 +109,14 @@ class CKitMultiRegionsSaleCondCtrlDomain extends CCatalogCondCtrlComplex
 			'CondAMRCmnDomain' => array(
 				'ID' => 'CondAMRCmnDomain',
 				'EXECUTE_MODULE' => 'all',
-				'MODULE_ID' => 'kit.multiregions',
+				'MODULE_ID' => 'ammina.regions',
 				'MODULE_ENTITY' => 'datetime',
 				'FIELD' => 'AMR_DOMAIN',
 				'FIELD_TYPE' => 'int',
 				'MULTIPLE' => 'N',
 				'GROUP' => 'N',
-				'LABEL' => Loc::getMessage('kit.multiregions_DISCOUNT_DOMAIN_LABEL'),
-				'PREFIX' => Loc::getMessage('kit.multiregions_DISCOUNT_DOMAIN_PREFIX'),
+				'LABEL' => Loc::getMessage('ammina.regions_DISCOUNT_DOMAIN_LABEL'),
+				'PREFIX' => Loc::getMessage('ammina.regions_DISCOUNT_DOMAIN_PREFIX'),
 				'LOGIC' => static::GetLogic(array(BT_COND_LOGIC_EQ, BT_COND_LOGIC_NOT_EQ)),
 				'JS_VALUE' => array(
 					'type' => 'select',
